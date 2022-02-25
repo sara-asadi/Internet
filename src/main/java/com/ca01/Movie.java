@@ -84,4 +84,12 @@ public class Movie {
         for (String s : genres) if (Objects.equals(s, genre)) return true;
         return false;
     }
+
+    public void updateComment(Comment comment, long id){
+        for (int i =0 ; i<comments.size(); i++){
+            if(comments.get(i).id == id){
+                comments.set(i, comment);
+            }
+        }
+    }
 }

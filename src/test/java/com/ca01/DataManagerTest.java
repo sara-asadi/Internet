@@ -1,5 +1,6 @@
 package com.ca01;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -22,7 +23,7 @@ class DataManagerTest {
     }
 
     @Test
-    void addNewActorTest() throws ParseException {
+    void addNewActorTest() throws ParseException, java.text.ParseException {
         String actorString = "{\"id\": 2, \"name\": \"Al Pacino\", \"birthDate\": \"1940-04-25\", \"nationality\": \"American\"}";
         JSONObject actorObject = (JSONObject) parser.parse(actorString);
         dataManager.addActor(actorObject);
@@ -30,7 +31,7 @@ class DataManagerTest {
     }
 
     @Test
-    void updateActorTest() throws ParseException {
+    void updateActorTest() throws ParseException, java.text.ParseException {
         String actorString = "{\"id\": 2, \"name\": \"Al Pacino\", \"birthDate\": \"1940-04-25\", \"nationality\": \"American\"}";
         JSONObject actorObject = (JSONObject) parser.parse(actorString);
         dataManager.addActor(actorObject);
@@ -80,8 +81,8 @@ class DataManagerTest {
         JSONObject movieObject = (JSONObject) parser.parse(movieString);
 
         int error = dataManager.addMovie(movieObject);
-        assertTrue(error == -1);
-        assertTrue(dataManager.movies.size() == 0);
+        assertEquals(-2,error);
+        assertEquals(0,dataManager.movies.size());
     }
 
     @Test
@@ -193,7 +194,7 @@ class DataManagerTest {
         JSONObject rateObject = (JSONObject) parser.parse(rateString);
         int error = dataManager.rateMovie(rateObject);
         assertEquals(-1, error);
-        assertEquals(0,dataManager.movies.get(0).rating);
+        assertEquals(null,dataManager.movies.get(0).rating);
     }
 
     @Test
@@ -215,7 +216,7 @@ class DataManagerTest {
         String rateString = "{\"userEmail\": \"sara@ut.ac.ir\", \"movieId\": 1, \"score\": 12}";
         JSONObject rateObject = (JSONObject) parser.parse(rateString);
         dataManager.rateMovie(rateObject);
-        assertEquals(0,dataManager.movies.get(0).rating);
+        assertEquals(null,dataManager.movies.get(0).rating);
         assertTrue(dataManager.users.get(0).ratedMovies.size() == 0);
     }
 
@@ -227,7 +228,7 @@ class DataManagerTest {
         String rateString = "{\"userEmail\": \"sara@ut.ac.ir\", \"movieId\": 1, \"score\": 0}";
         JSONObject rateObject = (JSONObject) parser.parse(rateString);
         dataManager.rateMovie(rateObject);
-        assertEquals(0,dataManager.movies.get(0).rating);
+        assertEquals(null,dataManager.movies.get(0).rating);
         assertTrue(dataManager.users.get(0).ratedMovies.size() == 0);
     }
 
@@ -239,7 +240,7 @@ class DataManagerTest {
         String rateString = "{\"userEmail\": \"sara@ut.ac.ir\", \"movieId\": 1, \"score\": -3}";
         JSONObject rateObject = (JSONObject) parser.parse(rateString);
         dataManager.rateMovie(rateObject);
-        assertEquals(0,dataManager.movies.get(0).rating);
+        assertEquals(null,dataManager.movies.get(0).rating);
         assertTrue(dataManager.users.get(0).ratedMovies.size() == 0);
     }
 
@@ -346,6 +347,15 @@ class DataManagerTest {
         int error = dataManager.removeFromWatchList(removeWatchListObject);
         assertEquals(-1, error);
         assertTrue(dataManager.users.get(0).watchList.size() == 1);
+    }
+
+
+    @Test
+    void GetMovieListEmpty(){
+        JSONObject obj = new JSONObject();
+        JSONArray movieList = new JSONArray();
+        obj.put("MoviesList", movieList);
+        assertEquals(obj, dataManager.getMoviesList());
     }
 
 }

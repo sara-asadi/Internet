@@ -104,7 +104,8 @@ public class DataManager {
         if (score>10 || score<1)
             return -3;
 
-        String userEmail = (String) data.get("userEmail");
+        String userEmail;
+        (userEmail = (String) data.get("userEmail")).equals("");
         long movieId = (long) data.get("movieId");
         int userIdx = findUser(userEmail);
         int movieIdx = findMovie(movieId);
@@ -157,28 +158,30 @@ public class DataManager {
 
         User user = users.get(userIdx);
         Comment comment = comments.get(commentIdx);
+        long movieId = comment.movieId;
 
         for (List<Long> list:user.ratedComments)
             if (list.get(0) == commentId){
                 long prevVote = list.get(1);
                 if (vote == 0){
                     if (prevVote == 1) comment.likes -= 1;
-                    if (prevVote == -1) comment.disLikes -= 1;
+                    else if (prevVote == -1) comment.disLikes -= 1;
                     list.set(0, (long) -1);
-                    return 0;
+
                 }
-                if (vote == 1 && prevVote == -1) {
+                else if (vote == 1 && prevVote == -1) {
                     comment.likes += 1;
                     comment.disLikes -= 1;
                     list.set(1, (long) 1);
-                    return 0;
+
                 }
-                if (vote == -1 && prevVote == 1) {
+                else if (vote == -1 && prevVote == 1) {
                     comment.likes -= 1;
                     comment.disLikes += 1;
                     list.set(1, (long) -1);
-                    return 0;
                 }
+                movies.get(findMovie(movieId)).updateComment(comment, commentId);
+                return 0;
             }
 
         if (vote == 0)
@@ -190,6 +193,7 @@ public class DataManager {
         user.ratedComments.add(temp);
         if (vote == 1) comment.likes += 1;
         if (vote == -1) comment.disLikes += 1;
+        movies.get(findMovie(movieId)).comments.add(comment);
         return 0;
     }
     public int addToWatchList(JSONObject data) throws ParseException {
