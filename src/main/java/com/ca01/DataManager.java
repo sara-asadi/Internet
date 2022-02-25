@@ -4,10 +4,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class DataManager {
     List<Actor> actors;
@@ -48,59 +46,52 @@ public class DataManager {
     public Actor getActorById(long actorId) {
         return actors.get(findActor(actorId));
     }
+    public void isDate(String str) throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(str);
+    }
 
-    public int addActor(JSONObject data){
-        Actor newActor = new Actor((long) data.get("id"), (String) data.get("name"), (String) data.get("birthDate"), (String) data.get("nationality"));
+    //try {;} catch (NullPointerException e) {return -1;}
+    //try {isDate(birthDate);}catch (ParseException e){return -1;}
+    //try {id = (long) data.get("id");} catch (NullPointerException e){return -1;}
+    //(=(String) data.get("")).equals("");
 
-        int idx = findActor((long)data.get("id"));
-        if(idx != -1) {
-            actors.set(idx, newActor);
-            return 0;
-        }
-        actors.add(newActor);
-        //System.out.println(Arrays.toString(actors.toArray()));
+    public int addActor(JSONObject data) throws ParseException {
+        String birthDate=(String) data.get("birthDate");
+        try {isDate(birthDate);}catch (ParseException e){return -1;}
+
+        Actor newActor = new Actor((long) data.get("id"), (String) data.get("name"), birthDate, (String) data.get("nationality"));
+        int idx = findActor((long) data.get("id"));
+        if (idx != -1) actors.set(idx, newActor);
+        else actors.add(newActor);
         return 0;
     }
     public int addMovie(JSONObject data) {
-        List<Long> cast = (List<Long>) data.get("cast");
+        String releaseDate=(String) data.get("releaseDate");
+        try {isDate(releaseDate);}catch (ParseException e){return -1;}
 
-        for (Long x: cast)
-            if(findActor(x) == -1) {
-                System.out.println(x);
-                return -1;
-            }
-
-        Movie newMovie = new Movie((long) data.get("id"), (String) data.get("name"), (String) data.get("summary"), (String) data.get("releaseDate"), (String) data.get("director"), (List<String>) data.get("writers"), (List<String>) data.get("genres"), cast, (double) data.get("imdbRate"), (long) data.get("duration"), (long) data.get("ageLimit"));
-
+        for (Long x : (List<Long>) data.get("cast")) if (findActor(x) == -1) return -2;
+        Movie newMovie = new Movie((long) data.get("id"),(String) data.get("name"), (String) data.get("summary"), releaseDate, (String) data.get("director"), (List<String>) data.get("writers"),(List<String>) data.get("genres"), (List<Long>) data.get("cast"), (double) data.get("imdbRate"), (long) data.get("duration"), (long) data.get("ageLimit"));
         int idx = findMovie((long) data.get("id"));
-        if(idx != -1) {
-            movies.set(idx, newMovie);
-            return 0;
-        }
-        movies.add(newMovie);
+        if (idx != -1) movies.set(idx, newMovie);
+        else movies.add(newMovie);
         return 0;
     }
     public int addUser(JSONObject data) {
-        User newUser = new User((String) data.get("email"), (String) data.get("password"), (String)data.get("nickname"), (String) data.get("name"), (String) data.get("birthDate"));
+        String birthDate=(String) data.get("birthDate");
+        try {isDate(birthDate);}catch (ParseException e){return -1;}
 
+        User newUser = new User((String) data.get("email"), (String) data.get("password"), (String) data.get("nickname"), (String) data.get("name"), birthDate);
         int idx = findUser((String) data.get("email"));
-
-        if(idx != -1) {
-            users.set(idx, newUser);
-            return 0;
-        }
-        users.add(newUser);
-
+        if (idx != -1) users.set(idx, newUser);
+        else users.add(newUser);
         return 0;
     }
     public int addComment(JSONObject data) {
         String userEmail = (String) data.get("userEmail");
-        if (findUser(userEmail) == -1)
-            return -1;
+        if (findUser(userEmail) == -1) return -1;
 
         int movieIdx = findMovie((long) data.get("movieId"));
-        if (movieIdx == -1)
-            return -2;
+        if (movieIdx == -1) return -2;
         Movie movie = movies.get(movieIdx);
         int id = comments.size()+1;
         Comment comment = new Comment(userEmail, movie.id, (String)data.get("text"), id);
@@ -139,8 +130,14 @@ public class DataManager {
         temp.add(movieId);
         temp.add(score);
         user.ratedMovies.add(temp);
-
-        movie.rating = ((movie.rating * movie.ratingCount)+score)/(movie.ratingCount + 1);
+        if (movie.rating == null) {
+            movie.rating = Double.valueOf(score);
+            movie.ratingCount += 1;
+        }
+        else {
+            movie.rating = ((movie.rating * movie.ratingCount) + score) / (movie.ratingCount + 1);
+            movie.ratingCount += 1;
+        }
         return 0;
     }
     public int voteComment(JSONObject data) {
@@ -191,7 +188,6 @@ public class DataManager {
         temp.add(commentId);
         temp.add(vote);
         user.ratedComments.add(temp);
-
         if (vote == 1) comment.likes += 1;
         if (vote == -1) comment.disLikes += 1;
         return 0;
@@ -238,61 +234,41 @@ public class DataManager {
     public JSONObject getMoviesList() {
         JSONObject obj = new JSONObject();
         JSONArray movieList = new JSONArray();
-        for (Movie movie : movies) {
-            JSONObject movieJson = new JSONObject();
-            movieJson.put("movieId", movie.id);
-            movieJson.put("name", movie.name);
-            movieJson.put("director", movie.director);
-            JSONArray genres = new JSONArray();
-            for (String genre : movie.genres)
-                genres.add(genre);
-            movieJson.put("genres", genres);
-            movieJson.put("rating", movie.rating);
-
-            movieList.add(movieJson);
-        }
+        for (Movie movie : movies)
+            movieList.add(movie.getJsonObject());
         obj.put("MoviesList", movieList);
         return obj;
     }
     public JSONObject getMovieById(JSONObject data) {
-        JSONObject obj = new JSONObject();
         int movieIdx = findMovie((long) data.get("movieId"));
         if (movieIdx == -1)
             return null;
         Movie movie = movies.get(movieIdx);
-        obj.put("movieId", movie.id);
-        obj.put("name", movie.name);
-        obj.put("summary", movie.summary);
-        obj.put("releaseDate", movie.releaseDate);
-        obj.put("director", movie.director);
-        obj.put("writers", Arrays.toString(movie.writers.toArray()));
-        obj.put("genres", Arrays.toString(movie.genres.toArray()));
-        JSONArray casts = new JSONArray();
-        for (Long actorId : movie.cast) {
-            Actor actor = actors.get(findActor(actorId));
-            JSONObject actorObj = new JSONObject();
-            actorObj.put("actorId", actor.id);
-            actorObj.put("name", actor.name);
-            casts.add(actorObj);
-        }
-        obj.put("cast", casts);
-        obj.put("rating", movie.rating);
-        obj.put("duration", movie.duration);
-        obj.put("ageLimit", movie.ageLimit);
-        JSONArray comments = new JSONArray();
-        for (Comment comment : movie.comments) {
-            JSONObject cObj = new JSONObject();
-            cObj.put("commentId", comment.id);
-            cObj.put("userEmail", comment.userEmail);
-            cObj.put("text", comment.text);
-            cObj.put("like", comment.likes);
-            cObj.put("dislike", comment.disLikes);
-
-            comments.add(cObj);
-        }
-        obj.put("comments", comments);
-
+        return movie.getJsonObject(this);
+    }
+    public JSONObject getMovieByGenre(JSONObject data) {
+        JSONObject obj = new JSONObject();
+        JSONArray movieList = new JSONArray();
+        for (Movie movie : movies)
+            if (movie.hasGenre((String) data.get("genre")))
+                movieList.add(movie.getJsonObject());
+        obj.put("MoviesListByGenre", movieList);
         return obj;
     }
-
+    public JSONObject getWatchList(JSONObject data) {
+        System.out.println("hi");
+        String email = (String) data.get("userEmail");
+        JSONObject obj = new JSONObject();
+        JSONArray watchList = new JSONArray();
+        int userIdx = findUser(email);
+        if (userIdx == -1)
+            return null;
+        User user = users.get(userIdx);
+        for (Long movieId : user.watchList) {
+            System.out.println("hi!");
+            watchList.add(movies.get(findMovie(movieId)).getJsonObject());
+        }
+        obj.put("WatchList", watchList);
+        return obj;
+    }
 }

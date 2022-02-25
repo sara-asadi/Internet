@@ -15,10 +15,10 @@ public class Comment {
 
 
     public Comment (String userEmail_, long movieId_, String text_, int id_){
-        userEmail = userEmail_;
-        movieId = movieId_;
-        text =text_;
-        id = id_;
+        userEmail = String.valueOf(userEmail_);
+        movieId = (long) movieId_;
+        text = String.valueOf(text_);
+        id = (long) id_;
         Date date = new Date();
         submitionTime = date.toString();
         likes = 0;

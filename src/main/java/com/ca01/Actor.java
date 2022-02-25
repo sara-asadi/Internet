@@ -8,11 +8,11 @@ public class Actor{
     String birthDate;
     String nationality;
 
-    public  Actor(long id_, String name_, String birthDate_, String nationality_){
-        id = id_;
-        name = name_;
-        birthDate = birthDate_;
-        nationality = nationality_;
+    public  Actor(long id_, String name_, String birthDate_, String nationality_) {
+        id = (long) id_;
+        (name = name_).equals("");
+        (birthDate = birthDate_).equals("");
+        (nationality = nationality_).equals("");
     }
     public JSONObject getJsonObject() {
         JSONObject actorObj = new JSONObject();
