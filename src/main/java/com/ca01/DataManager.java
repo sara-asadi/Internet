@@ -138,6 +138,7 @@ public class DataManager {
         user.ratedMovies.add(temp);
 
         movie.rating = ((movie.rating * movie.ratingCount)+score)/(movie.ratingCount + 1);
+        movie.ratingCount += 1;
         return 0;
     }
     public int voteComment(JSONObject data) {
