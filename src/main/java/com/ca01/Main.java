@@ -66,7 +66,7 @@ public class Main {
                 else if (error == -3)
                     System.out.println("{\"success\": false, \"data\": \"InvalidRateScore\"}");
                 else
-                    System.out.println("\"success\": true, \"data\": \"movie rated successfully\"");
+                    System.out.println("{\"success\": true, \"data\": \"movie rated successfully\"}");
             }
             if (command.equals("voteComment")) {
                 error = handler.voteComment(getJsonObject(tokenizer));
@@ -77,7 +77,7 @@ public class Main {
                 else if (error == -3)
                     System.out.println("{\"success\": false, \"data\": \"InvalidVoteValue\"}");
                 else
-                    System.out.println("\"success\": true, \"data\": \"comment voted successfully\"");
+                    System.out.println("{\"success\": true, \"data\": \"comment voted successfully\"}");
             }
             if (command.equals("addToWatchList")) {
                 error = handler.addToWatchList(getJsonObject(tokenizer));
@@ -101,6 +101,20 @@ public class Main {
                 else
                     System.out.println("{\"success\": true, \"data\": \"movie removed from watchlist successfully\"}");
             }
+            if (command.equals("getMoviesList")) {
+                JSONObject data = new JSONObject();
+                data = handler.getMoviesList();
+                System.out.println("{\"success\": true, \"data\": "+data.toJSONString()+"}");
+            }
+            if (command.equals("getMovieById")) {
+                JSONObject data = new JSONObject();
+                data = handler.getMovieById(getJsonObject(tokenizer));
+                if (data == null)
+                    System.out.println("{\"success\": false, \"data\": \"MovieNotFound\"}");
+                else
+                    System.out.println("{\"success\": true, \"data\": "+data.toJSONString()+"}");
+            }
+
         }
     }
 }

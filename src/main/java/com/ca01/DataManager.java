@@ -95,14 +95,14 @@ public class DataManager {
         if (findUser(userEmail) == -1)
             return -1;
 
-        long movieId = (long) data.get("movieId");
-        if (findMovie(movieId) == -1)
+        int movieIdx = findMovie((long) data.get("movieId"));
+        if (movieIdx == -1)
             return -2;
-
+        Movie movie = movies.get(movieIdx);
         int id = comments.size()+1;
-        Comment comment = new Comment(userEmail, movieId, (String)data.get("text"), id);
+        Comment comment = new Comment(userEmail, movie.id, (String)data.get("text"), id);
         comments.add(comment);
-
+        movie.comments.add(comment);
         return id;
     }
     public int rateMovie(JSONObject data) {
@@ -231,6 +231,65 @@ public class DataManager {
             return -1;
 
         return user.removeWatchList(movieId);
+    }
+    public JSONObject getMoviesList() {
+        JSONObject obj = new JSONObject();
+        JSONArray movieList = new JSONArray();
+        for (Movie movie : movies) {
+            JSONObject movieJson = new JSONObject();
+            movieJson.put("movieId", movie.id);
+            movieJson.put("name", movie.name);
+            movieJson.put("director", movie.director);
+            JSONArray genres = new JSONArray();
+            for (String genre : movie.genres)
+                genres.add(genre);
+            movieJson.put("genres", genres);
+            movieJson.put("rating", movie.rating);
+
+            movieList.add(movieJson);
+        }
+        obj.put("MoviesList", movieList);
+        return obj;
+    }
+    public JSONObject getMovieById(JSONObject data) {
+        JSONObject obj = new JSONObject();
+        int movieIdx = findMovie((long) data.get("movieId"));
+        if (movieIdx == -1)
+            return null;
+        Movie movie = movies.get(movieIdx);
+        obj.put("movieId", movie.id);
+        obj.put("name", movie.name);
+        obj.put("summary", movie.summary);
+        obj.put("releaseDate", movie.releaseDate);
+        obj.put("director", movie.director);
+        obj.put("writers", Arrays.toString(movie.writers.toArray()));
+        obj.put("genres", Arrays.toString(movie.genres.toArray()));
+        JSONArray casts = new JSONArray();
+        for (Long actorId : movie.cast) {
+            Actor actor = actors.get(findActor(actorId));
+            JSONObject actorObj = new JSONObject();
+            actorObj.put("actorId", actor.id);
+            actorObj.put("name", actor.name);
+            casts.add(actorObj);
+        }
+        obj.put("cast", casts);
+        obj.put("rating", movie.rating);
+        obj.put("duration", movie.duration);
+        obj.put("ageLimit", movie.ageLimit);
+        JSONArray comments = new JSONArray();
+        for (Comment comment : movie.comments) {
+            JSONObject cObj = new JSONObject();
+            cObj.put("commentId", comment.id);
+            cObj.put("userEmail", comment.userEmail);
+            cObj.put("text", comment.text);
+            cObj.put("like", comment.likes);
+            cObj.put("dislike", comment.disLikes);
+
+            comments.add(cObj);
+        }
+        obj.put("comments", comments);
+
+        return obj;
     }
 
 }

@@ -17,7 +17,7 @@ public class Movie {
     long ageLimit;
     double rating;
     long ratingCount;
-    List<String> comments;
+    List<Comment> comments;
 
     public  Movie(long id_, String name_, String summary_, String releaseDate_, String director_,
                   List<String> writers_, List<String> genres_, List<Long> cast_,
