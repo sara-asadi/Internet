@@ -15,9 +15,9 @@ public class Comment {
 
 
     public Comment (String userEmail_, long movieId_, String text_, int id_){
-        userEmail = String.valueOf(userEmail_);
+        (userEmail = userEmail_).equals("");
         movieId = (long) movieId_;
-        text = String.valueOf(text_);
+        (text = text_).equals("");
         id = (long) id_;
         Date date = new Date();
         submitionTime = date.toString();

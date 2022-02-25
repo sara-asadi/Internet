@@ -17,11 +17,11 @@ public class User {
     List<Long> watchList;
 
     public  User(String email_, String password_, String nickname_, String name_, String birthDate_){
-        email = String.valueOf(email_);
-        password = String.valueOf(password_);
-        nickname = String.valueOf(nickname_);
-        name = String.valueOf(name_);
-        birthDate = String.valueOf(birthDate_);
+        (email = email_).equals("");
+        (password = password_).equals("");
+        (nickname = nickname_).equals("");
+        (name = name_).equals("");
+        (birthDate = birthDate_).equals("");
         ratedMovies = new ArrayList<List<Long>>();
         ratedComments = new ArrayList<List<Long>>();
         watchList = new ArrayList<>();

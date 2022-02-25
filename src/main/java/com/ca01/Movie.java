@@ -27,10 +27,10 @@ public class Movie {
     public  Movie(long id_, String name_, String summary_, String releaseDate_, String director_, List<String> writers_, List<String> genres_, List<Long> cast_, double imdbRate_, long duration_, long ageLimit_){
 
         id = (long) id_;
-        name = String.valueOf(name_);
-        summary = String.valueOf(summary_);
-        releaseDate = String.valueOf(releaseDate_);
-        director = String.valueOf(director_);
+        (name = name_).equals("");
+        (summary = summary_).equals("");
+        (releaseDate = releaseDate_).equals("");
+        (director = director_).equals("");
         writers = new ArrayList<>();
         writers.addAll(writers_);
         genres = new ArrayList<>();
