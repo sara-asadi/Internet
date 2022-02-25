@@ -232,14 +232,5 @@ public class DataManager {
 
         return user.removeWatchList(movieId);
     }
-    public int getMovieList() {
-        //JSONObject obj = new JSONObject();
-        //JSONArray data = new JSONArray();
-
-        JSONArray movieList = new JSONArray();
-
-
-        return obj;
-    }
 
 }

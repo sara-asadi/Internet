@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-    public static JSONObject getJsonObject(StringTokenizer tokenizer, ) throws ParseException {
+    public static JSONObject getJsonObject(StringTokenizer tokenizer) throws ParseException {
         String jsonData = "";
         jsonData = tokenizer.nextToken();
         JSONParser parser = new JSONParser();
@@ -100,9 +100,6 @@ public class Main {
                     System.out.println("{\"success\": false, \"data\": \"CommentNotFound\"}");
                 else
                     System.out.println("{\"success\": true, \"data\": \"movie removed from watchlist successfully\"}");
-            }
-            if (command.equals("getMovieList")) {
-                error = handler.getMovieList();
             }
         }
     }
