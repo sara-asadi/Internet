@@ -28,9 +28,9 @@ public class DataManageAddToWatchListTest {
     }
     @Test
     void userAddMovieToWatchListTest() throws ParseException, java.text.ParseException {
-        String watchListString = "{\"userEmail\": \"sara@ut.ac.ir\", \"movieId\": 1}";
-        JSONObject watchListObject = (JSONObject) parser.parse(watchListString);
-        dataManager.addToWatchList(watchListObject);
+            String watchListString = "{\"userEmail\": \"sara@ut.ac.ir\", \"movieId\": 1}";
+            JSONObject watchListObject = (JSONObject) parser.parse(watchListString);
+            dataManager.addToWatchList(watchListObject);
         assertEquals(1,dataManager.users.get(0).watchList.size());
     }
 

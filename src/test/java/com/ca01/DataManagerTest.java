@@ -53,8 +53,6 @@ class DataManagerTest {
         JSONObject movieObject = (JSONObject) parser.parse(movieString);
 
         int a = dataManager.addMovie(movieObject);
-        System.out.println(a);
-        System.out.println(dataManager.movies);
         assertTrue(dataManager.movies.size() == 1);
     }
 

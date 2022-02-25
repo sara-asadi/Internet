@@ -32,8 +32,4 @@ class UserTest {
         assertEquals(false, user.isInWatchList(1L));
 
     }
-
-
-
-
 }
