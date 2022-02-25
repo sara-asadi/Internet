@@ -1,7 +1,10 @@
 package com.ca01;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 public class User {
     String email;
@@ -23,8 +26,10 @@ public class User {
         ratedComments = new ArrayList<List<Long>>();
         watchList = new ArrayList<>();
     }
-    public int getAge(){
-        return 0;
+    public int getAge() throws ParseException {
+        Date bDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
+        Date cDate = new Date();
+        return cDate.getYear()-bDate.getYear();
     }
     public boolean isInWatchList(long movieId){
         for (Long id: watchList)

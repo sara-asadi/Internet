@@ -1,8 +1,11 @@
 package com.ca01;
 
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,14 +55,17 @@ public class DataManager {
             return 0;
         }
         actors.add(newActor);
+        //System.out.println(Arrays.toString(actors.toArray()));
         return 0;
     }
     public int addMovie(JSONObject data) {
         List<Long> cast = (List<Long>) data.get("cast");
 
         for (Long x: cast)
-            if(findActor(x.longValue()) == -1)
+            if(findActor(x) == -1) {
+                System.out.println(x);
                 return -1;
+            }
 
         Movie newMovie = new Movie((long) data.get("id"), (String) data.get("name"), (String) data.get("summary"), (String) data.get("releaseDate"), (String) data.get("director"), (List<String>) data.get("writers"), (List<String>) data.get("genres"), cast, (double) data.get("imdbRate"), (long) data.get("duration"), (long) data.get("ageLimit"));
 
@@ -93,7 +99,7 @@ public class DataManager {
         if (findMovie(movieId) == -1)
             return -2;
 
-        int id = comments.size();
+        int id = comments.size()+1;
         Comment comment = new Comment(userEmail, movieId, (String)data.get("text"), id);
         comments.add(comment);
 
@@ -187,7 +193,7 @@ public class DataManager {
         if (vote == -1) comment.disLikes += 1;
         return 0;
     }
-    public int addToWatchList(JSONObject data) {
+    public int addToWatchList(JSONObject data) throws ParseException {
         String userEmail = (String) data.get("userEmail");
         int userIdx = findUser(userEmail);
         if (userIdx == -1)
@@ -226,4 +232,14 @@ public class DataManager {
 
         return user.removeWatchList(movieId);
     }
+    public int getMovieList() {
+        //JSONObject obj = new JSONObject();
+        //JSONArray data = new JSONArray();
+
+        JSONArray movieList = new JSONArray();
+
+
+        return obj;
+    }
+
 }

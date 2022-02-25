@@ -8,48 +8,48 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
+    public static JSONObject getJsonObject(StringTokenizer tokenizer, ) throws ParseException {
+        String jsonData = "";
+        jsonData = tokenizer.nextToken();
+        JSONParser parser = new JSONParser();
+        return (JSONObject) parser.parse("{" + jsonData + "}");
+    }
+
     public static void main(String[] args)
-            throws IOException, ParseException {
+            throws IOException, ParseException, java.text.ParseException {
         BufferedReader reader = new BufferedReader(
                 new InputStreamReader(System.in));
-        while (true) {
-            String command = reader.readLine();
-            String commandOp = "", commandData = "";
+        DataManager handler = new DataManager();
+        String line = null;
+        while (!(line = reader.readLine()).trim().equals("")) {
+            String command = "";
 
-            StringTokenizer tokenizer = new StringTokenizer(command, "{}");
-            while (tokenizer.hasMoreTokens()) {
-                commandOp = tokenizer.nextToken().trim();
-                commandData = tokenizer.nextToken();
-            }
-
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse("{" + commandData + "}");
-
-            DataManager handler = new DataManager();
+            StringTokenizer tokenizer = new StringTokenizer(line, "{}");
+            command = tokenizer.nextToken().trim();
 
             int error;
-
-            if (commandOp.equals("addActor")){
-                error = handler.addActor(jsonObject);
+            if (command.equals("addActor")){
+                error = handler.addActor(getJsonObject(tokenizer));
                 System.out.println("{\"success\": true, \"data\": \"actor added successfully\"}");
             }
-            if (commandOp.equals("addMovie")) {
-                error = handler.addMovie(jsonObject);
+            if (command.equals("addMovie")) {
+                error = handler.addMovie(getJsonObject(tokenizer));
                 if (error != 0)
                     System.out.println("{\"success\": false, \"data\": \"ActorNotFound\"}");
                 else
                     System.out.println("{\"success\": true, \"data\": \"movie added successfully\"}");
             }
-            if (commandOp.equals("addUser")) {
-                error = handler.addUser(jsonObject);
+            if (command.equals("addUser")) {
+                error = handler.addUser(getJsonObject(tokenizer));
                 System.out.println("{\"success\": true, \"data\": \"user added successfully\"}");
             }
-            if (commandOp.equals("addComment")) {
-                error = handler.addComment(jsonObject);
+            if (command.equals("addComment")) {
+                error = handler.addComment(getJsonObject(tokenizer));
                 if (error == -1)
                     System.out.println("{\"success\": false, \"data\": \"UserNotFound\"}");
                 else if (error == -2)
@@ -57,8 +57,8 @@ public class Main {
                 else
                     System.out.println("{\"success\": true, \"data\": \"comment with id " + error + " added successfully\"}");
             }
-            if (commandOp.equals("rateMovie")) {
-                error = handler.rateMovie(jsonObject);
+            if (command.equals("rateMovie")) {
+                error = handler.rateMovie(getJsonObject(tokenizer));
                 if (error == -1)
                     System.out.println("{\"success\": false, \"data\": \"UserNotFound\"}");
                 else if (error == -2)
@@ -68,8 +68,8 @@ public class Main {
                 else
                     System.out.println("\"success\": true, \"data\": \"movie rated successfully\"");
             }
-            if (commandOp.equals("voteComment")) {
-                error = handler.voteComment(jsonObject);
+            if (command.equals("voteComment")) {
+                error = handler.voteComment(getJsonObject(tokenizer));
                 if (error == -1)
                     System.out.println("{\"success\": false, \"data\": \"UserNotFound\"}");
                 else if (error == -2)
@@ -79,8 +79,8 @@ public class Main {
                 else
                     System.out.println("\"success\": true, \"data\": \"comment voted successfully\"");
             }
-            if (commandOp.equals("addToWatchList")) {
-                error = handler.addToWatchList(jsonObject);
+            if (command.equals("addToWatchList")) {
+                error = handler.addToWatchList(getJsonObject(tokenizer));
                 if (error == -1)
                     System.out.println("{\"success\": false, \"data\": \"UserNotFound\"}");
                 else if (error == -2)
@@ -92,14 +92,17 @@ public class Main {
                 else
                     System.out.println("{\"success\": true, \"data\": \"movie added to watchlist successfully\"}");
             }
-            if (commandOp.equals("removeFromWatchList")) {
-                error = handler.removeFromWatchList(jsonObject);
+            if (command.equals("removeFromWatchList")) {
+                error = handler.removeFromWatchList(getJsonObject(tokenizer));
                 if (error == -1)
                     System.out.println("{\"success\": false, \"data\": \"UserNotFound\"}");
                 else if (error == -2)
                     System.out.println("{\"success\": false, \"data\": \"CommentNotFound\"}");
                 else
                     System.out.println("{\"success\": true, \"data\": \"movie removed from watchlist successfully\"}");
+            }
+            if (command.equals("getMovieList")) {
+                error = handler.getMovieList();
             }
         }
     }
