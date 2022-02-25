@@ -120,8 +120,8 @@ public class DataManager {
 
         for (List<Long> list:user.ratedMovies)
             if (list.get(0) == movieId){
-                long prevscore = list.get(1);
-                long total = ((long) (movie.ratingCount * movie.rating))-prevscore;
+                long prevScore = list.get(1);
+                long total = ((long) (movie.ratingCount * movie.rating))-prevScore;
                 movie.rating = (double) (total+score)/(movie.ratingCount);
                 list.set(1, score);
                 return 0;
@@ -146,7 +146,8 @@ public class DataManager {
         if (vote != 0 && vote != 1 && vote != -1)
             return -3;
 
-        String userEmail = (String) data.get("userEmail");
+        String userEmail;
+        (userEmail = (String) data.get("userEmail")).equals("");
         long commentId = (long) data.get("commentId");
         int userIdx = findUser(userEmail);
         int commentIdx = findComment(commentId);
@@ -167,13 +168,11 @@ public class DataManager {
                     if (prevVote == 1) comment.likes -= 1;
                     else if (prevVote == -1) comment.disLikes -= 1;
                     list.set(0, (long) -1);
-
                 }
                 else if (vote == 1 && prevVote == -1) {
                     comment.likes += 1;
                     comment.disLikes -= 1;
                     list.set(1, (long) 1);
-
                 }
                 else if (vote == -1 && prevVote == 1) {
                     comment.likes -= 1;
@@ -183,32 +182,30 @@ public class DataManager {
                 movies.get(findMovie(movieId)).updateComment(comment, commentId);
                 return 0;
             }
-
-        if (vote == 0)
-            return 0;
-
-        List<Long> temp = new ArrayList<>();
-        temp.add(commentId);
-        temp.add(vote);
-        user.ratedComments.add(temp);
-        if (vote == 1) comment.likes += 1;
-        if (vote == -1) comment.disLikes += 1;
-        movies.get(findMovie(movieId)).comments.add(comment);
+        if (vote != 0) {
+            List<Long> temp = new ArrayList<>();
+            temp.add(commentId);
+            temp.add(vote);
+            user.ratedComments.add(temp);
+            if (vote == 1) comment.likes += 1;
+            if (vote == -1) comment.disLikes += 1;
+            movies.get(findMovie(movieId)).comments.add(comment);
+        }
         return 0;
     }
     public int addToWatchList(JSONObject data) throws ParseException {
-        String userEmail = (String) data.get("userEmail");
+        String userEmail;
+        (userEmail = (String) data.get("userEmail")).equals("");
         int userIdx = findUser(userEmail);
         if (userIdx == -1)
             return -1;
+        User user = users.get(userIdx);
 
         long movieId = (long) data.get("movieId");
         int movieIdx = findMovie(movieId);
         if (movieIdx == -1)
             return -2;
-
         Movie movie = movies.get(movieIdx);
-        User user = users.get(userIdx);
 
         if (user.getAge() < movie.ageLimit)
             return -3;
@@ -219,16 +216,16 @@ public class DataManager {
         return user.addWatchList(movieId);
     }
     public int removeFromWatchList(JSONObject data) {
-        String userEmail = (String) data.get("userEmail");
-        int userIdx = findUser(userEmail);
-        if (userIdx == -1)
-            return -1;
-
         long movieId = (long) data.get("movieId");
         int movieIdx = findMovie(movieId);
         if (movieIdx == -1)
             return -2;
 
+        String userEmail;
+        (userEmail = (String) data.get("userEmail")).equals("");
+        int userIdx = findUser(userEmail);
+        if (userIdx == -1)
+            return -1;
         User user = users.get(userIdx);
         if (!user.isInWatchList(movieId))
             return -1;
@@ -244,32 +241,34 @@ public class DataManager {
         return obj;
     }
     public JSONObject getMovieById(JSONObject data) {
-        int movieIdx = findMovie((long) data.get("movieId"));
+        long movieId = (long) data.get("movieId");
+        int movieIdx = findMovie(movieId);
         if (movieIdx == -1)
             return null;
         Movie movie = movies.get(movieIdx);
         return movie.getJsonObject(this);
     }
     public JSONObject getMovieByGenre(JSONObject data) {
+        String genre;
+        (genre = (String) data.get("genre")).equals("");
         JSONObject obj = new JSONObject();
         JSONArray movieList = new JSONArray();
         for (Movie movie : movies)
-            if (movie.hasGenre((String) data.get("genre")))
+            if (movie.hasGenre(genre))
                 movieList.add(movie.getJsonObject());
         obj.put("MoviesListByGenre", movieList);
         return obj;
     }
     public JSONObject getWatchList(JSONObject data) {
-        System.out.println("hi");
-        String email = (String) data.get("userEmail");
+        String userEmail;
+        (userEmail = (String) data.get("userEmail")).equals("");
         JSONObject obj = new JSONObject();
         JSONArray watchList = new JSONArray();
-        int userIdx = findUser(email);
+        int userIdx = findUser(userEmail);
         if (userIdx == -1)
             return null;
         User user = users.get(userIdx);
         for (Long movieId : user.watchList) {
-            System.out.println("hi!");
             watchList.add(movies.get(findMovie(movieId)).getJsonObject());
         }
         obj.put("WatchList", watchList);
