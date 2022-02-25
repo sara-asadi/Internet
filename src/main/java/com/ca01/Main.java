@@ -114,7 +114,19 @@ public class Main {
                 else
                     System.out.println("{\"success\": true, \"data\": "+data.toJSONString()+"}");
             }
-
+            if (command.equals("getMovieByGenre")) {
+                JSONObject data = new JSONObject();
+                data = handler.getMovieByGenre(getJsonObject(tokenizer));
+                System.out.println("{\"success\": true, \"data\": "+data.toJSONString()+"}");
+            }
+            if (command.equals("getWatchList")) {
+                JSONObject data = new JSONObject();
+                data = handler.getWatchList(getJsonObject(tokenizer));
+                if (data == null)
+                    System.out.println("{\"success\": false, \"data\": \"UserNotFound\"}");
+                else
+                    System.out.println("{\"success\": true, \"data\": "+data.toJSONString()+"}");
+            }
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.ca01;
 
+import org.json.simple.JSONObject;
+
 import java.util.Date;
 
 public class Comment {
@@ -21,5 +23,15 @@ public class Comment {
         submitionTime = date.toString();
         likes = 0;
         disLikes = 0;
+    }
+    public JSONObject getJsonObject() {
+        JSONObject commentObj = new JSONObject();
+         commentObj.put("commentId", id);
+         commentObj.put("userEmail", userEmail);
+         commentObj.put("text", text);
+         commentObj.put("like", likes);
+         commentObj.put("dislike", disLikes);
+
+        return commentObj;
     }
 }

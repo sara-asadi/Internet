@@ -1,7 +1,12 @@
 package com.ca01;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class Movie {
     long id;
@@ -15,7 +20,7 @@ public class Movie {
     double imdbRate;
     long duration;
     long ageLimit;
-    double rating;
+    Double rating;
     long ratingCount;
     List<Comment> comments;
 
@@ -33,8 +38,48 @@ public class Movie {
         imdbRate = imdbRate_;
         duration = duration_;
         ageLimit = ageLimit_;
-        rating = 0;
+        rating = null;
         ratingCount = 0;
         comments = new ArrayList<>();
+    }
+    public JSONObject getJsonObject() {
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("movieId", id);
+        jsonObj.put("name", name);
+        jsonObj.put("director", director);
+        JSONArray genresList = new JSONArray();
+        for (String genre : genres)
+            genresList.add(genre);
+        jsonObj.put("genres", genresList);
+        jsonObj.put("rating", rating);
+
+        return jsonObj;
+    }
+    public JSONObject getJsonObject(DataManager handler) {
+        JSONObject obj = new JSONObject();
+        obj.put("movieId", id);
+        obj.put("name", name);
+        obj.put("summary", summary);
+        obj.put("releaseDate", releaseDate);
+        obj.put("director", director);
+        obj.put("rating", rating);
+        obj.put("duration", duration);
+        obj.put("ageLimit", ageLimit);
+        obj.put("writers", Arrays.toString(writers.toArray()));
+        obj.put("genres", Arrays.toString(genres.toArray()));
+        JSONArray casts = new JSONArray();
+        for (Long actorId : cast)
+            casts.add(handler.getActorById(actorId).getJsonObject());
+        obj.put("cast", casts);
+        JSONArray commentsList = new JSONArray();
+        for (Comment comment : comments)
+            commentsList.add(comment.getJsonObject());
+        obj.put("comments", commentsList);
+
+        return obj;
+    }
+    public boolean hasGenre(String genre) {
+        for (String s : genres) if (Objects.equals(s, genre)) return true;
+        return false;
     }
 }
