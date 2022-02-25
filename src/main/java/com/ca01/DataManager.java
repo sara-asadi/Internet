@@ -45,6 +45,9 @@ public class DataManager {
                 return i;
         return -1;
     }
+    public Actor getActorById(long actorId) {
+        return actors.get(findActor(actorId));
+    }
 
     public int addActor(JSONObject data){
         Actor newActor = new Actor((long) data.get("id"), (String) data.get("name"), (String) data.get("birthDate"), (String) data.get("nationality"));
@@ -138,7 +141,6 @@ public class DataManager {
         user.ratedMovies.add(temp);
 
         movie.rating = ((movie.rating * movie.ratingCount)+score)/(movie.ratingCount + 1);
-        movie.ratingCount += 1;
         return 0;
     }
     public int voteComment(JSONObject data) {

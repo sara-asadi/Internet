@@ -1,5 +1,7 @@
 package com.ca01;
 
+import org.json.simple.JSONObject;
+
 public class Actor{
     long id;
     String name;
@@ -11,5 +13,11 @@ public class Actor{
         name = name_;
         birthDate = birthDate_;
         nationality = nationality_;
+    }
+    public JSONObject getJsonObject() {
+        JSONObject actorObj = new JSONObject();
+        actorObj.put("actorId", id);
+        actorObj.put("name", name);
+        return actorObj;
     }
 }
