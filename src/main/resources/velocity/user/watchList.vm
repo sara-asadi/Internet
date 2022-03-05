@@ -1,0 +1,18 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>$user.name 's Watch List</h1>
+<div class="watchList">
+    #foreach($movie in $watchList)
+
+           <a class="movie" href="/movies/$movie.getId()">$movie.name</a>
+           <p> release date: $movie.getReleaseDate()</p>
+           <p> director: $movie.getDirector()</p>
+           <p> genre: $movie.getGenres()</p>
+           <p>imdb rate: $movie.getImdbRate()</p>
+           <p>rating: $movie.getRating()</p>
+           <p>duration: $movie.getDuration()</p>
+           <button type="submit">Remove</button>
+
+    #end
+</div>
+#end
