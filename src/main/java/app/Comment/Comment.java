@@ -64,14 +64,6 @@ public class Comment {
         return disLikes;
     }
 
-    public int getLikes() {
-        return likes;
-    }
-
-    public int getDisLikes() {
-        return disLikes;
-    }
-
     public Comment setId(int i) {
         return new Comment(userEmail, movieId, text, i);
     }
