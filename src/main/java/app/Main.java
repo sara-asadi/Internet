@@ -1,21 +1,18 @@
 package app;
 
-import app.book.BookController;
-import app.book.BookDao;
-import app.index.IndexController;
-import app.login.LoginController;
+import app.Comment.Comment;
+import app.Comment.CommentDB;
+import app.actor.ActorController;
+import app.actor.ActorDB;
 import app.movie.MovieController;
-import app.user.UserDao;
-import app.util.Filters;
-import app.util.HerokuUtil;
+import app.movie.MovieDB;
+import app.user.UserController;
+import app.user.UserDB;
 import app.util.Path;
 import app.util.ViewUtil;
 import io.javalin.Javalin;
-import io.javalin.core.util.RouteOverviewPlugin;
-import io.javalin.http.staticfiles.Location;
-import org.jsoup.Jsoup;
 
-import java.io.File;
+import java.io.IOException;
 
 import static io.javalin.apibuilder.ApiBuilder.before;
 import static io.javalin.apibuilder.ApiBuilder.get;
@@ -23,31 +20,29 @@ import static io.javalin.apibuilder.ApiBuilder.post;
 
 
 public class Main {
+    public static MovieDB movieDB;
+    public static ActorDB actorDB;
+    public static UserDB userDB;
+    public static CommentDB commentDB;
+    public static void main(String[] args) throws IOException {
 
-    // Declare dependencies
-    public static BookDao bookDao;
-    public static UserDao userDao;
+        movieDB = new MovieDB();
+        actorDB = new ActorDB();
+        userDB = new UserDB();
+        commentDB = new CommentDB();
 
-    public static void main(String[] args) {
-
-        // Instantiate your dependencies
-        bookDao = new BookDao();
-        userDao = new UserDao();
-
-        Javalin app = Javalin.create().start(7071);
+        Javalin app = Javalin.create().start(4444);
 
         app.routes(() -> {
-            before(Filters.handleLocaleChange);
-            before(LoginController.ensureLoginBeforeViewingBooks);
-            get(Path.Web.INDEX, IndexController.serveIndexPage);
-            get(Path.Web.BOOKS, BookController.fetchAllBooks);
-            get(Path.Web.MOVIE, ctx->{
-                ctx.html(Jsoup.parse(new File("src/main/resources/movies.html"),"UTF-8").html());
-            });
-            get(Path.Web.ONE_BOOK, BookController.fetchOneBook);
-            get(Path.Web.LOGIN, LoginController.serveLoginPage);
-            post(Path.Web.LOGIN, LoginController.handleLoginPost);
-            post(Path.Web.LOGOUT, LoginController.handleLogoutPost);
+            get(Path.Web.MOVIES, MovieController.fetchAllMovies);
+            get(Path.Web.MOVIE, MovieController.fetchMovieById);
+            get(Path.Web.ACTOR, ActorController.fetchActor);
+            get(Path.Web.WATCHLIST, UserController.fetchWatchList);
+            get(Path.Web.ADD_WATCHLIST, UserController.addToWatchList);
+            get(Path.Web.RATE_MOVIE, UserController.rateMovie);
+            get(Path.Web.VOTE_COMMENT, UserController.voteComment);
+            get(Path.Web.MOVIE_SEARCH_YEAR, MovieController.fetchMoviesByYear);
+            get(Path.Web.MOVIE_SEARCH_GENRE, MovieController.fetchMoviesByGenre);
         });
 
         app.error(404, ViewUtil.notFound);

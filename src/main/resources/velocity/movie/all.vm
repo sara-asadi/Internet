@@ -1,0 +1,23 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>Movies $searchContext</h1>
+<div class="row row-3">
+    #foreach($movie in $movies)
+        <a class="movie" href="/movies/$movie.getId()"><h2>$movie.name</h2></a>
+           <p> summary: $movie.getSummary()</p>
+           <p> release date: $movie.getReleaseDate()</p>
+           <p> director: $movie.getDirector()</p>
+           <p> writers: $movie.getWriters()</p>
+           <p> genre: $movie.getGenres()</p>
+           <p> cast:
+           #foreach($actor in $movie.getCast())
+           <a class="actor" href="/actors/$actor.getId()"> $actor.name</a>,
+           #end
+           ...</p>
+           <p>imdb rate: $movie.getImdbRate()</p>
+           <p>rating: $movie.getRating()</p>
+           <p>duration: $movie.getDuration()</p>
+           <p>age limit: $movie.getAgeLimit()</p>
+    #end
+</div>
+#end
