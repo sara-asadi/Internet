@@ -19,8 +19,8 @@ public class Comment {
         id = (long) id_;
         Date date = new Date();
         submitionTime = date.toString();
-        likes = -1;
-        disLikes = -1;
+        likes = 0;
+        disLikes = 0;
     }
     public long getId() {
         return id;
@@ -53,6 +53,14 @@ public class Comment {
     }
     public int unDisLike() {
         disLikes -= 1;
+        return disLikes;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public int getDisLikes() {
         return disLikes;
     }
 

@@ -20,9 +20,16 @@
     <p>age limit: $movie.getAgeLimit()</p>
     <h3>comments:</h3>
     #foreach($comment in $movie.getComments())
-        <p>$comment.getUserName(): $comment.getText()
-        <br>    Likes: $comment.like()   DisLikes: $comment.disLike()
-        </p>
+        <p>$comment.getUserName(): $comment.getText()</p>
+        <br>
+        <div>
+        <p>Likes: $comment.getLikes()</p>
+        <button type="button" onClick="$comment.like()">like</button>
+        </div>
+        <div>
+        <p>DisLikes: $comment.getDisLikes()</p>
+        <button type="button" onClick="$comment.disLike()">disLike</button>
+        </div>
     #end
     </div>
     #else
