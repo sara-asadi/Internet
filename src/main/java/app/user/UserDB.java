@@ -94,4 +94,14 @@ public class UserDB {
         }
         else return false;
     }
+
+    public boolean removeFromWatchList(String email, long movie_id) {
+        User user = getUserByEmail(email);
+        Movie movie = movieDB.getMovieById(movie_id);
+        if (user.isInWatchList(movie_id)) {
+            user.removeWatchList(movie_id);
+            return true;
+        }
+        else return false;
+    }
 }

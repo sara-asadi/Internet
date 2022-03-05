@@ -34,6 +34,7 @@ public class Main {
         Javalin app = Javalin.create().start(4444);
 
         app.routes(() -> {
+            get(Path.Web.WELCOME, ViewUtil.welcome);
             get(Path.Web.MOVIES, MovieController.fetchAllMovies);
             get(Path.Web.MOVIE, MovieController.fetchMovieById);
             get(Path.Web.ACTOR, ActorController.fetchActor);
@@ -43,6 +44,10 @@ public class Main {
             get(Path.Web.VOTE_COMMENT, UserController.voteComment);
             get(Path.Web.MOVIE_SEARCH_YEAR, MovieController.fetchMoviesByYear);
             get(Path.Web.MOVIE_SEARCH_GENRE, MovieController.fetchMoviesByGenre);
+
+            get(Path.Web.ADD_WATCHLIST_INFORM, UserController.addToWatchList_inForm);
+
+            get(Path.Web.REMOVE_WATCHLIST, UserController.removeFromWatchList);
         });
 
         app.error(404, ViewUtil.notFound);

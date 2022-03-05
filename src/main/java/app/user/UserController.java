@@ -15,7 +15,7 @@ public class UserController {
         model.put("watchList", userDB.getWatchList(ctx.pathParam("user_id")));
         ctx.render(Path.Template.WATCHLIST, model);
     };
-    public static Handler addToWatchList= ctx -> {
+    public static Handler addToWatchList = ctx -> {
         Map<String, Object> model = ViewUtil.baseModel(ctx);
         if (userDB.addToWatchList(ctx.pathParam("user_id"), Long.parseLong(ctx.pathParam("movie_id"))))
             ctx.render(Path.Template.SUCCESS, model);
@@ -32,6 +32,21 @@ public class UserController {
     public static Handler voteComment = ctx -> {
         Map<String, Object> model = ViewUtil.baseModel(ctx);
         if (userDB.voteComment(ctx.pathParam("user_id"), Long.parseLong(ctx.pathParam("comment_id")), Long.parseLong(ctx.pathParam("vote"))))
+            ctx.render(Path.Template.SUCCESS, model);
+        else
+            ctx.render(Path.Template.FORBIDDEN, model);
+    };
+
+    public static Handler removeFromWatchList = ctx -> {
+        Map<String, Object> model = ViewUtil.baseModel(ctx);
+        if (userDB.removeFromWatchList(ctx.pathParam("user_id"), Long.parseLong(ctx.pathParam("movie_id"))))
+            ctx.render(Path.Template.SUCCESS, model);
+        else
+            ctx.render(Path.Template.FORBIDDEN, model);
+    };
+    public static Handler addToWatchList_inForm = ctx -> {
+        Map<String, Object> model = ViewUtil.baseModel(ctx);
+        if (userDB.addToWatchList(ctx.pathParam("user_id"), Long.parseLong(ctx.pathParam("movie_id"))))
             ctx.render(Path.Template.SUCCESS, model);
         else
             ctx.render(Path.Template.FORBIDDEN, model);
