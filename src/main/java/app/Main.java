@@ -45,8 +45,6 @@ public class Main {
             get(Path.Web.MOVIE_SEARCH_YEAR, MovieController.fetchMoviesByYear);
             get(Path.Web.MOVIE_SEARCH_GENRE, MovieController.fetchMoviesByGenre);
 
-            get(Path.Web.ADD_WATCHLIST_INFORM, UserController.addToWatchList_inForm);
-
             get(Path.Web.REMOVE_WATCHLIST, UserController.removeFromWatchList);
         });
 

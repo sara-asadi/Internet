@@ -44,11 +44,4 @@ public class UserController {
         else
             ctx.render(Path.Template.FORBIDDEN, model);
     };
-    public static Handler addToWatchList_inForm = ctx -> {
-        Map<String, Object> model = ViewUtil.baseModel(ctx);
-        if (userDB.addToWatchList(ctx.pathParam("user_id"), Long.parseLong(ctx.pathParam("movie_id"))))
-            ctx.render(Path.Template.SUCCESS, model);
-        else
-            ctx.render(Path.Template.FORBIDDEN, model);
-    };
 }
