@@ -52,13 +52,8 @@ public class User {
         return nickname;
     }
 
-    public List<Movie> getWatchList() {
-        List<Movie> wList = new ArrayList<>();
-        for (Long w : watchList) {
-            Movie m = movieDB.getMovieById(w);
-            wList.add(m);
-        }
-        return wList;
+    public List<Long> getWatchList() {
+        return watchList;
     }
 
     public int getAge() throws ParseException {
@@ -82,22 +77,23 @@ public class User {
         watchList.remove(movieId);
         return 0;
     }
-    public void rateMovie(long movie_id, long rate) {
-        Movie movie = movieDB.getMovieById(movie_id);
+    public long rateMovie(long movie_id, long rate) {
+
         Set s = ratedMovies.entrySet();
         for (Object o : s) {
             Map.Entry ratedMovie = (Map.Entry) o;
             if (ratedMovie.getKey().equals(movie_id)) {
                 long prevRate = (long) ratedMovie.getValue();
-                long total = ((long) (movie.getRating() * movie.getRatingCount())) - prevRate;
-                movie.setRating((double) (total + rate) / (movie.getRatingCount()));
                 ratedMovie.setValue(rate);
-                return;
+                return prevRate;
             }
         }
         ratedMovies.put(movie_id, rate);
-        movie.incRatingCount();
-        movie.setRating(((movie.getRating() * movie.getRatingCount()) + rate) / (movie.getRatingCount()));
+        return 0;
+    }
+
+    public Map getRatedMovies() {
+        return ratedMovies;
     }
 
     public void voteComment(long comment_id, long vote) {

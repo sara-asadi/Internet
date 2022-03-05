@@ -2,4 +2,5 @@
 #@mainLayout()
 <h1>403</h1>
 <h1>FORBIDDEN!</h1>
+<a class="home" href="/">home</a>
 #end

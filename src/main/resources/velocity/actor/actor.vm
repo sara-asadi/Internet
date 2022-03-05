@@ -1,20 +1,23 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
     #if($actor)
-    <h1>$actor.getName()</h1>
+    <h1 style="font-size:5vw;">$actor.getName()</h1>
     <div class="actor">
     <ul>
-    <li>nationality: $actor.getNationality()</li>
-    <li>birthDate: $actor.getBirthDate()</li>
+    <li style="font-size:3vw;">nationality: $actor.getNationality()</li>
+    <li style="font-size:3vw;">birthDate: $actor.getBirthDate()</li>
     </ul>
-    <h3>Movies:</h3>
+    <button class="button" onclick="window.location.href='https://en.wikipedia.org/wiki/$actor.name';">See More</button>
+    <h3 style="font-size:4vw;">Movies:</h3>
     #foreach($movie in $actor.getMovies())
-        <a class="movie" href="/movies/$movie.getId()">$movie.name</a>
-        <p>imdb rate: $movie.getImdbRate()</p>
-        <p>rating: $movie.getRating()</p>
+        <a class="movie" href="/movies/$movie.getId()"><h3 style="font-size:2vw;">$movie.name</h3></a>
+        <p style="font-size:1vw;">rating: $movie.getRating()</p>
+        <p style="font-size:1vw;">imdb rate: $movie.getImdbRate()</p>
+
     #end
     </div>
     #else
-    <h1> ACTOR NOT FOUND</h1>
+    <h1>404</h1>
+    <h1>NOT FOUND!</h1>
     #end
 #end

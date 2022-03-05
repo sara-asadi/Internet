@@ -16,23 +16,36 @@
     ...</p>
     <p>imdb rate: $movie.getImdbRate()</p>
     <p>rating: $movie.getRating()</p>
-    <p>duration: $movie.getDuration()</p>
-    <p>age limit: $movie.getAgeLimit()</p>
+    <p>duration: $movie.getDuration() minutes</p>
+    <p>age limit: $movie.getAgeLimit()+</p>
+    <button class="button" onclick="window.location.href='https://en.wikipedia.org/wiki/$movie.name';">
+    See More
+    </button>
+
+    <label>Enter Your Email:</label>
+    <input type="text" name="user_id" value="" />
+    <br><br>
+    <form action="/rateMovie/inForm" method="POST">
+      <label>Rate(between 1 and 10):</label>
+      <input type="number" id="rate" name="rate" min="1" max="10">
+      <button class="button" type="submit">rate</button>
+    </form>
+    <br>
+    <form action="/watchList/inForm/$movie.id" method="POST">
+        <label>Enter Your Email:</label>
+        <input type="text" id="user_id" name="user_id" value=""/>
+        <button class="button" type="submit">Add to WatchList</button>
+    </form>
     <h3>comments:</h3>
     #foreach($comment in $movie.getComments())
-        <p>$comment.getUserName(): $comment.getText()</p>
-        <br>
-        <div>
-        <p>Likes: $comment.getLikes()</p>
-        <button type="button" onClick="$comment.like()">like</button>
-        </div>
-        <div>
-        <p>DisLikes: $comment.getDisLikes()</p>
-        <button type="button" onClick="$comment.disLike()">disLike</button>
-        </div>
+        <p>$comment.getUserName(): $comment.getText()
+        <br>    Likes: $comment.like()   DisLikes: $comment.disLike()
+        </p>
+
     #end
     </div>
     #else
-    <h1>MOVIE NOT FOUND</h1>
+    <h1>404</h1>
+    <h1>NOT FOUND!</h1>
     #end
 #end

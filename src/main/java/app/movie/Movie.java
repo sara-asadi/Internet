@@ -32,7 +32,7 @@ public class Movie {
         writers = new ArrayList<>();
         genres = new ArrayList<>();
         cast = new ArrayList<>();
-        rating = null;
+        rating = Double.valueOf(0);
         ratingCount = 0;
         comments = new ArrayList<>();
     }
@@ -51,7 +51,7 @@ public class Movie {
         imdbRate = (double) imdbRate_;
         duration = (long) duration_;
         ageLimit = (long) ageLimit_;
-        rating = null;
+        rating = Double.valueOf(0);
         ratingCount = 0;
         comments = new ArrayList<>();
     }

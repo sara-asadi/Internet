@@ -2,17 +2,23 @@
 #@mainLayout()
 <h1>$user.name 's Watch List</h1>
 <div class="watchList">
+#if($watchList.isEmpty())
+<p>WatchList is Empty</p>
+#else
     #foreach($movie in $watchList)
-
-           <a class="movie" href="/movies/$movie.getId()">$movie.name</a>
+           <a class="movie" href="/movies/$movie.getId()"><h2>$movie.name</h2></a>
            <p> release date: $movie.getReleaseDate()</p>
            <p> director: $movie.getDirector()</p>
            <p> genre: $movie.getGenres()</p>
            <p>imdb rate: $movie.getImdbRate()</p>
            <p>rating: $movie.getRating()</p>
            <p>duration: $movie.getDuration()</p>
-           <button type="submit">Remove</button>
-
+           <button class="button 2" onclick="window.location.href='/remove/$user.email/$movie.getId()';">Remove</button>
+           <br>
+           <br>
+           <br>
     #end
 </div>
+#end
+<a class="home" href="/">home</a>
 #end

@@ -19,8 +19,10 @@ import static app.Main.movieDB;
 public class UserDB {
 
     public static List<User> users;
-    public UserDB() throws IOException {
+    public static MovieDB movieDB;
+    public UserDB(MovieDB _movieDB) throws IOException {
         users = getUsersArray("http://138.197.181.131:5000/api/users");
+        movieDB = _movieDB;
     }
     public List<User> getUsersArray(String apiAddress) throws IOException{
         List<User> Users = new ArrayList<>();
@@ -58,12 +60,15 @@ public class UserDB {
 
     public List<Movie> getWatchList(String email) {
         User user = getUserByEmail(email);
-        try {
-        return user.getWatchList();
-        }catch (NullPointerException e){
-            List<Movie> m = new ArrayList<>();
-            return m;
+        List<Movie> wList = new ArrayList<>();
+        if(user == null){
+            return wList;
         }
+        for (Long w : user.getWatchList()) {
+            Movie m = movieDB.getMovieById(w);
+            wList.add(m);
+        }
+        return wList;
     }
 
     public boolean addToWatchList(String email, long movie_id) throws ParseException {
@@ -78,9 +83,14 @@ public class UserDB {
 
     public boolean rateMovie(String email, long movie_id, long rate) {
         User user = getUserByEmail(email);
-        Movie movie = movieDB.getMovieById(movie_id);
-        if (rate > 0 && rate <= 10) {
-            user.rateMovie(movie_id, rate);
+        Movie ratedMovie = movieDB.getMovieById(movie_id);
+        if (rate > 0 && rate <= 10 && user != null && ratedMovie != null) {
+            long prevRate = user.rateMovie(movie_id, rate);
+            long total = ((long) (ratedMovie.getRating() * ratedMovie.getRatingCount())) - prevRate;
+            if(prevRate == 0){
+                ratedMovie.incRatingCount();
+            }
+            ratedMovie.setRating((double) (total + rate) / (ratedMovie.getRatingCount()));
             return true;
         }
         else return false;
@@ -90,6 +100,16 @@ public class UserDB {
         Comment comment = commentDB.getCommentById(comment_id);
         if (vote == 0 || vote == 1 || vote == -1) {
             user.voteComment(comment_id, vote);
+            return true;
+        }
+        else return false;
+    }
+
+    public boolean removeFromWatchList(String email, long movie_id) {
+        User user = getUserByEmail(email);
+        Movie movie = movieDB.getMovieById(movie_id);
+        if (user.isInWatchList(movie_id)) {
+            user.removeWatchList(movie_id);
             return true;
         }
         else return false;
