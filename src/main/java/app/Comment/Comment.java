@@ -39,6 +39,14 @@ public class Comment {
         return "@"+userEmail.substring(0,i);
     }
 
+    public int getLikes() {
+        return likes;
+    }
+
+    public int getDisLikes() {
+        return disLikes;
+    }
+
     public int like() {
         likes += 1;
         return likes;

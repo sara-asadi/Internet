@@ -16,7 +16,6 @@ public class Path {
         public static final String MOVIE_SEARCH_GENRE = "/movies/search/{genre}";
         public static final String WELCOME = "/";
         public static final String REMOVE_WATCHLIST = "/remove/{user_id}/{movie_id}";
-        public static final String ADD_WATCHLIST_INFORM = "watchList/inForm/{movie_id}";
     }
 
     public static class Template {
@@ -24,8 +23,6 @@ public class Path {
         public static final String MOVIE = "/velocity/movie/one.vm";
         public static final String ACTOR = "/velocity/actor/actor.vm";
         public static final String WATCHLIST = "/velocity/user/watchList.vm";
-        public static final String MOVIES_GENRE = "/velocity/movie/genre.vm";
-        public static final String MOVIES_YEAR = "/velocity/movie/year.vm";
 
         public static final String WELCOME = "/velocity/welcome.vm";
 
