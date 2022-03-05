@@ -1,12 +1,31 @@
 #macro(mainLayout)
 <html>
 <head>
+<style>
+a:link {color: black;text-decoration: none;}
+a:visited { color: black;text-decoration: none;}
+a:hover {color: white;font-size:120%;}
+a:active { color: white;text-decoration: none;}
+
+.button {
+  background-color: black;
+  border: none;
+  color: Orange;
+  padding: 2vw 4vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.5vw;
+  margin: 0.5vw 0.5vw;
+  cursor: pointer;
+}
+</style>
     <title>$msg.get("COMMON_TITLE")</title>
     <link rel="stylesheet" href="/main.css">
     <link rel="icon" href="/favicon.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body>
+<body style="background-color: #ffbf00; color:black;">
     <main>
         <div id="content">
             $bodyContent

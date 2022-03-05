@@ -1,7 +1,10 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
 <h1>Movies $searchContext</h1>
-<div class="row row-3">
+<div class="movies">
+#if($watchList.isEmpty())
+<p>No Movies Found!</p>
+#else
     #foreach($movie in $movies)
         <a class="movie" href="/movies/$movie.getId()"><h2>$movie.name</h2></a>
            <p> summary: $movie.getSummary()</p>
@@ -18,6 +21,7 @@
            <p>rating: $movie.getRating()</p>
            <p>duration: $movie.getDuration()</p>
            <p>age limit: $movie.getAgeLimit()</p>
+    #end
     #end
 </div>
 #end

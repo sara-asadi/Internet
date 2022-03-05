@@ -1,0 +1,6 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>IEMDB</h1>
+<a class="movies" href="/movies">movies</a>
+
+#end
