@@ -1,6 +1,7 @@
-<%@page import="app.repository.MovieDB"%>
+<%@page import="app.db.MovieDB"%>
 <%@page import="app.model.Movie"%>
 <%@ page import="java.util.List"%>
+<%@ page import="java.util.ArrayList"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -30,16 +31,13 @@
        </form>
        <br>
        <%
-       		 categoryDAO = new CategoryDAOImpl();
-       		List<Movie> movies = new ArrayList<Movie>();
+       		List<Movie> movies = new ArrayList<>();
        		movies = MovieDB.getInstance().getMovies();
        	%>
        <table>
            		<c:forEach items="${movies}" var="movie">
                    <p${movie.name} - ${movie.summary}</p>
                 </c:forEach>
-           </table>
-       </body>
-       </html>
-
-
+       </table>
+    </body>
+</html>
