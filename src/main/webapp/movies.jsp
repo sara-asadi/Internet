@@ -30,14 +30,16 @@
            <button type="submit" name="action" value="sort_by_date">releaseDate</button>
        </form>
        <br>
-       <%
+       <p><%
        		List<Movie> movies = new ArrayList<>();
        		movies = MovieDB.getInstance().getMovies();
-       	%>
+       %></p>
        <table>
-           		<c:forEach items="${movies}" var="movie">
-                   <p${movie.name} - ${movie.summary}</p>
-                </c:forEach>
+            <% for(int i = 0; i < movies.size(); i+=1) { %>
+                <tr>
+                    <td><%=movies.get(i).getName()%></td>
+                </tr>
+            <% } %>
        </table>
     </body>
 </html>
