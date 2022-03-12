@@ -62,6 +62,9 @@ public class Movie {
     }
     public String getSummary() {return summary;}
     public String getReleaseDate() {return releaseDate;}
+    public int getReleaseYear() {
+        return Integer.parseInt(releaseDate.substring(0, 4));
+    }
     public String getDirector(){
         return director;
     }
