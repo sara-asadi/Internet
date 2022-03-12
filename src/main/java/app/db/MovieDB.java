@@ -7,17 +7,18 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MovieDB {
     private static MovieDB instance;
     public static List<Movie> movies;
+    public static List<Movie> filtered;
 
     private MovieDB() throws IOException {
         movies = getMoviesArray("http://138.197.181.131:5000/api/movies");
+        movies = movies.stream().sorted(Comparator.comparing(Movie::getImdbRate).reversed()).collect(Collectors.toList());
+        filtered = movies;
     }
     public static MovieDB getInstance() throws IOException {
         if (instance == null)
@@ -51,10 +52,26 @@ public class MovieDB {
         return movies;
     }
     public List<Movie> getMovies(){return movies;}
+    public List<Movie> getMoviesF(){return filtered;}
+    public void SortByImdbRate() {
+        movies = movies.stream().sorted(Comparator.comparing(Movie::getImdbRate).reversed()).collect(Collectors.toList());
+        filtered = filtered.stream().sorted(Comparator.comparing(Movie::getImdbRate).reversed()).collect(Collectors.toList());
+    }
+    public void SortByReleaseDate() {
+        movies = movies.stream().sorted(Comparator.comparing(Movie::getReleaseYear).reversed()).collect(Collectors.toList());
+        System.out.println(movies.get(0).getReleaseYear());
+        filtered = filtered.stream().sorted(Comparator.comparing(Movie::getReleaseYear).reversed()).collect(Collectors.toList());
+    }
+    public void FilterMovies(String searchKey) {
+        List<Movie> matched = new ArrayList<>();
+        for (Movie movie : movies)
+            if (movie.getName().contains(searchKey))
+                matched.add(movie);
+        filtered = matched;
+    }
     public Movie getMovieById(long id) {
         return movies.stream().filter(m -> m.getId()== id).findFirst().orElse(null);
     }
-
     public List<Movie> getMoviesByYear(String start_year, String end_year) throws ParseException, ParseException {
         List<Movie> yearMovies = new ArrayList<>();
         for (Movie movie : movies)
@@ -62,12 +79,15 @@ public class MovieDB {
                 yearMovies.add(movie);
         return yearMovies;
     }
-
     public Object getMoviesByGenre(String genre) {
         List<Movie> genreMovies = new ArrayList<>();
         for (Movie movie : movies)
             if (movie.getGenres().contains(genre))
                 genreMovies.add(movie);
         return genreMovies;
+    }
+
+    public void clearSearchFilter() {
+        filtered = movies;
     }
 }
