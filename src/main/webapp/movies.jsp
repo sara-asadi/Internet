@@ -18,14 +18,14 @@
 <body>
        <a href="index.jsp">Home</a>
        <br><br>
-       <form action="" method="POST">
+       <form action="movies" method="POST">
            <label>Search:</label>
-           <input type="text" name="search" value="">
+           <input type="text" name="search">
            <button type="submit" name="action" value="search">Search</button>
            <button type="submit" name="action" value="clear">Clear Search</button>
        </form>
        <br><br>
-       <form action="" method="POST">
+       <form action="movies" method="POST">
            <label>Sort By:</label>
            <button type="submit" name="action" value="sort_by_imdb">imdb Rate</button>
            <button type="submit" name="action" value="sort_by_date">releaseDate</button>
@@ -33,7 +33,7 @@
        <br>
        <p><%
        		List<Movie> movies = new ArrayList<>();
-       		movies = MovieDB.getInstance().getMovies();
+       		movies = MovieDB.getInstance().getMoviesF();
        %></p>
        <table>
                 <tr>
@@ -51,7 +51,7 @@
                </tr>
             <% for(int i = 0; i < movies.size(); i+=1) { %>
                 <tr>
-                    <td><a href="/movies"><%=movies.get(i).getName()%><a></td>
+                    <td><a href="/movies/<%=movies.get(i).getId()%>"><%=movies.get(i).getName()%><a></td>
                     <td><%=movies.get(i).getSummary()%></td>
                     <td><%=movies.get(i).getReleaseDate()%></td>
                     <td><%=movies.get(i).getDirector()%></td>
@@ -61,7 +61,7 @@
                     List<Actor> actors = new ArrayList<>();
                     actors = movies.get(i).getCast();
                     for(int j = 0; j < actors.size(); j+=1) { %>
-                    <a href="/actors"><%=actors.get(j).getName()%></a>,
+                    <a href="/actors/<%=actors.get(j).getId()%>"><%=actors.get(j).getName()%></a>,
                     <% } %>...
                     </td>
                     <td><%=movies.get(i).getImdbRate()%></td>
