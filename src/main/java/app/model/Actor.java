@@ -3,7 +3,10 @@ package app.model;
 import app.db.MovieDB;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Actor{
@@ -34,6 +37,12 @@ public class Actor{
 
     public String getNationality() {
         return nationality;
+    }
+
+    public int getAge() throws ParseException {
+        Date bDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
+        Date cDate = new Date();
+        return cDate.getYear()-bDate.getYear();
     }
 
     public List<Movie> getMovies() throws IOException {

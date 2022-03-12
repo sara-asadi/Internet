@@ -51,7 +51,7 @@
                </tr>
             <% for(int i = 0; i < movies.size(); i+=1) { %>
                 <tr>
-                    <td><a href="/movies/<%=movies.get(i).getId()%>"><%=movies.get(i).getName()%><a></td>
+                    <td><a href="movies/<%=movies.get(i).getId()%>"><%=movies.get(i).getName()%><a></td>
                     <td><%=movies.get(i).getSummary()%></td>
                     <td><%=movies.get(i).getReleaseDate()%></td>
                     <td><%=movies.get(i).getDirector()%></td>
@@ -61,7 +61,7 @@
                     List<Actor> actors = new ArrayList<>();
                     actors = movies.get(i).getCast();
                     for(int j = 0; j < actors.size(); j+=1) { %>
-                    <a href="/actors/<%=actors.get(j).getId()%>"><%=actors.get(j).getName()%></a>,
+                    <a href="actors/<%=actors.get(j).getId()%>"><%=actors.get(j).getName()%></a>,
                     <% } %>...
                     </td>
                     <td><%=movies.get(i).getImdbRate()%></td>

@@ -34,6 +34,10 @@ public class Comment {
         return text;
     }
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
     public String getUserName() {
         int i = userEmail.indexOf('@');
         return "@"+userEmail.substring(0,i);
