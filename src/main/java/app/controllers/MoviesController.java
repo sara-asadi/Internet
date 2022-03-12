@@ -23,15 +23,11 @@ public class MoviesController extends HttpServlet {
 			throws ServletException, IOException {
         String action = request.getParameter("action");
         
-        if(StringUtils.isBlank(action) || action == "sort_by_imdb") {
+        if(StringUtils.isBlank(action) || action.equals("sort_by_imdb")) {
             Collection<Movie> movies = MovieDB.getInstance().getMovies();
-//            RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/movies.jsp");
             request.setAttribute("movies",movies);
             request.getRequestDispatcher("movies.jsp").forward(request, response);
         } else {
-
-//        	FlightManager.getInstance().bookFlight(destination, Integer.parseInt(numberOfTickets));
-
             String buyPageName = "newBook.jsp";
     		RequestDispatcher requestDispatcher = request.getRequestDispatcher(buyPageName);
             requestDispatcher.forward(request, response);        	
