@@ -115,15 +115,12 @@ public class Movie {
     public double getRatingCount() {
         return ratingCount;
     }
-
     public void setRating(double r) {
         rating = r;
     }
-
     public void incRatingCount() {
         ratingCount += 1;
     }
-
     public boolean isInPeriod(String start_year, String end_year) throws ParseException {
         Date rDate = new SimpleDateFormat("yyyy-MM-dd").parse(releaseDate);
         int releaseYear = rDate.getYear() + 1900;
