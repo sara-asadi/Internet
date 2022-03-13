@@ -24,6 +24,22 @@
         <servlet-name>MovieController</servlet-name>
         <url-pattern>/movies/*</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ActorController</servlet-name>
+        <servlet-class>app.controllers.ActorController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ActorController</servlet-name>
+        <url-pattern>/actors/*</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>WatchListController</servlet-name>
+        <servlet-class>app.controllers.WatchListController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WatchListController</servlet-name>
+        <url-pattern>/watchlist</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
