@@ -62,7 +62,7 @@
     <br>
     <form action="rate_movie" method="POST">
       <label>Rate(between 1 and 10):</label>
-      <input type="number" id="quantity" name="quantity" min="1" max="10">
+      <input type="number" id="quantity" name="quantity" min="1" max="10" required="required">
       <input type="hidden" id="form_action" name="action" value="rate">
       <input type="hidden" id="form_movie_id" name="movie_id" value="<%=movie.getId()%>">
       <button type="submit">rate</button>
@@ -74,6 +74,13 @@
       <button type="submit">Add to WatchList</button>
     </form>
     <br />
+    <%
+          List<Comment> comments = new ArrayList<>();
+          comments = movie.getComments();
+          if (comments.size() == 0) {%>
+          <p>no comments yet!</p>
+          <%}
+          else {%>
     <table>
       <tr>
         <th>nickname</th>
@@ -81,10 +88,7 @@
         <th></th>
         <th></th>
       </tr>
-      <%
-      List<Comment> comments = new ArrayList<>();
-      comments = movie.getComments();
-      for(int j = 0; j < comments.size(); j+=1) { %>
+      <% for(int j = 0; j < comments.size(); j+=1) { %>
         <tr>
           <td>
           <p><%=UserDB.getInstance().getUserByEmail(comments.get(j).getUserEmail()).getNickname()%></a>
@@ -93,42 +97,33 @@
           <p><%=comments.get(j).getText()%></p>
           </td>
           <td>
-            <form action="" method="POST">
+            <form action="vote_comment" method="POST">
               <label for=""><%=comments.get(j).getLikes()%></label>
-              <input
-                id="form_comment_id"
-                type="hidden"
-                name="comment_id"
-                value="<%=comments.get(j).getId()%>"
-              />
+              <input  id="form_comment_id"  type="hidden"  name="comment_id" value="<%=comments.get(j).getId()%>"/>
               <input type="hidden" id="form_action" name="action" value="like">
-              <input type="hidden" id="form_movie_id" name="movie_id" value="<%=id%>">
+              <input type="hidden" id="form_movie_id" name="movie_id" value="<%=movie.getId()%>">
               <button type="submit">like</button>
             </form>
           </td>
           <td>
-            <form action="" method="POST">
+            <form action="vote_comment" method="POST">
               <label for=""><%=comments.get(j).getDisLikes()%></label>
-              <input
-                id="form_comment_id"
-                type="hidden"
-                name="comment_id"
-                value="<%=comments.get(j).getId()%>"
-              />
+              <input id="form_comment_id" type="hidden" name="comment_id" value="<%=comments.get(j).getId()%>"/>
               <input type="hidden" id="form_action" name="action" value="dislike">
-              <input type="hidden" id="form_movie_id" name="movie_id" value="<%=id%>">
+              <input type="hidden" id="form_movie_id" name="movie_id" value="<%=movie.getId()%>">
               <button type="submit">dislike</button>
             </form>
           </td>
         </tr>
         <% } %>
       </table>
+      <%}%>
     <br><br>
-    <form action="" method="POST">
+    <form action="add_comment" method="POST">
       <label>Your Comment:</label>
-      <input type="text" name="comment" value="">
+      <input type="text" name="comment" required="required">
       <input type="hidden" id="form_action" name="action" value="comment">
-      <input type="hidden" id="form_movie_id" name="movie_id" value="<%=id%>">
+      <input type="hidden" id="form_movie_id" name="movie_id" value="<%=movie.getId()%>">
       <button type="submit">Add Comment</button>
     </form>
   </body>
