@@ -59,7 +59,6 @@ public class MovieDB {
     }
     public void SortByReleaseDate() {
         movies = movies.stream().sorted(Comparator.comparing(Movie::getReleaseYear).reversed()).collect(Collectors.toList());
-        System.out.println(movies.get(0).getReleaseYear());
         filtered = filtered.stream().sorted(Comparator.comparing(Movie::getReleaseYear).reversed()).collect(Collectors.toList());
     }
     public void FilterMovies(String searchKey) {

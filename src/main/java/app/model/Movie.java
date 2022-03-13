@@ -74,6 +74,7 @@ public class Movie {
     public String getGenres(){
         return Arrays.toString(genres.toArray());
     }
+    public List<String> getGenresList() {return genres;}
     public List<Actor> getCast() throws IOException {
         List<Actor> aList = new ArrayList<>();
         for (Long aid : cast) {

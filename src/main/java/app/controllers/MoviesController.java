@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletResponse;
 import jakarta.servlet.annotation.WebServlet;
 
 public class MoviesController extends HttpServlet {
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.sendRedirect("movies.jsp");
+    }
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -28,7 +32,6 @@ public class MoviesController extends HttpServlet {
             request.getRequestDispatcher("movies.jsp").forward(request, response);
         }
         if (action.equals("sort_by_date")) {
-            System.out.println("************");
             MovieDB.getInstance().SortByReleaseDate();
             request.getRequestDispatcher("movies.jsp").forward(request, response);
         }
