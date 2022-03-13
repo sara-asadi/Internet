@@ -26,7 +26,8 @@ public class UserDB {
     public void setCurrentUser(User user) {
         currentUser = user;
     }
-
+    public void login(User user) {setCurrentUser(user);}
+    public void logout() {setCurrentUser(null);}
     public User getCurrentUser(){
         return currentUser;
     }
