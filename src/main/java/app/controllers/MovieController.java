@@ -29,20 +29,21 @@ public class MovieController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         long movie_id = Integer.parseInt(request.getParameter("movie_id"));
+        User user = UserDB.getInstance().getCurrentUser();
 
         if(action.equals("comment")){
             String comment = request.getParameter("comment");
-            User user = UserDB.getInstance().getCurrentUser();
+
             Comment commentObj = new Comment(user.getEmail(), movie_id,comment, CommentDB.getInstance().generateId());
             CommentDB.getInstance().addComment(commentObj);
         }
         else if(action.equals("like")){
-            long comment_id = Integer.parseInt(request.getParameter("comment_id"));
-            CommentDB.getInstance().getCommentById(comment_id).like();
+            int comment_id = Integer.parseInt(request.getParameter("comment_id"));
+            user.voteComment(movie_id,comment_id,"like");
         }
         else if(action.equals("dislike")){
-            long comment_id = Integer.parseInt(request.getParameter("comment_id"));
-            CommentDB.getInstance().getCommentById(comment_id).disLike();
+            int comment_id = Integer.parseInt(request.getParameter("comment_id"));
+            user.voteComment(movie_id,comment_id,"dislike");
         }
         doGet(request,response);
     }
