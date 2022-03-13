@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.Collection;
 import java.util.List;
 
+import app.db.ErrorDB;
 import app.db.MovieDB;
 import app.db.UserDB;
 import app.model.Movie;
@@ -20,7 +21,10 @@ import jakarta.servlet.annotation.WebServlet;
 public class RateMovieController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        if (UserDB.currentUser == null) {
+            response.sendRedirect("../login.jsp");
+            return;
+        }
         int rate = Integer.parseInt(request.getParameter("quantity"));
         long movie_id = Integer.parseInt(request.getParameter("movie_id"));
         Movie movie = MovieDB.getInstance().getMovieById(movie_id);
@@ -36,6 +40,7 @@ public class RateMovieController extends HttpServlet {
         }
         else {
             String error = "invalid rate value!";
-        }
+            ErrorDB.getInstance().setErrorMessage(error);
+            response.sendRedirect("../error.jsp");        }
     }
 }

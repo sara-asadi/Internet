@@ -18,6 +18,10 @@ import java.io.SyncFailedException;
 
 public class MovieController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if (UserDB.currentUser == null) {
+            response.sendRedirect("../login.jsp");
+            return;
+        }
         CommentDB.getInstance();
         request.setAttribute("id",Long.parseLong(request.getPathInfo().substring(1)));
         RequestDispatcher dispatcher = getServletContext()
@@ -27,23 +31,31 @@ public class MovieController extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (UserDB.currentUser == null) {
+            response.sendRedirect("../login.jsp");
+            return;
+        }
         String action = request.getParameter("action");
         long movie_id = Integer.parseInt(request.getParameter("movie_id"));
         User user = UserDB.getInstance().getCurrentUser();
 
-        if(action.equals("comment")){
-            String comment = request.getParameter("comment");
+        switch (action) {
+            case "comment":
+                String comment = request.getParameter("comment");
 
-            Comment commentObj = new Comment(user.getEmail(), movie_id,comment, CommentDB.getInstance().generateId());
-            CommentDB.getInstance().addComment(commentObj);
-        }
-        else if(action.equals("like")){
-            int comment_id = Integer.parseInt(request.getParameter("comment_id"));
-            user.voteComment(movie_id,comment_id,"like");
-        }
-        else if(action.equals("dislike")){
-            int comment_id = Integer.parseInt(request.getParameter("comment_id"));
-            user.voteComment(movie_id,comment_id,"dislike");
+                Comment commentObj = new Comment(user.getEmail(), movie_id, comment, CommentDB.getInstance().generateId());
+                CommentDB.getInstance().addComment(commentObj);
+                break;
+            case "like": {
+                int comment_id = Integer.parseInt(request.getParameter("comment_id"));
+                user.voteComment(movie_id, comment_id, "like");
+                break;
+            }
+            case "dislike": {
+                int comment_id = Integer.parseInt(request.getParameter("comment_id"));
+                user.voteComment(movie_id, comment_id, "dislike");
+                break;
+            }
         }
         doGet(request,response);
     }

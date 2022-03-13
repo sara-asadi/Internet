@@ -5,6 +5,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import app.db.ErrorDB;
 import jakarta.servlet.annotation.WebServlet;
 
 import app.db.UserDB;
@@ -19,23 +21,25 @@ public class LoginController extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
 
         String page = "login.jsp";
         if(email != null) {
             User loggingUser = UserDB.getInstance().getUserByEmail(email);
             if(loggingUser!= null) {
                 request.setAttribute("email", email);
-                request.setAttribute("msg", "Login Success.....");
                 UserDB.getInstance().setCurrentUser(loggingUser);
                 page = "index.jsp";
             }
             else {
-                request.setAttribute("msg", "Wrong Email, Try again!!!");
+                String error = "Invalid Email!";
+                ErrorDB.getInstance().setErrorMessage(error);
+                response.sendRedirect("error.jsp");
             }
         }
         else {
-            request.setAttribute("msg", "Please enter username and password...");
+            String error = "Invalid Email!";
+            ErrorDB.getInstance().setErrorMessage(error);
+            response.sendRedirect("error.jsp");
         }
         request.getRequestDispatcher(page).include(request, response);
     }

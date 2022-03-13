@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.Collection;
 import java.util.List;
 
+import app.db.ErrorDB;
 import app.db.MovieDB;
 import app.db.UserDB;
 import app.model.Movie;
@@ -21,7 +22,10 @@ import jakarta.servlet.annotation.WebServlet;
 public class AddToWatchListController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        if (UserDB.currentUser == null) {
+            response.sendRedirect("../login.jsp");
+            return;
+        }
         long movie_id = Integer.parseInt(request.getParameter("movie_id"));
         Movie movie = MovieDB.getInstance().getMovieById(movie_id);
         User user = UserDB.getInstance().getCurrentUser();
@@ -31,10 +35,13 @@ public class AddToWatchListController extends HttpServlet {
                 response.sendRedirect(String.valueOf(movie_id));
             } else {
                 String error = "Age Limit Error!";
+                ErrorDB.getInstance().setErrorMessage(error);
+                response.sendRedirect("../error.jsp");
             }
-        }
-        catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException e) {
+            String error = "Age Limit Error!";
+            ErrorDB.getInstance().setErrorMessage(error);
+            response.sendRedirect("../error.jsp");
         }
     }
 }
