@@ -17,7 +17,7 @@
             <a href="watchlist">Watch List</a>
         </li>
         <li>
-            <a href="login">Log Out</a>
+            <a href="logout">Log Out</a>
         </li>
     </ul>
 </body>

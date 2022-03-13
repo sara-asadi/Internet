@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-       <a href="index.jsp">Home</a>
+       <a href="home">Home</a>
        <br><br>
        <form action="movies" method="POST">
            <label>Search:</label>

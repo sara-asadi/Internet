@@ -23,7 +23,7 @@
     Actor actor = ActorDB.getInstance().getActorById(id);
   %>
   <body>
-    <a href="../index.jsp">Home</a>
+    <a href="home">Home</a>
     <p id="email">email: <%=UserDB.getInstance().getCurrentUser().getEmail()%></p>
     <ul>
         <li id="name">name: <%=actor.getName()%></li>

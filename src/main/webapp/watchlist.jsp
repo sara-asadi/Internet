@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-    <a href="index.jsp">Home</a>
+    <a href="home">Home</a>
     <% User user = UserDB.getInstance().getCurrentUser(); %>
     <p id="email">email: <%=user.getEmail()%></p>
     <ul>

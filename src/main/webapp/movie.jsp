@@ -23,7 +23,7 @@
     movie = MovieDB.getInstance().getMovieById(id);
   %>
   <body>
-    <a href="../index.jsp">Home</a>
+    <a href="home">Home</a>
 
     <ul>
       <li id="name">name: <%=movie.getName()%></li>
