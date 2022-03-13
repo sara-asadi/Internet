@@ -51,7 +51,7 @@
                 for(int j = 0; j < actors.size(); j+=1) { %>
       <tr>
         <td>
-        <a href="actors/<%=actors.get(j).getId()%>"><%=actors.get(j).getName()%></a>
+        <a href="../actors/<%=actors.get(j).getId()%>"><%=actors.get(j).getName()%></a>
         </td>
         <td>
         <p><%=actors.get(j).getAge()%></p>
@@ -60,17 +60,17 @@
       <% } %>
     </table>
     <br>
-    <form action="" method="POST">
+    <form action="rate_movie" method="POST">
       <label>Rate(between 1 and 10):</label>
       <input type="number" id="quantity" name="quantity" min="1" max="10">
       <input type="hidden" id="form_action" name="action" value="rate">
-      <input type="hidden" id="form_movie_id" name="movie_id" value="01">
+      <input type="hidden" id="form_movie_id" name="movie_id" value="<%=movie.getId()%>">
       <button type="submit">rate</button>
     </form>
     <br>
-    <form action="" method="POST">
+    <form action="add_to_watchlist" method="POST">
       <input type="hidden" id="form_action" name="action" value="add">
-      <input type="hidden" id="form_movie_id" name="movie_id" value="01">
+      <input type="hidden" id="form_movie_id" name="movie_id" value="<%=movie.getId()%>">
       <button type="submit">Add to WatchList</button>
     </form>
     <br />
