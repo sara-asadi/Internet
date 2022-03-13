@@ -1,6 +1,8 @@
 package app.model;
 
 import app.db.ActorDB;
+import app.db.CommentDB;
+import app.db.MovieDB;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -26,16 +28,18 @@ public class Movie {
     private Double rating;
     private long ratingCount;
     private List<Comment> comments;
+    private boolean commentsInited;
 
-    public Movie(){
+    public Movie() throws IOException {
         writers = new ArrayList<>();
         genres = new ArrayList<>();
         cast = new ArrayList<>();
         rating = Double.valueOf(0);
         ratingCount = 0;
         comments = new ArrayList<>();
+        commentsInited = false;
     }
-    public  Movie(long id_, String name_, String summary_, String releaseDate_, String director_, List<String> writers_, List<String> genres_, List<Long> cast_, double imdbRate_, long duration_, long ageLimit_){
+    public Movie(long id_, String name_, String summary_, String releaseDate_, String director_, List<String> writers_, List<String> genres_, List<Long> cast_, double imdbRate_, long duration_, long ageLimit_) throws IOException {
         id = (long) id_;
         (name = name_).equals("");
         (summary = summary_).equals("");
@@ -53,6 +57,7 @@ public class Movie {
         rating = Double.valueOf(0);
         ratingCount = 0;
         comments = new ArrayList<>();
+        commentsInited = false;
     }
     public long getId() {
         return this.id;
@@ -98,19 +103,34 @@ public class Movie {
     public long getAgeLimit() {
         return this.ageLimit;
     }
-    public List<Comment> getComments() {
+    private void initComments() throws IOException {
+        if (!commentsInited) {
+            CommentDB.getInstance().InsertComments();
+            commentsInited = true;
+        }
+    }
+    public List<Comment> getComments() throws IOException {
+        initComments();
         return comments;
     }
-
-    public void addComment(Comment comment) {
+    public void addComment(Comment comment) throws IOException {
         comments.add(comment);
     }
-    public void updateComment(long cid, Comment comment) {
+    public void updateComment(long cid, Comment comment) throws IOException {
         for (int i =0 ; i<comments.size(); i++){
             if(comments.get(i).getId() == cid){
                 comments.set(i, comment);
             }
         }
+    }
+    public Comment getComment(int commentId) throws IOException {
+        initComments();
+        for (int i =0 ; i<comments.size(); i++){
+            if(comments.get(i).getId() == commentId){
+                return comments.get(i);
+            }
+        }
+        return null;
     }
     public double getRatingCount() {
         return ratingCount;

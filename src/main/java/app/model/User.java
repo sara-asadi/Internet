@@ -173,43 +173,37 @@ public class User {
         return ratedMovies;
     }
 
-    public void voteComment(long comment_id, long vote) throws IOException {
-        Set comments = ratedComments.entrySet();
-        for (Object o : comments) {
-            Map.Entry comment = (Map.Entry) o;
-            if (comment.getKey().equals(comment_id))
-                if (vote == 0 && comment.getValue().equals(1)) {
-                    comment.setValue(vote);
-                    CommentDB.getInstance().getCommentById(comment_id).unLike();
-                } else if (vote == 0 && comment.getValue().equals(-1)) {
-                    comment.setValue(vote);
-                    CommentDB.getInstance().getCommentById(comment_id).unDisLike();
-                } else if (vote == 1 && comment.getValue().equals(-1)) {
-                    comment.setValue(vote);
-                    CommentDB.getInstance().getCommentById(comment_id).like();
-                    CommentDB.getInstance().getCommentById(comment_id).unDisLike();
-                } else if (vote == 1 && comment.getValue().equals(0)) {
-                    comment.setValue(vote);
-                    CommentDB.getInstance().getCommentById(comment_id).like();
-                } else if (vote == -1 && comment.getValue().equals(1)) {
-                    comment.setValue(vote);
-                    CommentDB.getInstance().getCommentById(comment_id).disLike();
-                    CommentDB.getInstance().getCommentById(comment_id).unLike();
-                } else if (vote == -1 && comment.getValue().equals(0)) {
-                    comment.setValue(vote);
-                    CommentDB.getInstance().getCommentById(comment_id).disLike();
+    public void voteComment(long movie_id, int comment_id, String vote) throws IOException {
+        Movie movie = MovieDB.getInstance().getMovieById(movie_id);
+        Comment comment = movie.getComment(comment_id);
+        Set s = ratedComments.entrySet();
+        boolean dup = false;
+        for (Object o : s) {
+            Map.Entry ratedComments = (Map.Entry) o;
+            if (ratedComments.getKey().equals(comment_id)) {
+                dup = true;
+                String prevVote = (String) ratedComments.getValue();
+                if (!Objects.equals(prevVote, vote)) {
+                    if (Objects.equals(vote, "like")) {
+                        comment.like();
+                        comment.unDisLike();
+                    } else if (Objects.equals(vote, "dislike")) {
+                        comment.disLike();
+                        comment.unLike();
+                    }
                 }
-            MovieDB.getInstance().getMovieById(CommentDB.getInstance().getCommentById(comment_id).getMovieId()).updateComment(comment_id, CommentDB.getInstance().getCommentById(comment_id));
-            return;
+            }
         }
-        if (vote != 0) {
+        if (dup) {
+            ratedComments.replace(comment_id, vote);
+            movie.updateComment(comment_id, comment);
+        } else {
             ratedComments.put(comment_id, vote);
-            if (vote == 1)
-                CommentDB.getInstance().getCommentById(comment_id).like();
-            if (vote == -1)
-                CommentDB.getInstance().getCommentById(comment_id).disLike();
-            MovieDB.getInstance().getMovieById(CommentDB.getInstance().getCommentById(comment_id).getMovieId()).addComment(CommentDB.getInstance().getCommentById(comment_id));
+            if (Objects.equals(vote, "like"))
+                comment.like();
+            else if (Objects.equals(vote, "dislike"))
+                comment.disLike();
+            movie.updateComment(comment_id, comment);
         }
-        return;
     }
 }

@@ -75,46 +75,6 @@ public class UserDB {
         return wList;
     }
 
-    public boolean addToWatchList(String email, long movie_id) throws ParseException, IOException {
-        User user = getUserByEmail(email);
-        Movie movie = MovieDB.getInstance().getMovieById(movie_id);
-        if (user.getAge() > movie.getAgeLimit()) {
-            user.addWatchList(movie_id);
-            return true;
-        }
-        else return false;
-    }
 
-    public boolean rateMovie(String email, long movie_id, long rate) throws IOException {
-        User user = getUserByEmail(email);
-        Movie ratedMovie = MovieDB.getInstance().getMovieById(movie_id);
-        if (rate > 0 && rate <= 10 && user != null && ratedMovie != null) {
-            long prevRate = user.rateMovie(movie_id, rate);
-            long total = ((long) (ratedMovie.getRating() * ratedMovie.getRatingCount())) - prevRate;
-            if(prevRate == 0){
-                ratedMovie.incRatingCount();
-            }
-            ratedMovie.setRating((double) (total + rate) / (ratedMovie.getRatingCount()));
-            return true;
-        }
-        else return false;
-    }
-    public boolean voteComment(String email, long comment_id, long vote) throws IOException {
-        User user = getUserByEmail(email);
-        if (vote == 0 || vote == 1 || vote == -1) {
-            user.voteComment(comment_id, vote);
-            return true;
-        }
-        else return false;
-    }
-
-    public boolean removeFromWatchList(String email, long movie_id) {
-        User user = getUserByEmail(email);
-        if (user.isInWatchList(movie_id)) {
-            user.removeWatchList(movie_id);
-            return true;
-        }
-        else return false;
-    }
 }
 

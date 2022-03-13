@@ -14,12 +14,17 @@ import java.util.Scanner;
 
 public class CommentDB {
     private static CommentDB instance;
-    public static List<Comment> comments;
+    private static List<Comment> comments;
+    int commentsNumber;
+
     private CommentDB() throws IOException {
         comments = getCommentsArray("http://138.197.181.131:5000/api/comments");
         for (int i = 1; i<=comments.size(); i++) {
             comments.set(i-1, comments.get(i-1).setId(i));
         }
+        commentsNumber = comments.size();
+    }
+    public void InsertComments() throws IOException {
         for (Comment comment : comments) {
             MovieDB.getInstance().getMovieById(comment.getMovieId()).addComment(comment);
         }
@@ -28,6 +33,12 @@ public class CommentDB {
         if (instance == null)
             instance = new CommentDB();
         return instance;
+    }
+
+    public void addComment(String text, long movie_id, String email) throws IOException {
+        Comment comment = new Comment(email, movie_id, text, commentsNumber+1);
+        commentsNumber += 1;
+        MovieDB.getInstance().getMovieById(movie_id).addComment(comment);
     }
     public List<Comment> getCommentsArray(String apiAddress) throws IOException{
         List<Comment> Comments;
@@ -51,12 +62,5 @@ public class CommentDB {
         }
 
         return Comments;
-    }
-    public static Iterable<Comment> getAllComments() {
-        return comments;
-    }
-
-    public Comment getCommentById(long id) {
-        return comments.stream().filter(c -> c.getId()== id).findFirst().orElse(null);
     }
 }
