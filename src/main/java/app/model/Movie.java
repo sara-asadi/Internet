@@ -103,14 +103,7 @@ public class Movie {
     public long getAgeLimit() {
         return this.ageLimit;
     }
-    private void initComments() throws IOException {
-        if (!commentsInited) {
-            CommentDB.getInstance().InsertComments();
-            commentsInited = true;
-        }
-    }
     public List<Comment> getComments() throws IOException {
-        initComments();
         return comments;
     }
     public void addComment(Comment comment) throws IOException {
@@ -124,7 +117,6 @@ public class Movie {
         }
     }
     public Comment getComment(int commentId) throws IOException {
-        initComments();
         for (int i =0 ; i<comments.size(); i++){
             if(comments.get(i).getId() == commentId){
                 return comments.get(i);
