@@ -17,8 +17,12 @@ public class ActorController extends HttpServlet {
             response.sendRedirect("../login.jsp");
             return;
         } else {
-            request.setAttribute("id", Long.parseLong(request.getPathInfo().substring(1)));
-
+            long id = Long.parseLong(request.getPathInfo().substring(1));
+            if(ActorDB.getInstance().getActorById(id)==null){
+                response.sendRedirect("../404.jsp");
+                return;
+            }
+            request.setAttribute("id",id);
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/actor.jsp");
             dispatcher.forward(request, response);
         }

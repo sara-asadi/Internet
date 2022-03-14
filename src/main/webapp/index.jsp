@@ -11,7 +11,7 @@
         <li id="email">email: <%=UserDB.getInstance().getCurrentUser().getEmail()%></li>
 
         <li>
-            <a href="movies.jsp">Movies</a>
+            <a href="movies">Movies</a>
         </li>
         <li>
             <a href="watchlist">Watch List</a>

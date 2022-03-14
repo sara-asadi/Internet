@@ -15,7 +15,7 @@ public class WatchListController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (UserDB.currentUser == null) {
-            response.sendRedirect("../login.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
         response.sendRedirect("watchlist.jsp");
@@ -23,7 +23,7 @@ public class WatchListController extends HttpServlet {
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (UserDB.currentUser == null) {
-            response.sendRedirect("../login.jsp");
+            response.sendRedirect("login.jsp");
             return;
         }
     }

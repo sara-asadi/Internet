@@ -23,7 +23,12 @@ public class MovieController extends HttpServlet {
             return;
         }
         CommentDB.getInstance();
-        request.setAttribute("id",Long.parseLong(request.getPathInfo().substring(1)));
+        long id = Long.parseLong(request.getPathInfo().substring(1));
+        if(MovieDB.getInstance().getMovieById(id) == null){
+            response.sendRedirect("../404.jsp");
+            return;
+        }
+        request.setAttribute("id",id);
         RequestDispatcher dispatcher = getServletContext()
                 .getRequestDispatcher("/movie.jsp");
         dispatcher.forward(request, response);

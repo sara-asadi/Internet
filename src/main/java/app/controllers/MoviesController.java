@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import app.db.MovieDB;
+import app.db.UserDB;
 import app.model.Movie;
 import org.apache.commons.lang.StringUtils;
 
@@ -18,6 +19,10 @@ import jakarta.servlet.annotation.WebServlet;
 public class MoviesController extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (UserDB.currentUser == null) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
         response.sendRedirect("movies.jsp");
     }
 	public void doPost(HttpServletRequest request, HttpServletResponse response)

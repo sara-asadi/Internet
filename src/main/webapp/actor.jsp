@@ -21,9 +21,12 @@
   <%
     long id = (long)request.getAttribute("id");
     Actor actor = ActorDB.getInstance().getActorById(id);
+    if(actor == null){
+        response.sendRedirect("../404.jsp");
+    }
   %>
   <body>
-    <a href="home">Home</a>
+    <a href="../home">Home</a>
     <p id="email">email: <%=UserDB.getInstance().getCurrentUser().getEmail()%></p>
     <ul>
         <li id="name">name: <%=actor.getName()%></li>

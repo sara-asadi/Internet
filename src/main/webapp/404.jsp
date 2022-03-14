@@ -5,7 +5,7 @@
     <title>404 Error</title>
 </head>
 <body>
-    <a href="../home">Home</a>
+    <a href="home">Home</a>
     <h1>404<br>Page Not Found</h1>
 </body>
 </html>
