@@ -55,7 +55,13 @@
     <div class="container">
         <div class="movies col-md-8">
             <% for(int i = 0; i < movies.size(); i+=1) { %>
-            <a href="movies/<%=movies.get(i).getId()%>"><img src="images/movies/<%=movies.get(i).getName()%>.jpg" alt="<%=movies.get(i).getName()%>" class="poster"><a>
+            <div class="bg-image hover-overlay">
+                <a href="movies/<%=movies.get(i).getId()%>">
+                    <img src="images/movies/<%=movies.get(i).getName()%>.jpg" alt="<%=movies.get(i).getName()%>" class="poster w-100">
+                    <div class="mask" style="background-color: rgba(249, 49, 84, 0.34);"></div>
+                </a>
+            </div>
+
             <% } %>
         </div>
         <span class="col-md-4 sort-bar">
