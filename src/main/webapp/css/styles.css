@@ -2,11 +2,19 @@
     display:flex;
     flex-wrap:wrap;
 }
+.sort-bar{
+    width:min-content;
+}
 .sort{
     background-color:#b12025;
     border-radius:5px;
     display:flex;
     flex:center;
+}
+.sort-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .btn-link{
@@ -33,6 +41,13 @@
     flex-wrap:wrap;
 }
 
+.movies{
+    display:flex;
+    flex:wrap;
+    align: stretch;
+    align-content:space-between;
+    gap:10px 10px;
+}
 
 
 

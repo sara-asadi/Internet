@@ -48,30 +48,25 @@
         </div-->
       </div>
     </nav>
-       <%
-       		List<Movie> movies = new ArrayList<>();
-       		movies = MovieDB.getInstance().getMoviesF();
-       %>
-       <div class="container">
-        <div class="movies col-md-10">
+    <%
+        List<Movie> movies = new ArrayList<>();
+        movies = MovieDB.getInstance().getMoviesF();
+    %>
+    <div class="container">
+        <div class="movies col-md-8">
             <% for(int i = 0; i < movies.size(); i+=1) { %>
             <a href="movies/<%=movies.get(i).getId()%>"><img src="images/movies/<%=movies.get(i).getName()%>.jpg" alt="<%=movies.get(i).getName()%>" class="poster"><a>
             <% } %>
         </div>
-        <div class="col-md-2 sort-bar">
+        <span class="col-md-4 sort-bar">
             <label class="title">:رتبه بندی بر اساس</label>
             <div class="sort">
-                <form action="movies" method="POST">
+                <form action="movies" method="POST" class="sort-form">
                    <button type="submit" name="action" value="sort_by_date" class="btn btn-link">تاریخ</button>
-                    <button type="submit" name="action" value="sort_by_imdb" class="btn btn-link">امتیاز imdb</button>
+                   <button type="submit" name="action" value="sort_by_imdb" class="btn btn-link">امتیاز imdb</button>
                 </form>
             </div>
-        </div>
-        </div>
-       </div>
-       <table>
-
-
-       </table>
-    </body>
+        </span>
+    </div>
+</body>
 </html>

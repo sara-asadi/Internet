@@ -30,9 +30,6 @@ body, html{
     padding:0px;
     display: flex;
  }
-.sort-bar{
-    align-content:center;
-}
 .navbar-header{
     padding:0px;
     margin-left:0px;
@@ -55,9 +52,13 @@ body, html{
     background-color: #b12025;
     border:0px;
 }
-.container-fluid{
-
+.container {
+    padding-top: 70px;
+    float: right;
+    display: flex;
+    justify-content: end;
 }
+
 .title{
     color:white;
 }
@@ -89,6 +90,6 @@ body, html{
     position:right;
 }
 img.poster{
-    width:100px;
+    width:150px;
     height:150px;
 }
