@@ -1,0 +1,16 @@
+app\model\Movie.class
+app\model\Comment.class
+app\ServletInitializer.class
+app\tools\HTTPRequestHandler\HTTPRequestHandler.class
+app\model\Actor.class
+app\tools\CORS\SimpleCORSFilter.class
+app\db\UserDB.class
+app\tools\Response.class
+app\db\ErrorDB.class
+app\tools\Exceptions\ExceptionBadRequest.class
+app\db\MovieDB.class
+app\tools\Exceptions\ExceptionNotFound.class
+app\BackEndApplication.class
+app\db\CommentDB.class
+app\model\User.class
+app\db\ActorDB.class
