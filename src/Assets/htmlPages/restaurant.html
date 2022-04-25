@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Restaurant Name</title>
+    <link rel="stylesheet" href="../Assets/styles/restaurant-style.css">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+<header>
+    <div class="header">
+        <div class="loghme-icon  ml-auto">
+            <a href="home.html">
+                <img alt="tmp" src="../Assets/images/LOGO.png">
+            </a>
+        </div>
+        <div class="cart m-2">
+            <div class="cart-icon">
+                <i class="flaticon-smart-cart"></i>
+            </div>
+            <div class="cart-items">
+                <span>۳</span>
+            </div>
+        </div>
+        <div class="profile m-2">
+            <a href="profile.html">
+                حساب کاربری
+            </a>
+        </div>
+        <div class="logout m-2">
+            خروج
+        </div>
+    </div>
+</header>
+
+<main>
+    <div class="sub-header-red">
+        <div class="sub-header-over">
+            <img alt="tmp" class="sub-header-over-img" src="../Assets/images/McDonalds-Logo-square.jpg">
+        </div>
+    </div>
+    <div class="sub-header-over-text">رستوران خامس</div>
+
+    <div class="container restaurant-main-container">
+
+        <div class="row">
+            <div class="col-lg-4 col-6 center-text"></div>
+            <div class="col-lg-8 col-6 center-text">
+                    <span class="menu-text">
+                        منوی غذا
+                    </span>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <!-- margin-top -->
+            <!--            CART -->
+            <div class="col-lg-4 col-6">
+                <div class="card cart-container">
+                        <span class="cart-title">
+                            سبد خرید
+                        </span>
+
+                    <div class="cart-list-wrapper d-flex justify-content-center">
+
+                        <div class="cart-list-item-wrapper d-flex flex-column">
+                            <div class="d-flex flex-row justify-space-between">
+                                <div class="align-self-start">
+                                    پیتزا اعلا
+                                </div>
+                                <div class="align-self-end mr-auto">
+                                    <a><i class="glyph-icon flaticon-minus cart-icon"></i></a>
+                                    <span class="p-1">۳۰</span>
+                                    <a><i class="glyph-icon flaticon-plus cart-icon"></i></a>
+                                </div>
+                            </div>
+                            <div class="price d-flex flex-row justify-content-end">
+                                ۳۹۰۰۰ تومان
+                            </div>
+                        </div>
+                        <div class="break"></div>
+                        <div class="cart-list-item-wrapper d-flex flex-column">
+                            <div class="d-flex flex-row justify-space-between">
+                                <div class="align-self-start">
+                                    پیتزا نیمه اعلا
+                                </div>
+                                <div class="align-self-end mr-auto">
+                                    <a><i class="glyph-icon flaticon-minus cart-icon"></i></a>
+                                    <span class="p-1">۳۰</span>
+                                    <a><i class="glyph-icon flaticon-plus cart-icon"></i></a>
+                                </div>
+                            </div>
+                            <div class="price d-flex flex-row justify-content-end">
+                                ۳۹۰۰۰ تومان
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="total-price">
+                        جمع کل:
+                        <span>
+                                ۳۹۰۰۰ تومان
+                            </span>
+                    </div>
+
+                    <button type="button" class="btn btn-default btn-cyan">
+                        تایید نهایی
+                    </button>
+
+
+                </div>
+            </div>
+
+            <!--            FOOD LIST -->
+            <div class="col-lg-8 col-6 food-list-container">
+                <div class="row">
+
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text"> پیتزا اعلا</span>
+                                <span class="rating-star-text">۵</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text">پیتزا نیمه اعلا</span>
+                                <span class="rating-star-text">۴</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange"
+                                        disabled>ناموجود
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text"> پیتزا اعلا</span>
+                                <span class="rating-star-text">۵</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text"> پیتزا اعلا</span>
+                                <span class="rating-star-text">۵</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text"> پیتزا اعلا</span>
+                                <span class="rating-star-text">۵</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text"> پیتزا اعلا</span>
+                                <span class="rating-star-text">۵</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text"> پیتزا اعلا</span>
+                                <span class="rating-star-text">۵</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-lg-6">
+                        <div class="card food-item-container">
+                            <div class="row img-wrapper">
+                                <img alt="tmp" src="./../Assets/images/italian-pizza-square.jpg" class="img">
+                            </div>
+                            <div class="row title-wrapper">
+                                <span class="title-text"> پیتزا اعلا</span>
+                                <span class="rating-star-text">۵</span>
+                                <span class="rating-star-img">&starf;</span>
+                            </div>
+                            <div class="row price-wrapper">۳۹۰۰۰ تومان</div>
+                            <div class="row card-button-wrapper">
+                                <button type="button" class="btn btn-warning btn-default btn-orange">افزودن به سبد
+                                    خرید
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+<footer>
+    <div class="row no-gutters justify-content-center align-items-center footer-inner-box">
+        <div class="col-auto">
+            <div class="copy-right-icon">
+                    <span>
+                        ©
+                    </span>
+            </div>
+        </div>
+        <div class="col-auto">
+            <div class="copy-right-text">
+                    <span>
+                        تمامی حقوق متعلق به لقمه است.
+                    </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+
+</html>

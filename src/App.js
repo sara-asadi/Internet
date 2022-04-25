@@ -1,25 +1,40 @@
-import logo from './logo.svg';
+
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// import Home from "./pages/home/Home";
+import Login from "./pages/login/Login";
+import Signup from "./pages/signup/Signup";
+// import Movies from "./pages/movies/Movies";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+    <Routes>
+      {/* <Route path="/movies" component={Movies}/> */}
+      {/* <Route path="/dashboard">
+        <Dashboard />
+      </Route>
+      <Route path="/profile">
+        <Profile />
+      </Route>
+      <Route path="/restaurant" component={Restaurant} /> */}
+      <Route path="/login" element={<Login />}/>
+        {/* <Logout/> */}
+      {/* </Route> */}
+      <Route path="/signup" element={<Signup />}/>
+      {/* <Route path="/test">
+        <Example/>
+      </Route> */}
+      {/* <Route exact path="/" component={Home} /> */}
+    </Routes>
+  </Router>
   );
+}
+
+function Logout(){
+  return (<div>
+    HI
+    </div>);
 }
 
 export default App;

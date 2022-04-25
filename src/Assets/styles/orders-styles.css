@@ -1,0 +1,197 @@
+@import "header.css";
+@import "footer.css";
+@import "../fonts/font/flaticon.css";
+@import "../fonts/vazir-fonts/fonts.css";
+
+html {
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  direction: rtl;
+  font-family: "Vazir" !important;
+  background-color: #f7fff7 !important;
+  height: 100%;
+  /* position: relative; */
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block; /* remove extra space below image */
+}
+
+main {
+  /* margin: 0 auto -70px; */
+  min-height: 100%;
+  margin-top: 70px;
+  margin-bottom: 70px;
+}
+
+.profile-info {
+  padding: 50px 35px;
+  background: #ff6b6b;
+  color: white;
+  margin-top: 50px;
+}
+
+.profile-info .name {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.profile-info .name .profile-icon [class^="flaticon-"]:before,
+[class*=" flaticon-"]:before,
+[class^="flaticon-"]:after,
+[class*=" flaticon-"]:after {
+  font-size: 100px;
+}
+
+.profile-info .name .name-text {
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.profile-info .other-info {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.orders-charge-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.orders-charge-wrapper .orders-charge {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid gray;
+  border-radius: 45px;
+  background: white;
+  padding: 50px 0;
+}
+
+.orders-charge-wrapper .orders-charge .selector {
+  position: absolute;
+  top: -30px;
+  min-width: 280px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  height: 60px;
+  z-index: 1000;
+  align-items: center;
+  background: white;
+  width: 70%;
+  box-shadow: 0 0 10px -4px black;
+}
+
+.orders-charge-wrapper .orders-charge .selector-item {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  overflow: hidden;
+  border: none;
+}
+
+.orders-charge-wrapper .orders-charge .active-item {
+  background: #ff6b6b;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.orders-charge-wrapper .orders-charge .orders {
+  width: 90%;
+}
+
+.orders-charge-wrapper .orders-charge .orders .order-item {
+  margin: 10px 0;
+  border: 1px solid gray;
+  border-radius: 12px;
+  line-height: 60px;
+}
+
+.orders-charge-wrapper .orders-charge .orders .order-item .order-index {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid;
+  font-size: 20px;
+}
+.orders-charge-wrapper .orders-charge .orders .order-item .order-restaurant {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 1px solid;
+  font-size: 20px;
+}
+
+.orders-charge-wrapper .orders-charge .orders .order-item .order-status {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.orders-charge-wrapper
+  .orders-charge
+  .orders
+  .order-item
+  .order-status
+  .status-box {
+  line-height: 25px;
+  display: flex;
+  justify-self: center;
+  margin: 0 auto;
+
+  padding: 5px 30px;
+  border-radius: 8px;
+}
+
+.orders-charge-wrapper
+  .orders-charge
+  .orders
+  .order-item
+  .order-status
+  .delivering {
+  background: #ccffc7;
+  color: #24621e;
+}
+
+.orders-charge-wrapper
+  .orders-charge
+  .orders
+  .order-item
+  .order-status
+  .searching {
+  background: #d2fffc;
+  color: #1e605b;
+}
+
+.orders-charge-wrapper
+  .orders-charge
+  .orders
+  .order-item
+  .order-status
+  .delivered {
+  background: #ffe66d;
+  color: #1d1a0c;
+  box-shadow: 0px 2px 6px -4px black;
+}
+
+.clickable {
+  cursor: pointer;
+}
