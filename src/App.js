@@ -4,13 +4,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
-// import Movies from "./pages/movies/Movies";
+import Movies from "./pages/movies/Movies";
 
 function App() {
   return (
     <Router>
     <Routes>
-      {/* <Route path="/movies" component={Movies}/> */}
+      <Route path="/movies" element={<Movies />} />
       {/* <Route path="/dashboard">
         <Dashboard />
       </Route>

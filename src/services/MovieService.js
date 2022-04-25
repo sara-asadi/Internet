@@ -1,3 +1,5 @@
+import { MOVIES_URL } from "../config/config";
+
 const axios = require("axios").default;
 export default class MovieService {
 
@@ -7,7 +9,8 @@ export default class MovieService {
   }
 
   static async getMovieById(id) {
-    let movie = await axios.get(""+id);
+    debugger
+    let movie = await axios.get(MOVIES_URL+id);
     if(movie.data !== "")
         return movie.data
     else return null
