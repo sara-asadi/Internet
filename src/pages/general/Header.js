@@ -1,85 +1,105 @@
 import React from "react";
 import "../../Assets/styles/header.css";
-import Modal from 'react-bootstrap/Modal'
-import Cart from "./modals/Cart";
-import {Link} from "react-router-dom";
-import UserService from "../../services/UserService";
-import {enToFaNumber} from "../../utils/utils";
-import {cartRefresh} from "../../services/subjects/MessageService";
+import "bootstrap/dist/css/bootstrap.css";
+import Dropdown from "react-bootstrap/Dropdown";
 
-export default class Header extends React.Component{
-    constructor(props) {
-        super(props);
-        this.handleShow = this.handleShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
+export default class Header extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleShow = this.handleShow.bind(this);
+    this.handleClose = this.handleClose.bind(this);
 
-        this.state = {
-            show: false,
-            cartSize: 0
-        };
-    }
+    this.state = {
+      show: true,
+    };
+  }
 
-    handleClose() {
-        this.setState({ show: false });
+  handleClose() {
+    this.setState({ show: false });
+  }
 
-    }
+  handleShow() {
+    this.setState({ show: true });
+  }
 
-    handleShow() {
-        this.setState({ show: true });
-    }
+  componentDidMount() {}
 
+  render() {
+    return (
+      <nav className="navbar default-navbar">
+        <div className="container-fluid">
+          <div className="navbar-header navbar-left col-md-3">
+            <a href="#">
+              <img src="./../../Assets/images/template.png" className="logo" />
+            </a>
+          </div>
+          <div className="nav navbar-form col-md-2">
+            <Dropdown>
+              <Dropdown.Toggle variant="Secondary" className="btn dropdown-toggle">
+                :جستجو بر اساس
+                <span className="caret"></span>
+              </Dropdown.Toggle>
+              <Dropdown.Menu className="dropdown-menu">
+                <Dropdown.Item href="#">نام</Dropdown.Item>
+                <Dropdown.Item href="#">ژانر</Dropdown.Item>
+                <Dropdown.Item href="#">تاریخ تولید</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
 
-    getCartSize() {
-        UserService.getCart().then(cart => {
-            this.setState({cartSize: cart.data.size})
-        })
-    }
-
-
-    componentDidMount() {
-        this.getCartSize()
-        cartRefresh.asObservable().subscribe(() => {
-            this.getCartSize();
-        })
-    }
-
-
-    render() {
-        return (
-            <div>
-            <header>
-                <div className="header">
-                    <div className="loghme-icon  ml-auto">
-                        <Link to="/">
-                            <img alt="tmp" src={require("../../Assets/images/LOGO.png")}/>
-                        </Link>
-                    </div>
-                    <div className="cart m-2" onClick={this.handleShow}>
-                        <div className="cart-icon">
-                            <i className="flaticon-smart-cart"></i>
-                        </div>
-                        <div className="cart-items">
-                            <span>
-                                {enToFaNumber(this.state.cartSize)}
-                            </span>
-                        </div>
-                    </div>
-                    <div className="profile m-2">
-                        <Link to="/profile">
-                            حساب کاربری
-                        </Link>
-                    </div>
-                    <div className="logout m-2">
-                        خروج
-                    </div>
-                </div>
-            </header>
-                <Modal show={this.state.show} onHide={this.handleClose}>
-                  <Cart/>
-                </Modal>
-
+          {/* <ul className="nav navbar-form col-md-2">
+            <button
+              className="btn dropdown-toggle"
+              type="button"
+              data-toggle="dropdown"
+            >
+              :جستجو بر اساس
+              <span className="caret"></span>
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <a href="#">نام</a>
+              </li>
+              <li>
+                <a href="#">ژانر</a>
+              </li>
+              <li>
+                <a href="#">تاریخ تولید</a>
+              </li>
+            </ul>
+          </ul> */}
+          {/* <form action="movies" method="POST" className="navbar-form col-md-3">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search"
+                name="search"
+              />
+              <div className="input-group-btn">
+                <button
+                  className="btn btn-search"
+                  type="submit"
+                  name="action"
+                  value="search"
+                >
+                  <i className="glyphicon glyphicon-search"></i>
+                </button>
+              </div>
             </div>
-
-        );
-    }
+          </form> */}
+          {/* <div className="nav navbar-nav navbar-right col-md-1 user">
+            <li>
+              <a href="#">
+                <span
+                  className="iconify-inline"
+                  data-icon="carbon:user-avatar-filled"
+                ></span>
+              </a>
+            </li>
+          </div> */}
+        </div>
+      </nav>
+    );
+  }
 }
