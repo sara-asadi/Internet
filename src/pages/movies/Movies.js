@@ -6,6 +6,7 @@ import ActorCard from "./ActorCard";
 import CommentCard from "./CommentCard";
 import MovieCard from "./MovieCard";
 import "./Movies.css";
+import "../Style.css";
 
 export default class Movies extends React.Component {
   constructor(props) {
@@ -90,9 +91,15 @@ export default class Movies extends React.Component {
       </div>
     );
   }
+  async AddToWatchList(){
+    this._isMounted && this.setState({isLoading: true});
+        await MovieService.AddToWatchList(this.state.Movie.id);
+        this._isMounted && this.setState({isLoading: false});
 
+  }
   renderMovie() {
     return (
+      <div>
       <div>
         <div
           className="hero-image"
@@ -105,7 +112,7 @@ export default class Movies extends React.Component {
                 <div className="imdb-rate">
                   {this.state.Movie.imdbRate}
                   <br />
-                  {/* <img width="15%" src="star-icon.png" /> */}
+                  <img width="15%" src={"../../Assets/images/star-icon.png"} />
                   <div className="row">
                     <div className="col user-rate">
                       امتیاز کاربران <br /> ({this.state.Movie.ratingCount})
@@ -122,7 +129,7 @@ export default class Movies extends React.Component {
                 </p>
                 <p id="director">کارگردان: {this.state.Movie.director}</p>
                 <p id="writers">
-                  نویسنده: Stan Lee, Chris McKenna, Steve Ditko
+                  نویسندگان: {this.state.Movie.writers}
                 </p>
                 <p id="duration">مدت زمان: {this.state.Movie.duration}</p>
                 <br />
@@ -133,14 +140,19 @@ export default class Movies extends React.Component {
                 <p className="text-left">{this.state.Movie.summary}</p>
               </div>
               <div className="col-sm-2">
-                <img width="150%" src="spiderman-1.jpg" />
+                <img width="150%" src={this.state.Movie.image} />
+                <br></br>
+                {/*<Link to={this.AddToWatchList}>*/}
+                  <button className="button-2">add to watchlist</button>
+                 {/* </Link>*/}
+                
               </div>
               <div className="col-sm-2"></div>
             </div>
           </div>
         </div>
-
-        <div className="row">
+<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+         <div className="row">
           <div className="col-sm-1"></div>
           <div className="col-sm-8 cast container">
             <p>بازیگران</p>
@@ -148,7 +160,10 @@ export default class Movies extends React.Component {
               <div className="carousel-inner">
                 <div className="carousel-item active">
                   <div className="row">
-                    {this.actorsList()}
+                    <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id="+this.state.Movie.actorIds[0]} ><img src={this.state.Movie.actorImages[0]} className="image-2"/><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[0]}<br></br>{this.state.Movie.actorAges[0]}</div></div></a></div></div>
+                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id="+this.state.Movie.actorIds[1]}><img src={this.state.Movie.actorImages[1]} className="image-2"/><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[1]}<br></br>{this.state.Movie.actorAges[1]}</div></div></a></div></div>
+                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id="+this.state.Movie.actorIds[2]}><img src={this.state.Movie.actorImages[2]} className="image-2"/><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[2]}<br></br>{this.state.Movie.actorAges[2]}</div></div></a></div></div>
+                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id="+this.state.Movie.actorIds[3]}><img src={this.state.Movie.actorImages[3]} className="image-2"/><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[3]}<br></br>{this.state.Movie.actorAges[3]}</div></div></a></div></div>
                   </div>
                 </div>
               </div>
@@ -165,36 +180,23 @@ export default class Movies extends React.Component {
             </div>
           </div>
         </div>
-
+      </div>
+      <br></br><br></br><br></br><br></br><br></br>
         <div className="row">
           <div className="col-sm-1"></div>
-          <div className="col-sm-8 cast container">
-            <p>دیدگاه ها</p>
-            <div className="comment container">
-              <p>دیدگاه خود را اضافه کنید:</p>
-              <hr />
-              <form>
-                <div className="form-group mr-5">
-                  <textarea
-                    className="form-control comment"
-                    rows="2"
-                    id="comment"
-                  ></textarea>
-                </div>
-              </form>
-              <div className="m-2 text-left">
-                <a href="#" className="btn btn-success" role="button">
-                  ثبت
-                </a>
-              </div>
+          <div className="col-sm-8 cast container"><p>دیدگاه ها</p>
+            <div className="comment container"> <p>دیدگاه خود را اضافه کنید:</p>
+              <hr /><form> <div className="form-group mr-5"><textarea  className="form-control comment" rows="2" id="comment"></textarea></div>  </form>
+              <div className="m-2 text-left"><a href="#" className="btn btn-success" role="button"> ثبت </a></div>
             </div>
             <br />
-            <div className="comment container">
-              {this.commentsList()}
-            </div>
+            <div className="comment container">   {this.commentsList()} </div>
           </div>
         </div>
+        <br></br><br></br><br></br><br></br><br></br>
+
       </div>
+
     );
   }
   renderLoading() {

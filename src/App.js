@@ -5,12 +5,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import Movies from "./pages/movies/Movies";
+import Actor from './pages/actor/Actor';
 
 function App() {
   return (
     <Router>
     <Routes>
       <Route path="/movies" element={<Movies />} />
+      <Route path="/actors" element={<Actor />} />
       {/* <Route path="/dashboard">
         <Dashboard />
       </Route>
@@ -31,10 +33,10 @@ function App() {
   );
 }
 
-function Logout(){
-  return (<div>
-    HI
-    </div>);
-}
+// function Logout(){
+//   return (<div>
+//     HI
+//     </div>);
+// }
 
 export default App;

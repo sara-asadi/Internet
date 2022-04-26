@@ -30,9 +30,11 @@ export default class Header extends React.Component {
         <div className="container-fluid">
           <div className="navbar-header navbar-left col-md-3">
             <a href="#">
-              <img src="./../../Assets/images/template.png" className="logo" />
+            <img className="logo" src={require("../../Assets/images/template.png")} alt=""/>
             </a>
           </div>
+          { this.state.isInMovie
+          &&
           <div className="nav navbar-form col-md-2">
             <Dropdown>
               <Dropdown.Toggle variant="Secondary" className="btn dropdown-toggle">
@@ -46,6 +48,7 @@ export default class Header extends React.Component {
               </Dropdown.Menu>
             </Dropdown>
           </div>
+          }
           {/* <form action="movies" method="POST" className="navbar-form col-md-3">
             <div className="input-group">
               <input
