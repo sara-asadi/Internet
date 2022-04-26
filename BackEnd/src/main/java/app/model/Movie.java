@@ -69,12 +69,12 @@ public class Movie {
     public String getReleaseDate() {return releaseDate;}
     public int getReleaseYear() {
         return Integer.parseInt(releaseDate.substring(0, 4));
-
     }
     public long getReleaseCDate() {
-        String cDate = releaseDate.substring(0, 4)+releaseDate.substring(5, 7)+releaseDate.substring(8, 10);
+        String cDate = releaseDate.substring(0,4);
         return Long.parseLong(cDate);
     }
+
     public String getDirector(){
         return director;
     }

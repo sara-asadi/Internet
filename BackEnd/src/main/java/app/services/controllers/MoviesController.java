@@ -38,7 +38,7 @@ public class MoviesController {
         return getMovies();
     }
 
-    @PostMapping("/search/{searchKey}")
+    @GetMapping("/search/{searchKey}")
     public List<MovieJSON> search(@PathVariable String searchKey, final HttpServletResponse response) throws IOException {
         MovieDB.getInstance().FilterMovies(searchKey);
         return getMovies();

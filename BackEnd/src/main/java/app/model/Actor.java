@@ -14,13 +14,19 @@ public class Actor{
     private String name;
     private String birthDate;
     private String nationality;
+    private String image;
 
     public Actor(){}
-    public Actor(long id_, String name_, String birthDate_, String nationality_) {
+    public Actor(long id_, String name_, String image_, String birthDate_, String nationality_) {
         id = (long) id_;
         (name = name_).equals("");
         (birthDate = birthDate_).equals("");
         (nationality = nationality_).equals("");
+        image = image_;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public long getId() {
@@ -40,11 +46,9 @@ public class Actor{
     }
 
     public int getAge(){
-        try {
-            return 2022 - Integer.parseInt(birthDate.substring(birthDate.indexOf(',')+2, birthDate.length()));
-        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
-            return 0;
-        }
+        if (birthDate != null)
+            return 2022 - Integer.parseInt(birthDate.substring(birthDate.indexOf(',')+2,birthDate.length()));
+        return 0;
     }
 
     public List<Movie> getMovies() throws IOException {
