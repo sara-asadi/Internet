@@ -37,9 +37,15 @@ body{
   text-align: center;
   background-color: #4E4E50;
   padding: 10px;
+  margin-bottom: 10px;
   border-radius: 25px;
   padding-bottom: 100px;
   z-index: 2;
+}
+
+#cast.row {
+  display: flex;
+  justify-content: center;
 }
 
 .comment {
@@ -100,9 +106,12 @@ body{
   align: center;
 }
 
-.container-1 {
+.container-1{
   position: relative;
   box-shadow: 0 0 30px black;
+}
+span.container-1 {
+  width: auto;
 }
 
 .overlay-1 {
@@ -136,22 +145,22 @@ body{
   text-align: center;
 }
 
-.image-1 {
+/* .image-1 {
   display: block;
   width: 100%;
   height: auto;
-}
+} */
 
 img.poster{
   object-fit: cover;
   width:170px;
   height:160px;
 }
-
+/* 
 .container-2 {
   position: relative;
   width: 100%;
-  }
+  } */
 
   .image-2 {
   display: block;

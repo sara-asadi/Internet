@@ -12,18 +12,18 @@ export default class MovieCard extends React.Component {
 
   render() {
     return (
-      <span className="container-1">
-        <a href="#">
-          <img src={this.props.Movie.image} className="poster image-1" />
-          <div className="overlay-1">
-            <div id="movieCard" className="text-1">
-              {this.props.Movie.name}
-              <br />
-              {this.props.Movie.imdbRate}
+        <span className="container-1">
+          <a href="#">
+            <img src={this.props.Movie.image} className="poster image-1" />
+            <div className="overlay-1">
+              <div id="movieCard" className="text-1">
+                {this.props.Movie.name}
+                <br />
+                {this.props.Movie.imdbRate}
+              </div>
             </div>
-          </div>
-        </a>
-      </span>
+          </a>
+        </span>
     );
   }
 }

@@ -1,5 +1,9 @@
 import React from "react";
-import { MOVIESCAST_URL, MOVIESCOMMENTS_URL, MOVIES_URL } from "../../config/config";
+import {
+  MOVIESCAST_URL,
+  MOVIESCOMMENTS_URL,
+  MOVIES_URL,
+} from "../../config/config";
 import MovieService from "../../services/MovieService";
 import Header from "../general/Header";
 import ActorCard from "./ActorCard";
@@ -26,23 +30,22 @@ export default class Movies extends React.Component {
       const apiUrl2 = `${MOVIESCAST_URL}${this.state.MovieId}`;
       const response2 = await fetch(apiUrl2);
       const json2 = await response2.json();
-      debugger
+      debugger;
       setTimeout(() => {
         this.setState({
-          Actors: json2
+          Actors: json2,
         });
       }, 2000);
       const apiUrl1 = `${MOVIESCOMMENTS_URL}${this.state.MovieId}`;
       const response1 = await fetch(apiUrl1);
       const json1 = await response1.json();
-      debugger
+      debugger;
       setTimeout(() => {
         this.setState({
-          Comments: json1
+          Comments: json1,
         });
       }, 2000);
-    }
-    else{
+    } else {
       let searchFilter = JSON.parse(localStorage.getItem("searchFilter"));
       let typeFilter = JSON.parse(localStorage.getItem("typeFilter"));
       if (searchFilter == null) searchFilter = "";
@@ -50,7 +53,7 @@ export default class Movies extends React.Component {
       const apiUrl = `${MOVIES_URL}?search=${searchFilter}&type=${typeFilter}`;
       const response = await fetch(apiUrl);
       const json = await response.json();
-      debugger
+      debugger;
       setTimeout(() => {
         this.setState({
           Movies: json,
@@ -147,21 +150,21 @@ export default class Movies extends React.Component {
             <div className="actors carousel slide" data-ride="carousel">
               <div className="carousel-inner">
                 <div className="carousel-item active">
-                  <div className="row">
+                  <div id="cast" className="row">
+                    <a
+                      className="carousel-control-prev"
+                      href="#myCarousel"
+                      data-slide="prev"
+                    ></a>
                     {this.actorsList()}
+                    <a
+                      className="carousel-control-next"
+                      href="#myCarousel"
+                      data-slide="next"
+                    ></a>
                   </div>
                 </div>
               </div>
-              <a
-                className="carousel-control-prev"
-                href="#myCarousel"
-                data-slide="prev"
-              ></a>
-              <a
-                className="carousel-control-next"
-                href="#myCarousel"
-                data-slide="next"
-              ></a>
             </div>
           </div>
         </div>
@@ -189,9 +192,7 @@ export default class Movies extends React.Component {
               </div>
             </div>
             <br />
-            <div className="comment container">
-              {this.commentsList()}
-            </div>
+            <div className="comment container">{this.commentsList()}</div>
           </div>
         </div>
       </div>
@@ -208,53 +209,51 @@ export default class Movies extends React.Component {
   }
 
   actorsList() {
-    if(this.state.Actors){
+    if (this.state.Actors) {
       const actors = this.state.Actors;
       debugger;
 
       var items = [];
-      for(var i=0 ; i<actors.length; i++){
-        items.push(<ActorCard Actor={actors[i]} key={"M"+i}/>);
+      for (var i = 0; i < actors.length; i++) {
+        items.push(<ActorCard Actor={actors[i]} key={"M" + i} />);
       }
       return items;
     }
-    return undefined
+    return undefined;
   }
 
   commentsList() {
-    if(this.state.Comments){
-
+    if (this.state.Comments) {
       const comments = this.state.Comments;
       debugger;
       var items = [];
-      debugger
-      for(var i=0 ; i<comments.length; i++){
-        items.push(<CommentCard Comment={comments[i]} key={"M"+i}/>);
+      debugger;
+      for (var i = 0; i < comments.length; i++) {
+        items.push(<CommentCard Comment={comments[i]} key={"M" + i} />);
       }
       return items;
     }
-    return undefined
+    return undefined;
   }
 
   moviesList() {
-    if(this.state.Movies){
-
-      const movies = this.state.Movies.slice(0,10);
+    if (this.state.Movies) {
+      const movies = this.state.Movies.slice(0, 10);
       var items = [];
-      debugger
-      for(var i=0 ; i<10; i++){
-        items.push(<MovieCard Movie={movies[i]} key={"M"+i}/>);
+      debugger;
+      for (var i = 0; i < 10; i++) {
+        items.push(<MovieCard Movie={movies[i]} key={"M" + i} />);
       }
-      debugger
+      debugger;
       return items;
     }
-    return undefined
+    return undefined;
   }
 
   renderMovies() {
     return (
       <div>
-        <div id="movie"className="container">
+        <div id="movie" className="container">
           <div className="movies col-md-10">{this.moviesList()}</div>
           <span className="col-md-2 sort-bar">
             <label className="title">:رتبه بندی بر اساس</label>
