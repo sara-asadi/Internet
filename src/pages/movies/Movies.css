@@ -1,7 +1,191 @@
+body{
+  background-color: #292929;
+}
 .hero-image {
-    background-color: #292929;
-    height: 500px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    position: relative;
+  background-color: #292929;
+  height: 500px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 110%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 1.5vw;
+  width: 100%;
+  padding:50px;
+}
+.user-rate {
+  font-size: 1.2vw;
+  color: white;
+  text-align: center;
+  right: 5%;
+}
+.user-rate-val{
+  font-size: 2.5vw;
+  left: 5%;
+}
+
+.cast {
+  font-size: 1.5vw;
+  color: white;
+  text-align: center;
+  background-color: #4E4E50;
+  padding: 10px;
+  border-radius: 25px;
+  padding-bottom: 100px;
+  z-index: 2;
+}
+
+.comment {
+  font-size: 1.5 vw;
+  color: black;
+  text-align: right;
+  background-color: white;
+  padding: 10px;
+  border-radius: 25px;
+  width: 90%;
+}
+
+.btn {
+  font-size: small;
+  height: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.imdb-rate {
+  font-size: 4vw;
+  color: white;
+  text-align: center;
+  background-color: #B12025;
+  opacity: 0.7;
+  padding: 10px;
+}
+
+
+
+#movie.container {
+  padding-top: 70px;
+  float: right;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.movies {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.title{
+  color:white;
+}
+
+.sort {
+  background-color: #b12025;
+  border-radius: 5px;
+  display: flex;
+  flex: center;
+  align-items: center;
+}
+
+.btn-link {
+  color: white;
+  align: center;
+}
+
+.container-1 {
+  position: relative;
+  box-shadow: 0 0 30px black;
+}
+
+.overlay-1 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: 0.5s ease;
+  background-color: #b12025;
+}
+
+.container-1:hover .overlay-1 {
+  opacity: 0.5;
+  box-shadow: 0 0 60px black;
+
+}
+
+#movieCard.text-1 {
+  color: white;
+  font-size: 1.1vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.image-1 {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+img.poster{
+  object-fit: cover;
+  width:170px;
+  height:160px;
+}
+
+.container-2 {
+  position: relative;
+  width: 100%;
   }
+
+  .image-2 {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+  }
+
+  .overlay-2 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #B12025;
+  border-radius: 50%;
+  }
+
+  .container-2:hover .overlay-2 {
+  opacity: 0.8;
+  }
+
+  .text-2 {
+    color: white;
+    font-size: 1.1vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+    }

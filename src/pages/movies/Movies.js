@@ -133,7 +133,7 @@ export default class Movies extends React.Component {
                 <p className="text-left">{this.state.Movie.summary}</p>
               </div>
               <div className="col-sm-2">
-                <img width="150%" src="spiderman-1.jpg" />
+                <img width="150%" src={this.state.Movie.image} />
               </div>
               <div className="col-sm-2"></div>
             </div>
@@ -254,17 +254,17 @@ export default class Movies extends React.Component {
   renderMovies() {
     return (
       <div>
-        <div class="container">
-          <div class="movies col-md-10">{this.moviesList()}</div>
-          <span class="col-md-2 sort-bar">
-            <label class="title">:رتبه بندی بر اساس</label>
-            <div class="sort">
-              <form action="movies" method="POST" class="sort-form">
+        <div id="movie" className="container">
+          <div className="movies col-md-10">{this.moviesList()}</div>
+          <span className="col-md-2 sort-bar">
+            <label className="title">:رتبه بندی بر اساس</label>
+            <div className="sort">
+              <form action="movies" method="POST" className="sort-form">
                 <button
                   type="submit"
                   name="action"
                   value="sort_by_date"
-                  class="btn btn-link"
+                  className="btn btn-link"
                 >
                   تاریخ
                 </button>
@@ -272,7 +272,7 @@ export default class Movies extends React.Component {
                   type="submit"
                   name="action"
                   value="sort_by_imdb"
-                  class="btn btn-link"
+                  className="btn btn-link"
                 >
                   امتیاز imdb
                 </button>

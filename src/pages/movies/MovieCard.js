@@ -12,11 +12,11 @@ export default class MovieCard extends React.Component {
 
   render() {
     return (
-      <span class="container-1">
+      <span className="container-1">
         <a href="#">
-          <img src={this.props.Movie.image} class="poster image-1" />
-          <div class="overlay-1">
-            <div class="text-1">
+          <img src={this.props.Movie.image} className="poster image-1" />
+          <div className="overlay-1">
+            <div id="movieCard" className="text-1">
               {this.props.Movie.name}
               <br />
               {this.props.Movie.imdbRate}

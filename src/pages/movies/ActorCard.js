@@ -17,7 +17,7 @@ export default class ActorCard extends React.Component {
           <a href="#">
             {/* <img src={this.props.Actor.image} className="image-2" /> */}
             <div className="overlay-2">
-              <div className="text-1">
+              <div className="text-2">
                 {this.props.Actor.name}
                 <br />
                 {this.props.Actor.age}

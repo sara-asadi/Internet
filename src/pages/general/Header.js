@@ -30,7 +30,7 @@ export default class Header extends React.Component {
         <div className="container-fluid">
           <div className="navbar-header navbar-left col-md-3">
             <a href="#">
-              <img src="./../../Assets/images/template.png" className="logo" />
+              {/* <img src="./../../Assets/images/template.png" className="logo" /> */}
             </a>
           </div>
           <div className="nav navbar-form col-md-2">
