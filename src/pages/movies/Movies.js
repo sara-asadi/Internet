@@ -151,7 +151,7 @@ export default class Movies extends React.Component {
             </div>
           </div>
         </div>
-<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+<br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
          <div className="row">
           <div className="col-sm-1"></div>
           <div className="col-sm-8 cast container">
