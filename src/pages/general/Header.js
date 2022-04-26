@@ -46,28 +46,6 @@ export default class Header extends React.Component {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-
-          {/* <ul className="nav navbar-form col-md-2">
-            <button
-              className="btn dropdown-toggle"
-              type="button"
-              data-toggle="dropdown"
-            >
-              :جستجو بر اساس
-              <span className="caret"></span>
-            </button>
-            <ul className="dropdown-menu">
-              <li>
-                <a href="#">نام</a>
-              </li>
-              <li>
-                <a href="#">ژانر</a>
-              </li>
-              <li>
-                <a href="#">تاریخ تولید</a>
-              </li>
-            </ul>
-          </ul> */}
           {/* <form action="movies" method="POST" className="navbar-form col-md-3">
             <div className="input-group">
               <input

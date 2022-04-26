@@ -86,16 +86,6 @@ public class MovieController {
         return Movies.getInstance().getActorsList(MovieDB.getInstance().getMovieById(movieId).getCast());
     }
 
-    @GetMapping("/{actorId}")
-    public ActorJSON getActor(@PathVariable long actorId, final HttpServletResponse response) throws IOException {
-        try {
-            return new ActorJSON(actorId);
-        } catch (Exception e) {
-            response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
-            return null;
-        }
-    }
-
     @PostMapping(path = "/comment", consumes = "application/json", produces = "application/json")
     public String comment(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
         Gson gson = new Gson();

@@ -1,11 +1,15 @@
 import React from "react";
 import MovieService from "../../services/MovieService";
 import Header from "../general/Header";
+import ActorCard from "./ActorCard";
+import CommentCard from "./CommentCard";
+import MovieCard from "./MovieCard";
 import "./Movies.css";
 
 export default class Movies extends React.Component {
   constructor(props) {
     super(props);
+    debugger
     this.state = {
       queryParams: new URLSearchParams(window.location.search),
       MovieId: new URLSearchParams(window.location.search).get("id"),
@@ -18,7 +22,6 @@ export default class Movies extends React.Component {
     document.title = "Movies";
     // scrollToTop();
     if (this.state.MovieId != null) {
-      // this.props.history.push("/");
       this.getMovieById(this.state.MovieId);
     }
   }
@@ -50,19 +53,6 @@ export default class Movies extends React.Component {
       </div>
     );
   }
-
-  //   coverImage: "http://cdn.6nightmovie.click/upload/1920/-ef9_YVudPNglmyPxHHYqgSN8kmp.jpg"
-  // director: "Frank Darabont"
-  // duration: 142
-  // id: 1
-  // image: "http://cdn.6nightmovie.click/upload/280/6Mn3SsAYF9z48yqIr3eXSvVfCXVa.jpg"
-  // imdbRate: 9.3
-  // name: "The Shawshank Redemption ( 1994 )"
-  // rating: 0
-  // ratingCount: 0
-  // releaseDate: "1994/10/13"
-  // summary: "«اندي» (رابينز)، بانکدار محترم و پولدار ايالت نيوانگلند، به اتهام قتل همسرش و فاسق او به حبس ابد در زندان ايالتي شوشنک محکوم مي شود و اندکي بعد با «رد» (فريمن)، زنداني سياه پوست، دوست مي شود. پس از هجده سال، «اندي» ردي از قاتل اصلي پيدا مي کند و تصمیم می گیرد برای آزادی تلاش کند..."
-  // writers
 
   renderMovie() {
     return (
@@ -117,99 +107,11 @@ export default class Movies extends React.Component {
           <div className="col-sm-1"></div>
           <div className="col-sm-8 cast container">
             <p>بازیگران</p>
-            {/*
-            <div id="myCarousel" className="carousel slide" data-ride="carousel">
+            <div className="actors carousel slide" data-ride="carousel">
               <div className="carousel-inner">
                 <div className="carousel-item active">
                   <div className="row">
-                    <div className="col-sm-3">
-                      <div className="container-2">
-                        <a href="#">
-                          <img src="Tom.jpg" className="image-2" />
-                          <div className="overlay-2">
-                            <div className="text-1">
-                              Tom Holland
-                              <br />
-                              25
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="col-sm-3">
-                      <div className="container-2">
-                        <a href="#">
-                          <img src="benedict.jpg" className="image-2" />
-                          <div className="overlay-2">
-                            <div className="text-1">
-                              Benedict Cumberbatch
-                              <br />
-                              40
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="col-sm-3">
-                      <div className="container-2">
-                        <a href="#">
-                          <img src="zendaya.jpg" className="image-2" />
-                          <div className="overlay-2">
-                            <div className="text-1">
-                              Zendaya
-                              <br />
-                              25
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="col-sm-3">
-                      <div className="container-2">
-                        <a href="#">
-                          <img src="jon.jpg" className="image-2" />
-                          <div className="overlay-2">
-                            <div className="text-1">
-                              Jon Favreau
-                              <br />
-                              50
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="carousel-item">
-                  <div className="row">
-                    <div className="col-sm-3">
-                      <div className="container-2">
-                        <a href="#">
-                          <img src="william.jpg" className="image-2" />
-                          <div className="overlay-2">
-                            <div className="text-1">
-                              Jaimie Fox
-                              <br />
-                              40
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
-                    <div className="col-sm-3">
-                      <div className="container-2">
-                        <a href="#">
-                          <img src="jaimie.jpg" className="image-2" />
-                          <div className="overlay-2">
-                            <div className="text-1">
-                              William Dafoe
-                              <br />
-                              50
-                            </div>
-                          </div>
-                        </a>
-                      </div>
-                    </div>
+                    {this.actorsList(this.state.MovieId)}
                   </div>
                 </div>
               </div>
@@ -223,11 +125,11 @@ export default class Movies extends React.Component {
                 href="#myCarousel"
                 data-slide="next"
               ></a>
-            </div> */}
+            </div>
           </div>
         </div>
 
-        {/* <div className="row">
+        <div className="row">
           <div className="col-sm-1"></div>
           <div className="col-sm-8 cast container">
             <p>دیدگاه ها</p>
@@ -251,47 +153,10 @@ export default class Movies extends React.Component {
             </div>
             <br />
             <div className="comment container">
-              <p>علی</p>
-              <hr />
-              <div>فیلم تاثیر گذاری بود</div>
-              <div className="text-left">
-                <div className="vote">
-                  <a href="#">
-                    <img src="like.png" />
-                  </a>
-                  <div className="caption">12</div>
-                </div>
-                <div className="vote">
-                  <a href="#">
-                    <img src="dislike.png" />
-                  </a>
-                  <div className="caption">5</div>
-                </div>
-              </div>
+              {this.commentsList(this.state.MovieId)}
             </div>
-            <br />
-            <div className="comment container">
-              <p>حسن</p>
-              <hr />
-              <div>زیبا</div>
-              <div className="text-left">
-                <div className="vote">
-                  <a href="#">
-                    <img src="like.png" />
-                  </a>
-                  <div className="caption">5</div>
-                </div>
-                <div className="vote">
-                  <a href="#">
-                    <img src="dislike.png" />
-                  </a>
-                  <div className="caption">2</div>
-                </div>
-              </div>
-            </div>
-            <br />
           </div>
-        </div> */}
+        </div>
       </div>
     );
   }
@@ -305,101 +170,36 @@ export default class Movies extends React.Component {
     );
   }
 
+  async actorsList(id) {
+    debugger;
+    let actorsList = await MovieService.getActorsById(id);
+    return actorsList.map((actor, i) => {
+      debugger;
+      return <ActorCard Actor={actor} key={"A" + i} />;
+    });
+  }
+
+  async commentsList(id){
+    let commentsList = await MovieService.getCommentsById(id);
+    return commentsList.map((comment, i)=>{
+      return <CommentCard Comment={comment} key={"C"+i}/>;
+    })
+  }
+
+  async moviesList(){
+    let movies = await MovieService.getMovies();
+    return movies.map((movie, i)=>{
+      return <MovieCard Movie={movie} key={"M"+i}/>;
+    })
+  }
+
   renderMovies() {
     return (
       <div>
         <div class="container">
           <div class="movies col-md-10">
-            <span class="container-1">
-              <a href="#">
-                <img
-                  src="./../images/movies/The Godfather.jpg"
-                  class="poster image-1"
-                />
-                <div class="overlay-1">
-                  <div class="text-1">
-                    The Godfather
-                    <br />
-                    8.3
-                  </div>
-                </div>
-              </a>
-            </span>
+           {this.moviesList()}
 
-            <span class="container-1">
-              <a href="#">
-                <img
-                  src="./../images/movies/Se7en.jpg"
-                  class="poster image-1"
-                />
-                <div class="overlay-1">
-                  <div class="text-1">
-                    Se7en
-                    <br />
-                    8.3
-                  </div>
-                </div>
-              </a>
-            </span>
-
-            <span class="container-1">
-              <a href="#">
-                <img src="./../images/movies/1917.jpg" class="poster image-1" />
-                <div class="overlay-1">
-                  <div class="text-1">
-                    1917
-                    <br />
-                    8.3
-                  </div>
-                </div>
-              </a>
-            </span>
-
-            <span class="container-1">
-              <a href="#">
-                <img
-                  src="./../images/movies/Fight Club.jpg"
-                  class="poster image-1"
-                />
-                <div class="overlay-1">
-                  <div class="text-1">
-                    Fight Club
-                    <br />
-                    8.3
-                  </div>
-                </div>
-              </a>
-            </span>
-            <span class="container-1">
-              <a href="#">
-                <img
-                  src="./../images/movies/Forrest Gump.jpg"
-                  class="poster image-1"
-                />
-                <div class="overlay-1">
-                  <div class="text-1">
-                    Forrest Gump
-                    <br />
-                    8.3
-                  </div>
-                </div>
-              </a>
-            </span>
-            <span class="container-1">
-              <a href="#">
-                <img
-                  src="./../images/movies/Incendies.jpg"
-                  class="poster image-1"
-                />
-                <div class="overlay-1">
-                  <div class="text-1">
-                    Incendies
-                    <br />
-                    8.3
-                  </div>
-                </div>
-              </a>
-            </span>
           </div>
           <span class="col-md-2 sort-bar">
             <label class="title">:رتبه بندی بر اساس</label>
@@ -428,45 +228,4 @@ export default class Movies extends React.Component {
       </div>
     );
   }
-
-  // renderMain() {
-  //     return (
-  //         <main>
-  //             <div className="sub-header-red">
-  //                 <div className="sub-header-over">
-  //                     <img alt="" className="sub-header-over-img"
-  //                          src={this.state.Movie.logo}/>
-  //                 </div>
-  //             </div>
-  //             <div className="sub-header-over-text">{this.state.Movie.name}</div>
-
-  //             <div className="container restaurant-main-container">
-
-  //                 <div className="row">
-  //                     <div className="col-lg-4 col-6 center-text"/>
-  //                     <div className="col-lg-8 col-6 center-text">
-  //                 <span className="menu-text">
-  //                     منوی غذا
-  //                 </span>
-  //                     </div>
-  //                 </div>
-  //                 <div className="row mt-5">
-
-  //                     <div className="col-lg-4 col-6">
-  //                         <Cart/>
-  //                     </div>
-
-  //                     <div className="col-lg-8 col-6 food-list-container">
-  //                         <div className="row">
-
-  //                             {/* {this.renderMenu()} */}
-
-  //                         </div>
-  //                     </div>
-  //                 </div>
-  //             </div>
-
-  //         </main>
-  //     );
-  // }
 }
