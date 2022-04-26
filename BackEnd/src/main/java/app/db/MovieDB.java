@@ -19,10 +19,6 @@ public class MovieDB {
         movies = getMoviesArray("http://138.197.181.131:5000/api/v2/movies");
         movies = movies.stream().sorted(Comparator.comparing(Movie::getImdbRate).reversed()).collect(Collectors.toList());
         filtered = movies;
-        for (Movie movie : movies) {
-            System.out.println(movie.getName());
-            System.out.println(movie.getReleaseCDate());
-        }
     }
     public static MovieDB getInstance() throws IOException {
         if (instance == null)
