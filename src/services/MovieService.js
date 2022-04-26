@@ -4,8 +4,10 @@ const axios = require("axios").default;
 export default class MovieService {
 
   static async getMovies() {
-    let movies = await axios.get(MOVIES_URL);
-    return movies.data
+    debugger
+    const response = await fetch(MOVIES_URL);
+    const json = await response.json();
+    return json;
   }
 
   static async getMovieById(id) {

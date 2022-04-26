@@ -13,21 +13,21 @@ export default class CommentCard extends React.Component {
   render() {
     return (
       <div className="comment">
-        <p>{this.state.Comment.userName}</p>
+        <p>{this.props.Comment.userName}</p>
         <hr />
-        <div>{this.state.Comment.text}</div>
+        <div>{this.props.Comment.text}</div>
         <div className="text-left">
           <div className="vote">
             <a href="#">
               <img src="like.png" />
             </a>
-            <div className="caption">{this.state.Comment.likes}</div>
+            <div className="caption">{this.props.Comment.likes}</div>
           </div>
           <div className="vote">
             <a href="#">
               <img src="dislike.png" />
             </a>
-            <div className="caption">{this.state.Comment.disLikes}</div>
+            <div className="caption">{this.props.Comment.disLikes}</div>
           </div>
         </div>
         <br />

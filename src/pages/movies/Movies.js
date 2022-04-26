@@ -1,4 +1,5 @@
 import React from "react";
+import { MOVIESCAST_URL, MOVIESCOMMENTS_URL, MOVIES_URL } from "../../config/config";
 import MovieService from "../../services/MovieService";
 import Header from "../general/Header";
 import ActorCard from "./ActorCard";
@@ -9,7 +10,6 @@ import "./Movies.css";
 export default class Movies extends React.Component {
   constructor(props) {
     super(props);
-    debugger
     this.state = {
       queryParams: new URLSearchParams(window.location.search),
       MovieId: new URLSearchParams(window.location.search).get("id"),
@@ -18,16 +18,53 @@ export default class Movies extends React.Component {
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     document.title = "Movies";
-    // scrollToTop();
+
     if (this.state.MovieId != null) {
       this.getMovieById(this.state.MovieId);
+      const apiUrl2 = `${MOVIESCAST_URL}${this.state.MovieId}`;
+      const response2 = await fetch(apiUrl2);
+      const json2 = await response2.json();
+      debugger
+      setTimeout(() => {
+        this.setState({
+          Actors: json2
+        });
+      }, 2000);
+      const apiUrl1 = `${MOVIESCOMMENTS_URL}${this.state.MovieId}`;
+      const response1 = await fetch(apiUrl1);
+      const json1 = await response1.json();
+      debugger
+      setTimeout(() => {
+        this.setState({
+          Comments: json1
+        });
+      }, 2000);
     }
+    else{
+      let searchFilter = JSON.parse(localStorage.getItem("searchFilter"));
+      let typeFilter = JSON.parse(localStorage.getItem("typeFilter"));
+      if (searchFilter == null) searchFilter = "";
+      if (typeFilter == null) typeFilter = "all";
+      const apiUrl = `${MOVIES_URL}?search=${searchFilter}&type=${typeFilter}`;
+      const response = await fetch(apiUrl);
+      const json = await response.json();
+      debugger
+      setTimeout(() => {
+        this.setState({
+          Movies: json,
+        });
+      }, 2000);
+    }
+    debugger;
   }
 
+  getId = () => {
+    return JSON.parse(localStorage.getItem("id"));
+  };
+
   async getMovieById(id) {
-    debugger;
     let Movie = await MovieService.getMovieById(id);
     if (Movie == null) {
       this.setState({
@@ -111,7 +148,7 @@ export default class Movies extends React.Component {
               <div className="carousel-inner">
                 <div className="carousel-item active">
                   <div className="row">
-                    {this.actorsList(this.state.MovieId)}
+                    {this.actorsList()}
                   </div>
                 </div>
               </div>
@@ -153,7 +190,7 @@ export default class Movies extends React.Component {
             </div>
             <br />
             <div className="comment container">
-              {this.commentsList(this.state.MovieId)}
+              {this.commentsList()}
             </div>
           </div>
         </div>
@@ -170,37 +207,55 @@ export default class Movies extends React.Component {
     );
   }
 
-  async actorsList(id) {
-    debugger;
-    let actorsList = await MovieService.getActorsById(id);
-    return actorsList.map((actor, i) => {
+  actorsList() {
+    if(this.state.Actors){
+      const actors = this.state.Actors;
       debugger;
-      return <ActorCard Actor={actor} key={"A" + i} />;
-    });
+
+      var items = [];
+      for(var i=0 ; i<actors.length; i++){
+        items.push(<ActorCard Actor={actors[i]} key={"M"+i}/>);
+      }
+      return items;
+    }
+    return undefined
   }
 
-  async commentsList(id){
-    let commentsList = await MovieService.getCommentsById(id);
-    return commentsList.map((comment, i)=>{
-      return <CommentCard Comment={comment} key={"C"+i}/>;
-    })
+  commentsList() {
+    if(this.state.Comments){
+
+      const comments = this.state.Comments;
+      debugger;
+      var items = [];
+      debugger
+      for(var i=0 ; i<comments.length; i++){
+        items.push(<CommentCard Comment={comments[i]} key={"M"+i}/>);
+      }
+      return items;
+    }
+    return undefined
   }
 
-  async moviesList(){
-    let movies = await MovieService.getMovies();
-    return movies.map((movie, i)=>{
-      return <MovieCard Movie={movie} key={"M"+i}/>;
-    })
+  moviesList() {
+    if(this.state.Movies){
+
+      const movies = this.state.Movies.slice(0,10);
+      var items = [];
+      debugger
+      for(var i=0 ; i<10; i++){
+        items.push(<MovieCard Movie={movies[i]} key={"M"+i}/>);
+      }
+      debugger
+      return items;
+    }
+    return undefined
   }
 
   renderMovies() {
     return (
       <div>
         <div class="container">
-          <div class="movies col-md-10">
-           {this.moviesList()}
-
-          </div>
+          <div class="movies col-md-10">{this.moviesList()}</div>
           <span class="col-md-2 sort-bar">
             <label class="title">:رتبه بندی بر اساس</label>
             <div class="sort">
