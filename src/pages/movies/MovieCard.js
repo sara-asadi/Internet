@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import "./Movies.css"
 export default class MovieCard extends React.Component {
   constructor(props) {
     super(props);
@@ -14,7 +14,7 @@ export default class MovieCard extends React.Component {
     return (
       <span class="container-1">
         <a href="#">
-          <img src={this.props.Movie.image} class="poster image-1" />
+          <img src={this.props.Movie.image} className="poster image-1"  />
           <div class="overlay-1">
             <div class="text-1">
               {this.props.Movie.name}

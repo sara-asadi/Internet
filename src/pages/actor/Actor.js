@@ -1,7 +1,7 @@
 import React from "react";
 import ActorService from "../../services/ActorService";
 import Header from "../general/Header";
-import "../Style.css"
+import "../../Assets/styles/Style.css"
 
 export default class Actor extends React.Component {
   constructor(props) {

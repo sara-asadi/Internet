@@ -5,8 +5,8 @@ import Header from "../general/Header";
 import ActorCard from "./ActorCard";
 import CommentCard from "./CommentCard";
 import MovieCard from "./MovieCard";
-import "./Movies.css";
-import "../Style.css";
+import "../../Assets/styles/Movies.css";
+import "../../Assets/styles/Style.css";
 
 export default class Movies extends React.Component {
   constructor(props) {
@@ -227,9 +227,7 @@ export default class Movies extends React.Component {
     if(this.state.Comments){
 
       const comments = this.state.Comments;
-      debugger;
       var items = [];
-      debugger
       for(var i=0 ; i<comments.length; i++){
         items.push(<CommentCard Comment={comments[i]} key={"M"+i}/>);
       }
@@ -243,7 +241,6 @@ export default class Movies extends React.Component {
 
       const movies = this.state.Movies.slice(0,10);
       var items = [];
-      debugger
       for(var i=0 ; i<10; i++){
         items.push(<MovieCard Movie={movies[i]} key={"M"+i}/>);
       }
