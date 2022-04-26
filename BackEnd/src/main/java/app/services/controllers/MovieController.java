@@ -7,7 +7,9 @@ import app.model.Actor;
 import app.model.Comment;
 import app.model.Movie;
 import app.model.User;
+import app.services.modelJSON.ActorJSON;
 import app.services.modelJSON.MovieJSON;
+import app.services.repository.Movies;
 import app.tools.Response;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
@@ -79,12 +81,19 @@ public class MovieController {
         return Response.OK_RESPONSE;
     }
 
-    @PostMapping(path = "/cast", consumes = "application/json", produces = "application/json")
-    public List<Actor> cast(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        Properties properties = gson.fromJson(jsonString, Properties.class);
-        long movieId = Long.parseLong(properties.getProperty("movieId"));
-        return MovieDB.getInstance().getMovieById(movieId).getCast();
+    @GetMapping("/cast/{movieId}")
+    public List<ActorJSON> cast(@PathVariable long movieId, final HttpServletResponse response) throws IOException {
+        return Movies.getInstance().getActorsList(MovieDB.getInstance().getMovieById(movieId).getCast());
+    }
+
+    @GetMapping("/{actorId}")
+    public ActorJSON getActor(@PathVariable long actorId, final HttpServletResponse response) throws IOException {
+        try {
+            return new ActorJSON(actorId);
+        } catch (Exception e) {
+            response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
+            return null;
+        }
     }
 
     @PostMapping(path = "/comment", consumes = "application/json", produces = "application/json")

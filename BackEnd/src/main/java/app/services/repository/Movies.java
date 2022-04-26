@@ -1,7 +1,9 @@
 package app.services.repository;
 
 import app.db.MovieDB;
+import app.model.Actor;
 import app.model.Movie;
+import app.services.modelJSON.ActorJSON;
 import app.services.modelJSON.MovieJSON;
 
 import java.io.IOException;
@@ -35,5 +37,13 @@ public class Movies {
             moviesJSON.add(new MovieJSON(movie.getId()));
         }
         return moviesJSON;
+    }
+
+    public List<ActorJSON> getActorsList(List<Actor> actors) throws IOException {
+        List<ActorJSON> actorsJSON = new ArrayList<>();
+        for (Actor actor : actors) {
+            actorsJSON.add(new ActorJSON(actor.getId()));
+        }
+        return actorsJSON;
     }
 }
