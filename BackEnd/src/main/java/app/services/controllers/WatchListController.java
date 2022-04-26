@@ -31,11 +31,8 @@ public class WatchListController {
         return Movies.getInstance().getMoviesList(user.getRecommendationList());
     }
 
-    @DeleteMapping("/remove")
-    public String removeFromWatchlist(@RequestBody String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        Properties properties = gson.fromJson(jsonString, Properties.class);
-        long movieId = Long.parseLong(properties.getProperty("movieId"));
+    @GetMapping("/remove/{movieId}")
+    public String removeFromWatchlist(@PathVariable long movieId, final HttpServletResponse response) throws IOException {
         User user = UserDB.getInstance().getCurrentUser();
         if (user.isInWatchList(movieId)) {
             user.removeWatchList(movieId);

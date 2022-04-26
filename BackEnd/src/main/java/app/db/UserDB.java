@@ -15,6 +15,7 @@ public class UserDB {
     public static User currentUser;
     private UserDB() throws IOException {
         users = getUsersArray("http://138.197.181.131:5000/api/users");
+        currentUser = users.get(0);
     }
     public static UserDB getInstance() throws IOException {
         if (instance == null)

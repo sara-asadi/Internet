@@ -38,10 +38,8 @@ public class MoviesController {
         return getMovies();
     }
 
-    @PostMapping(path = "/search", consumes = "application/json", produces = "application/json")
-    public List<MovieJSON> search(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        String searchKey = (gson.fromJson(jsonString, Properties.class)).getProperty("search");
+    @PostMapping("/search/{searchKey}")
+    public List<MovieJSON> search(@PathVariable String searchKey, final HttpServletResponse response) throws IOException {
         MovieDB.getInstance().FilterMovies(searchKey);
         return getMovies();
     }

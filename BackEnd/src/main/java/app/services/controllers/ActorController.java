@@ -28,12 +28,8 @@ public class ActorController {
         }
     }
 
-
-    @GetMapping("/movies")
-    public List<MovieJSON> movies(@RequestBody String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        Properties properties = gson.fromJson(jsonString, Properties.class);
-        long actorId = Long.parseLong(properties.getProperty("actorId"));
+    @GetMapping("/movies/{actorId}")
+    public List<MovieJSON> movies(@PathVariable long actorId, final HttpServletResponse response) throws IOException {
         return Movies.getInstance().getMoviesList(ActorDB.getInstance().getActorById(actorId).getMovies());
     }
 }

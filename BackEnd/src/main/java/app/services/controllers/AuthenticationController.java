@@ -18,18 +18,8 @@ import java.util.Properties;
 
 @RestController
 public class AuthenticationController {
-    @GetMapping("")
-    public List<MovieJSON> getMovies() throws IOException {
-        return Movies.getInstance().getMoviesList();
-    }
-
-    @PostMapping(path = "login", consumes = "application/json", produces = "application/json")
-    public String login(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        Properties properties = gson.fromJson(jsonString, Properties.class);
-        String email = properties.getProperty("email");
-        String password = properties.getProperty("password");
-
+    @GetMapping("login/{email}/{password}")
+    public String login(@PathVariable String email,@PathVariable String password, final HttpServletResponse response) throws IOException {
         if(email != null) {
             User loggingUser = UserDB.getInstance().getUserByEmail(email);
             if(loggingUser!= null && Objects.equals(password, loggingUser.getPassword())) {
@@ -68,10 +58,10 @@ public class AuthenticationController {
 
     }
 
-    @DeleteMapping("logout")
-    public void logout(@RequestBody String jsonString) throws IOException {
+    @GetMapping("logout")
+    public String logout() throws IOException {
         UserDB.getInstance().logout();
+        return Response.OK_RESPONSE;
     }
-
 }
 

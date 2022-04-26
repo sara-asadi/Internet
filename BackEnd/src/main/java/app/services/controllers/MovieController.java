@@ -57,13 +57,8 @@ public class MovieController {
         return getCommentList(movie.getComments());
     }
 
-    @PostMapping(path = "/rate", consumes = "application/json", produces = "application/json")
-    public String rate(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        Properties properties = gson.fromJson(jsonString, Properties.class);
-        long movieId = Long.parseLong(properties.getProperty("movieId"));
-
-        int rate = Integer.parseInt(properties.getProperty("quantity"));
+    @GetMapping("/rate/{movieId}/{rate}")
+    public String rate(@PathVariable long movieId,@PathVariable int rate , final HttpServletResponse response) throws IOException {
         Movie movie = MovieDB.getInstance().getMovieById(movieId);
         User user = UserDB.getInstance().getCurrentUser();
         if (rate > 0 && rate <= 10) {
@@ -82,11 +77,8 @@ public class MovieController {
         return Response.OK_RESPONSE;
     }
 
-    @PostMapping(path = "/add", consumes = "application/json", produces = "application/json")
-    public String add(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        Properties properties = gson.fromJson(jsonString, Properties.class);
-        long movieId = Long.parseLong(properties.getProperty("movieId"));
+    @GetMapping("/add/{movieId}")
+    public String add(@PathVariable long movieId, final HttpServletResponse response) throws IOException {
         Movie movie = MovieDB.getInstance().getMovieById(movieId);
         User user = UserDB.getInstance().getCurrentUser();
         try {
@@ -103,34 +95,27 @@ public class MovieController {
         return Response.OK_RESPONSE;
     }
 
-
-    @PostMapping(path = "/comment", consumes = "application/json", produces = "application/json")
-    public String comment(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        Properties properties = gson.fromJson(jsonString, Properties.class);
-        long movieId = Long.parseLong(properties.getProperty("movieId"));
+    @GetMapping("/comment/{movieId}/{text}")
+    public String comment(@PathVariable long movieId,@PathVariable String text, final HttpServletResponse response) throws IOException {
         Movie movie = MovieDB.getInstance().getMovieById(movieId);
-        String action = properties.getProperty("action");
         User user = UserDB.getInstance().getCurrentUser();
+        Comment commentObj = new Comment(user.getEmail(), movieId, text, CommentDB.getInstance().generateId());
+        CommentDB.getInstance().addComment(commentObj);
+        return Response.OK_RESPONSE;
+    }
+    @GetMapping("/like/{movieId}/{commentId}")
+    public String likeComment(@PathVariable long movieId,@PathVariable int commentId, final HttpServletResponse response) throws IOException {
+        Movie movie = MovieDB.getInstance().getMovieById(movieId);
+        User user = UserDB.getInstance().getCurrentUser();
+        user.voteComment(movieId, commentId, "like");
+        return Response.OK_RESPONSE;
+    }
 
-        switch (action) {
-            case "comment":
-                String comment = properties.getProperty("comment");
-                Comment commentObj = new Comment(user.getEmail(), movieId, comment, CommentDB.getInstance().generateId());
-                CommentDB.getInstance().addComment(commentObj);
-                break;
-            case "like": {
-                int comment_id = Integer.parseInt(properties.getProperty("comment_id"));
-                user.voteComment(movieId, comment_id, "like");
-                break;
-            }
-            case "dislike": {
-                int comment_id = Integer.parseInt(properties.getProperty("comment_id"));
-                user.voteComment(movieId, comment_id, "dislike");
-                break;
-            }
-        }
-
+    @GetMapping("/dislike/{movieId}/{commentId}")
+    public String dislikeComment(@PathVariable long movieId,@PathVariable int commentId, final HttpServletResponse response) throws IOException {
+        Movie movie = MovieDB.getInstance().getMovieById(movieId);
+        User user = UserDB.getInstance().getCurrentUser();
+        user.voteComment(movieId, commentId, "dislike");
         return Response.OK_RESPONSE;
     }
 }
