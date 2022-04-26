@@ -19,7 +19,7 @@ export default class Signup extends React.Component {
             <div className="main-box w-100 h-100">
                 <div className="d-flex flex-row-reverse no-gutters h-100">
                     <div className="col-lg-9 col-md-8 h-100">
-                        <img className="background-img" src={require("../../Assets/images/food.jpg")} alt=""/>
+                        <img className="background-img" src={require("../../Assets/images/login.png")} alt=""/>
                     </div>
                     <div className="col-lg-3 col-md-4 overflow-auto">
                         <div className="form-container">

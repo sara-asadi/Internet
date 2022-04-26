@@ -254,7 +254,7 @@ export default class Movies extends React.Component {
   renderMovies() {
     return (
       <div>
-        <div id="movie" className="container">
+        <div id="movie"className="container">
           <div className="movies col-md-10">{this.moviesList()}</div>
           <span className="col-md-2 sort-bar">
             <label className="title">:رتبه بندی بر اساس</label>

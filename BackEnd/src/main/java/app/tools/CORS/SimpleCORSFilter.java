@@ -23,7 +23,7 @@ public class SimpleCORSFilter implements Filter {
         try {
             Thread.sleep(1000); // 1 seconds
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         HttpServletResponse response = (HttpServletResponse) resp;
         HttpServletRequest request = (HttpServletRequest) req;

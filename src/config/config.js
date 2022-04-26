@@ -1,5 +1,6 @@
 export const DOMAIN = "http://localhost:8080/";
 export let MOVIES_URL = DOMAIN + "movies/";
+export let ACTOR_URL = DOMAIN + "actors/";
 export let MOVIESCAST_URL = DOMAIN + "movies/cast/";
 export let MOVIESCOMMENTS_URL = DOMAIN + "movies/comments/";
 export let USER_URL = DOMAIN + "user/";
