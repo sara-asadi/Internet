@@ -40,12 +40,9 @@ public class Actor{
     }
 
     public int getAge(){
-        try{
-        Date bDate = new SimpleDateFormat("yyyy-MM-dd").parse(birthDate);
-        Date cDate = new Date();
-        return cDate.getYear()-bDate.getYear();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        try {
+            return 2022 - Integer.parseInt(birthDate.substring(birthDate.indexOf(',')+2, birthDate.length()));
+        } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
             return 0;
         }
     }

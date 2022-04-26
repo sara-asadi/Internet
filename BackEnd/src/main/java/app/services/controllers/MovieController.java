@@ -8,6 +8,7 @@ import app.model.Comment;
 import app.model.Movie;
 import app.model.User;
 import app.services.modelJSON.ActorJSON;
+import app.services.modelJSON.CommentJSON;
 import app.services.modelJSON.MovieJSON;
 import app.services.repository.Movies;
 import app.tools.Response;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,6 +35,26 @@ public class MovieController {
             response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
             return null;
         }
+    }
+
+    @GetMapping("/cast/{movieId}")
+    public List<ActorJSON> cast(@PathVariable long movieId, final HttpServletResponse response) throws IOException {
+        return Movies.getInstance().getActorsList(MovieDB.getInstance().getMovieById(movieId).getCast());
+    }
+
+    public List<CommentJSON> getCommentList(List<Comment> comments) throws IOException {
+        List<CommentJSON> commentsJSON = new ArrayList<>();
+        for (Comment comment : comments) {
+            commentsJSON.add(new CommentJSON(comment.getId()));
+        }
+        return commentsJSON;
+    }
+
+    @GetMapping("/comments/{movieId}")
+    public List<CommentJSON> getComment(@PathVariable long movieId, final HttpServletResponse response) throws IOException {
+        CommentDB.getInstance();
+        Movie movie = MovieDB.getInstance().getMovieById(movieId);
+        return getCommentList(movie.getComments());
     }
 
     @PostMapping(path = "/rate", consumes = "application/json", produces = "application/json")
@@ -81,20 +103,7 @@ public class MovieController {
         return Response.OK_RESPONSE;
     }
 
-    @GetMapping("/cast/{movieId}")
-    public List<ActorJSON> cast(@PathVariable long movieId, final HttpServletResponse response) throws IOException {
-        return Movies.getInstance().getActorsList(MovieDB.getInstance().getMovieById(movieId).getCast());
-    }
 
-    @GetMapping("/{actorId}")
-    public ActorJSON getActor(@PathVariable long actorId, final HttpServletResponse response) throws IOException {
-        try {
-            return new ActorJSON(actorId);
-        } catch (Exception e) {
-            response.sendError(HttpStatus.NOT_FOUND.value(), e.getMessage());
-            return null;
-        }
-    }
 
     @PostMapping(path = "/comment", consumes = "application/json", produces = "application/json")
     public String comment(@RequestBody(required = true) String jsonString, final HttpServletResponse response) throws IOException {
