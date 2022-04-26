@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-
+import "./Movies.css"
 export default class MovieCard extends React.Component {
   constructor(props) {
     super(props);
