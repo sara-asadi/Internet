@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Actor{
     private long id;
@@ -46,8 +47,8 @@ public class Actor{
     }
 
     public int getAge(){
-        if (birthDate != null)
-            return 2022 - Integer.parseInt(birthDate.substring(birthDate.indexOf(',')+2,birthDate.length()));
+       // if (!Objects.equals(birthDate, ""))
+        //    return 2022 - Integer.parseInt(birthDate.substring(birthDate.indexOf(',')+2,birthDate.length()));
         return 0;
     }
 
