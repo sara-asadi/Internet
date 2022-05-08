@@ -1,5 +1,6 @@
 package ir.ac.ut.iemdb.repository;
 
+import ir.ac.ut.iemdb.model.Actor;
 import ir.ac.ut.iemdb.model.Cast;
 import ir.ac.ut.iemdb.model.Movie;
 
@@ -44,19 +45,12 @@ public class CastRepository extends Repository<Cast, String>{
         createTableStatement.close();
         con.close();
     }
-    protected String getFindAllCastByMovieIdStatement(){
-        return String.format("SELECT* FROM %s cast WHERE cast.movieId = ?;", TABLE_NAME);
-    }
-
-    protected void fillFindAllCastByMovieIdValues(PreparedStatement st, String movieId) throws SQLException {
-        st.setInt(1, Integer.parseInt(movieId));
-    }
 
     public List<Movie> getMovies(int actorId) throws SQLException {
         List<Movie> result = new ArrayList<Movie>();
         String statement = String.format("select %s from %s, %s\n" +
-                                        " where %s.actorId = %d and %s.movieId = %s.id;",
-                                        MovieRepository.getCOLUMNS(), TABLE_NAME, MovieRepository.getTableName(), TABLE_NAME, actorId, TABLE_NAME, MovieRepository.getTableName());
+                        " where %s.actorId = %d and %s.movieId = %s.id;",
+                MovieRepository.getCOLUMNS(), TABLE_NAME, MovieRepository.getTableName(), TABLE_NAME, actorId, TABLE_NAME, MovieRepository.getTableName());
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement st = con.prepareStatement(statement);
         ) {
@@ -74,11 +68,26 @@ public class CastRepository extends Repository<Cast, String>{
         }
     }
 
-    protected String getFindAllMovieByActorIdStatement(){
-        return String.format("SELECT* FROM %s cast WHERE cast.actorId = ?;", TABLE_NAME);
-    }
-    protected void fillFindAllMovieByActorIdValues(PreparedStatement st, String actorId) throws SQLException {
-        st.setInt(1, Integer.parseInt(actorId));
+    public List<Actor> getCast(int movieId) throws SQLException {
+        List<Actor> result = new ArrayList<Actor>();
+        String statement = String.format("select %s from %s, %s\n" +
+                        " where %s.movieId = %d and %s.actorId = %s.id;",
+                ActorRepository.getCOLUMNS(), TABLE_NAME, ActorRepository.getTableName(), TABLE_NAME, movieId, TABLE_NAME, ActorRepository.getTableName());
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    result.add(ActorRepository.getInstance().convertResultSetToDomainModel(resultSet));}
+                con.close();
+                return result;
+            } catch (SQLException ex) {
+                System.out.println("error in Mapper.findAll query.");
+                throw ex;
+            }
+        }
     }
 
     @Override

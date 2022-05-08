@@ -1,6 +1,8 @@
 package ir.ac.ut.iemdb.controller;
 
+import ir.ac.ut.iemdb.model.Actor;
 import ir.ac.ut.iemdb.model.Movie;
+import ir.ac.ut.iemdb.repository.CastRepository;
 import ir.ac.ut.iemdb.repository.MovieRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +36,11 @@ public class MovieController {
     @GetMapping("/{id}")
     public Movie findById(@PathVariable String id) throws SQLException {
         return repository.findById(id);
+    }
+
+    @GetMapping("/cast/{id}")
+    public List<Actor> getCast(@PathVariable Integer id) throws SQLException {
+        return CastRepository.getInstance().getCast(id);
     }
 
 

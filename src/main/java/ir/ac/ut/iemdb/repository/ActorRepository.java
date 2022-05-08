@@ -10,10 +10,16 @@ import java.util.ArrayList;
 
 public class ActorRepository extends Repository<Actor, String> {
     private static final String TABLE_NAME = "Actor";
+    private static final String COLUMNS = "id,name,birthDate,nationality,image";
+
     private static ActorRepository instance;
 
     public static String getTableName() {
         return TABLE_NAME;
+    }
+
+    public static String getCOLUMNS() {
+        return COLUMNS;
     }
 
     public static ActorRepository getInstance() {
@@ -69,7 +75,7 @@ public class ActorRepository extends Repository<Actor, String> {
 
     @Override
     protected String getFindAllStatement() {
-        return String.format("SELECT * FROM %s;", TABLE_NAME);
+        return String.format("SELECT %s FROM %s;", COLUMNS, TABLE_NAME);
     }
 
     @Override
