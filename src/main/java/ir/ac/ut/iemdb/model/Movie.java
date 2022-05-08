@@ -1,5 +1,6 @@
 package ir.ac.ut.iemdb.model;
 
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -7,14 +8,12 @@ import java.util.List;
 
 public class Movie {
     //    id, name, summary, releaseDate, director, writers, genres, cast, imdbRate, duration, ageLimit, image, coverImage
-    private Long id;
+    private int id;
     private String name;
     private String summary;
-    private Date releaseDate;
+    private String releaseDate;
     private String director;
-    private String writers;
-    private List<String> genres;
-    private List<String> cast;
+    private String writer;
     private Double imdbRate;
     private Integer duration;
     private Integer ageLimit;
@@ -23,30 +22,39 @@ public class Movie {
     private String image;
     private String coverImage;
 
-    public Movie(Long id, String name, String summary, Date releaseDate, String director, String writers, Double imdbRate,
+    private List<String> writers;
+    private List<String> genres;
+    private List<Integer> cast;
+    private List<Comment> comments;
+
+    public Movie() throws IOException {
+        genres = new ArrayList<>();
+        cast = new ArrayList<>();
+        comments = new ArrayList<>();
+    }
+
+    public Movie(Integer id, String name, String summary, String  releaseDate, String director, String writer, Double imdbRate,
                  Integer duration, Integer ageLimit, String image, String coverImage) {
         this.id = id;
         this.name = name;
         this.summary = summary;
         this.releaseDate = releaseDate;
         this.director = director;
-        this.writers = writers;
-        this.genres = (ArrayList<String>) genres;
-        this.cast = (ArrayList<String>) cast;
+        this.writer = writer;
         this.imdbRate = imdbRate;
         this.duration = duration;
         this.ageLimit = ageLimit;
-        rating = 0.0;
-        ratingCount = 0;
+        this.rating = 0.0;
+        this.ratingCount = 0;
         this.image = image;
         this.coverImage = coverImage;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -66,11 +74,11 @@ public class Movie {
         this.summary = summary;
     }
 
-    public Date getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(Date releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 
@@ -82,11 +90,19 @@ public class Movie {
         this.director = director;
     }
 
-    public String getWriters() {
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public List<String> getWriters() {
         return writers;
     }
 
-    public void setWriters(String writers) {
+    public void setWriters(List<String> writers) {
         this.writers = writers;
     }
 
@@ -98,12 +114,20 @@ public class Movie {
         this.genres = genres;
     }
 
-    public List<String> getCast() {
+    public List<Integer> getCast() {
         return cast;
     }
 
-    public void setCast(List<String> cast) {
+    public void setCast(List<Integer> cast) {
         this.cast = cast;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
     public Double getImdbRate() {

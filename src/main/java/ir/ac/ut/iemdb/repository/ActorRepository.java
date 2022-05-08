@@ -31,7 +31,7 @@ public class ActorRepository extends Repository<Actor, String> {
     private ActorRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format("CREATE TABLE IF NOT EXISTS %s(id  long not null,\n" +
+                String.format("CREATE TABLE IF NOT EXISTS %s(id  int not null,\n" +
                         "    name  varchar(20) not null,\n" +
                         "    birthDate varchar(20),\n" +
                         "    nationality varchar(20),\n" +
@@ -50,17 +50,17 @@ public class ActorRepository extends Repository<Actor, String> {
 
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
-        st.setLong(1, Long.parseLong(id));
+        st.setInt(1, Integer.parseInt(id));
     }
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT INTO %s(id, name, birthDate, nationality, image) VALUES(?,?,?,?,?)", TABLE_NAME);
+        return String.format("INSERT IGNORE INTO %s(id, name, birthDate, nationality, image) VALUES(?,?,?,?,?);", TABLE_NAME);
     }
 
     @Override
     protected void fillInsertValues(PreparedStatement st, Actor data) throws SQLException {
-        st.setLong(1, data.getId());
+        st.setInt(1, data.getId());
         st.setString(2, data.getName());
         st.setString(3, data.getBirthDate());
         st.setString(4, data.getNationality());
@@ -74,7 +74,7 @@ public class ActorRepository extends Repository<Actor, String> {
 
     @Override
     protected Actor convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Actor(rs.getLong(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+        return new Actor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
     }
 
     @Override

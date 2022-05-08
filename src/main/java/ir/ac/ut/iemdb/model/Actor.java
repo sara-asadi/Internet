@@ -9,21 +9,21 @@ import java.util.List;
 import java.util.Objects;
 
 public class Actor{
-    private long id;
+    private int id;
     private String name;
     private String birthDate;
     private String nationality;
     private String image;
 
     public Actor(){}
-    public Actor(long id_, String name_, String birthDate_, String nationality_, String image_) {
-        id = (long) id_;
+    public Actor(int id_, String name_, String birthDate_, String nationality_, String image_) {
+        id = (int) id_;
         (name = name_).equals("");
         (birthDate = birthDate_).equals("");
         (nationality = nationality_).equals("");
         image = image_;
     }
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -47,7 +47,7 @@ public class Actor{
         this.name = name;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -1,58 +1,51 @@
 package ir.ac.ut.iemdb.services;
 
-public class RestaurantsService {
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import ir.ac.ut.iemdb.model.Actor;
+import ir.ac.ut.iemdb.model.Cast;
+import ir.ac.ut.iemdb.model.Comment;
+import ir.ac.ut.iemdb.model.Movie;
+import ir.ac.ut.iemdb.repository.*;
+import ir.ac.ut.iemdb.services.HTTPRequestHandler.HTTPRequestHandler;
 
-    private static RestaurantsService instance;
+import java.util.List;
+
+public class MoviesService {
+
+    private static MoviesService instance;
 
 
-    private RestaurantsService() {
+    private MoviesService() {
     }
 
-    public static RestaurantsService getInstance() {
+    public static MoviesService getInstance() {
         if (instance == null) {
-            instance = new RestaurantsService();
+            instance = new MoviesService();
         }
         return instance;
     }
 
-    public void importRestaurantsFromWeb() throws Exception {
-        String RestaurantsJsonString = HTTPRequestHandler.getRequest("http://138.197.181.131:8080/restaurants");
+    public void importMoviesFromWeb() throws Exception {
+        String MoviesJsonString = HTTPRequestHandler.getRequest("http://138.197.181.131:5000/api/v2/movies");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        List<Restaurant> restaurants = gson.fromJson(RestaurantsJsonString, new TypeToken<List<Restaurant>>() {
+        List<Movie> movies = gson.fromJson(MoviesJsonString, new TypeToken<List<Movie>>() {
         }.getType());
-        for (Restaurant restaurant : restaurants) {
-            for (Food food : restaurant.getMenu()) {
-                food.setRestaurantId(restaurant.getId());
-            }
-        }
 
-        for (Restaurant restaurant : restaurants) {
+        for (Movie movie : movies) {
             try {
-                MzRepository.getInstance().insertRestaurant(restaurant);
-            } catch (Exception e) {
-
-            }
-            for (Food food : restaurant.getMenu()) {
-                try {
-                    MzRepository.getInstance().insertFood(food);
-                } catch (Exception e) {
-
+                MovieRepository.getInstance().insert(movie);
+                for (String genre: movie.getGenres()) {
+                    GenreRepository.getInstance().insert(genre);
                 }
-            }
-
+                for (Comment comment : movie.getComments()) {
+                    CommentRepository.getInstance().insert(comment);
+                }
+                for (Integer actorId : movie.getCast()) {
+                    CastRepository.getInstance().insert(new Cast(Math.toIntExact(movie.getId()), Math.toIntExact(actorId)));
+                }
+            } catch (Exception ignored) {}
         }
-//        System.out.println("done");
-//
-//        for (Restaurant restaurant : restaurants) {
-////            System.out.println(counter + "----------------");
-////            restaurant.print();
-//            try {
-//                MzFoodDelivery.getInstance().addRestaurant(restaurant);
-//            } catch (Exception e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
     }
-
-
 }

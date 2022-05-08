@@ -14,12 +14,12 @@ public class ActorController {
     private final ActorRepository repository = ActorRepository.getInstance();
 
     @PostMapping("/insert/{id}/{name}/{birthDate}/{nationality}/{image}")
-    public void insertActor(@PathVariable Long id, @PathVariable String name, @PathVariable String birthDate, @PathVariable String nationality, @PathVariable String image) throws SQLException {
+    public void insertActor(@PathVariable Integer id, @PathVariable String name, @PathVariable String birthDate, @PathVariable String nationality, @PathVariable String image) throws SQLException {
         repository.insert(new Actor(id, name, birthDate, nationality, image));
     }
 
     @GetMapping("/{id}")
-    public Actor findById(@PathVariable Long id) throws SQLException {
+    public Actor findById(@PathVariable Integer id) throws SQLException {
         return repository.findById(String.valueOf(id));
     }
 

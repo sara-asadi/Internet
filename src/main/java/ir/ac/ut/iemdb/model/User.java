@@ -64,14 +64,14 @@ public class User {
     }
 
     /*
-    public List<Long> getWatchList() {
+    public List<Integer> getWatchList() {
         return watchList;
     }
 
     public List<Movie> getWatchListMovies() throws IOException {
         List<Movie> movies = new ArrayList<>();
-        for (Long aLong : watchList) {
-            Movie movie = MovieDB.getInstance().getMovieById(aLong);
+        for (Integer aInteger : watchList) {
+            Movie movie = MovieDB.getInstance().getMovieById(aInteger);
             movies.add(movie);
         }
         return movies;
@@ -152,29 +152,29 @@ public class User {
         Date cDate = new Date();
         return cDate.getYear()-bDate.getYear();
     }
-    public boolean isInWatchList(long movieId){
-        for (Long id: watchList)
+    public boolean isInWatchList(int movieId){
+        for (Integer id: watchList)
             if (id == movieId)
                 return true;
         return false;
     }
-    public int addWatchList(long movieId){
+    public int addWatchList(int movieId){
         if (isInWatchList(movieId))
             return 1;
         watchList.add(movieId);
         return 0;
     }
-    public int removeWatchList(long movieId){
+    public int removeWatchList(int movieId){
         watchList.remove(movieId);
         return 0;
     }
-    public long rateMovie(long movie_id, long rate) {
+    public int rateMovie(int movie_id, int rate) {
 
         Set s = ratedMovies.entrySet();
         for (Object o : s) {
             Map.Entry ratedMovie = (Map.Entry) o;
             if (ratedMovie.getKey().equals(movie_id)) {
-                long prevRate = (long) ratedMovie.getValue();
+                int prevRate = (int) ratedMovie.getValue();
                 ratedMovie.setValue(rate);
                 return prevRate;
             }
@@ -187,7 +187,7 @@ public class User {
         return ratedMovies;
     }
 
-    public void voteComment(long movie_id, int comment_id, String vote) throws IOException {
+    public void voteComment(int movie_id, int comment_id, String vote) throws IOException {
         Movie movie = MovieDB.getInstance().getMovieById(movie_id);
         Comment comment = movie.getComment(comment_id);
         Set s = ratedComments.entrySet();

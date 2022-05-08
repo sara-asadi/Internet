@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CastRepository extends Repository<Cast, String>{
-    private static final String TABLE_NAME = "CAST";
+    private static final String TABLE_NAME = "Casts";
     private static CastRepository instance;
 
     public static String getTableName() {
@@ -70,7 +70,7 @@ public class CastRepository extends Repository<Cast, String>{
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT INTO %s(movieId, actorId) VALUES(?,?)", TABLE_NAME);
+        return String.format("INSERT IGNORE INTO %s(movieId, actorId) VALUES(?,?)", TABLE_NAME);
     }
 
     @Override

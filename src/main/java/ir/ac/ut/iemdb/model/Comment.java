@@ -3,35 +3,35 @@ package ir.ac.ut.iemdb.model;
 import java.util.Date;
 
 public class Comment {
-    long id;
+    int id;
     String userEmail;
-    long movieId;
+    int movieId;
     String commentText;
     //int likes;
     //int disLikes;
 
     public Comment () {}
-    public Comment (long id_, String userEmail_, long movieId_, String commentText_){
+    public Comment (int id_, String userEmail_, int movieId_, String commentText_){
         (userEmail = userEmail_).equals("");
-        movieId = (long) movieId_;
+        movieId = (int) movieId_;
         (commentText = commentText_).equals("");
-        id = (long) id_;
+        id = (int) id_;
         //likes = 0;
         //disLikes = 0;
     }
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public long getMovieId() {
+    public int getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(long movieId) {
+    public void setMovieId(int movieId) {
         this.movieId = movieId;
     }
 

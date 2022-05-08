@@ -32,9 +32,9 @@ public class CommentRepository extends Repository<Comment, String> {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
                 String.format("CREATE TABLE IF NOT EXISTS %s(" +
-                        "    id long NOT NULL AUTO_INCREMENT,\n" +
+                        "    id int NOT NULL AUTO_INCREMENT,\n" +
                         "    userEmail varchar(25) NOT NULL,\n" +
-                        "    movieId long not null,\n" +
+                        "    movieId int not null,\n" +
                         "    commentText text,\n" +
                         "    PRIMARY KEY (id),\n" +
                         "    FOREIGN KEY (userEmail) REFERENCES %s(userEmail),\n" +
@@ -53,7 +53,7 @@ public class CommentRepository extends Repository<Comment, String> {
 
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
-        st.setLong(1, Long.parseLong(id));
+        st.setInt(1, Integer.parseInt(id));
     }
 
     @Override
@@ -63,9 +63,9 @@ public class CommentRepository extends Repository<Comment, String> {
 
     @Override
     protected void fillInsertValues(PreparedStatement st, Comment data) throws SQLException {
-        st.setLong(1, data.getId());
+        st.setInt(1, data.getId());
         st.setString(2, data.getUserEmail());
-        st.setLong(3, data.getMovieId());
+        st.setInt(3, data.getMovieId());
         st.setString(4, data.getCommentText());
     }
 
@@ -76,7 +76,7 @@ public class CommentRepository extends Repository<Comment, String> {
 
     @Override
     protected Comment convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Comment(rs.getLong(1), rs.getString(2), rs.getLong(3), rs.getString(4));
+        return new Comment(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4));
     }
 
     @Override
@@ -93,6 +93,6 @@ public class CommentRepository extends Repository<Comment, String> {
     }
 
     protected void fillFindByMovieValues(PreparedStatement st, String id) throws SQLException {
-        st.setLong(1, Long.parseLong(id));
+        st.setInt(1, Integer.parseInt(id));
     }
 }

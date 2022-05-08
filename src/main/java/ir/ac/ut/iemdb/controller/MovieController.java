@@ -17,8 +17,8 @@ public class MovieController {
 
     //    id, name, summary, releaseDate, director, writers, genres, cast, imdbRate, duration, ageLimit, image, coverImage
     @PostMapping("/insert/{id}/{name}/{summary}/{releaseDate}/{director}/{writers}/{genres}/{cast}/{imdbRate}/{duration}/{ageLimit}/{image}/{coverImage}" )
-    public void insertMovie(@PathVariable Long id, @PathVariable String name, @PathVariable String summary,
-                            @PathVariable Date releaseDate, @PathVariable String director, @PathVariable String writers,
+    public void insertMovie(@PathVariable Integer id, @PathVariable String name, @PathVariable String summary,
+                            @PathVariable String releaseDate, @PathVariable String director, @PathVariable String writers,
                             @PathVariable Double imdbRate, @PathVariable Integer duration, @PathVariable Integer ageLimit,
                             @PathVariable Double rating, @PathVariable Integer ratingCount, @PathVariable String image,
                             @PathVariable String coverImage
