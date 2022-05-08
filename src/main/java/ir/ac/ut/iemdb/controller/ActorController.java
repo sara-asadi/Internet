@@ -1,7 +1,6 @@
 package ir.ac.ut.iemdb.controller;
 
 import ir.ac.ut.iemdb.model.Actor;
-import ir.ac.ut.iemdb.model.Film;
 import ir.ac.ut.iemdb.repository.ActorRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +30,6 @@ public class ActorController {
 //
 //    @GetMapping("/movies/{actorId}")
 //    public List<Movie> findMovies() throws SQLException {
-//        return repository.findMovies();
+//    return repository.findMovies();
 //    }
 }

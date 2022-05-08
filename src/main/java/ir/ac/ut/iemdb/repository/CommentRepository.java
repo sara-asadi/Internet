@@ -12,6 +12,10 @@ public class CommentRepository extends Repository<Comment, String> {
     private static final String TABLE_NAME = "Comments";
     private static CommentRepository instance;
 
+    public static String getTableName() {
+        return TABLE_NAME;
+    }
+
     public static CommentRepository getInstance() {
         if (instance == null) {
             try {

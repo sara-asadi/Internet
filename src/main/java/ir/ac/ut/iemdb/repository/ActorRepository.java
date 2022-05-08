@@ -12,6 +12,10 @@ public class ActorRepository extends Repository<Actor, String> {
     private static final String TABLE_NAME = "Actor";
     private static ActorRepository instance;
 
+    public static String getTableName() {
+        return TABLE_NAME;
+    }
+
     public static ActorRepository getInstance() {
         if (instance == null) {
             try {
