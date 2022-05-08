@@ -36,9 +36,9 @@ public class MoviesService {
         for (Movie movie : movies) {
             try {
                 MovieRepository.getInstance().insert(movie);
-                for (String genre: movie.getGenres()) {
-                    GenreRepository.getInstance().insert(genre);
-                }
+                //for (String genre: movie.getGenres()) {
+                //    GenreRepository.getInstance().insert(genre);
+                //}
                 for (Comment comment : movie.getComments()) {
                     CommentRepository.getInstance().insert(comment);
                 }

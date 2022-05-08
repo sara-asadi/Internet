@@ -1,7 +1,6 @@
 package ir.ac.ut.iemdb.repository;
 
 import ir.ac.ut.iemdb.model.Movie;
-import org.springframework.util.StringUtils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,10 +8,17 @@ import java.util.ArrayList;
 public class MovieRepository extends Repository<Movie, String> {
 
     private static final String TABLE_NAME = "Movie";
+    private static final String COLUMNS = "id,name,summary,releaseDate,director,writers,imdbRate," +
+            "duration,ageLimit,rating,ratingCount,image,coverImage";
+
     private static MovieRepository instance;
 
     public static String getTableName() {
         return TABLE_NAME;
+    }
+
+    public static String getCOLUMNS() {
+        return COLUMNS;
     }
 
     public static MovieRepository getInstance() {
@@ -53,7 +59,7 @@ public class MovieRepository extends Repository<Movie, String> {
 
     @Override
     protected String getFindByIdStatement() {
-        return String.format("SELECT* FROM %s movie WHERE movie.id = ?;", TABLE_NAME);
+        return String.format("SELECT %s FROM %s movie WHERE movie.id = ?;",COLUMNS, TABLE_NAME);
     }
 
     @Override
@@ -90,7 +96,10 @@ public class MovieRepository extends Repository<Movie, String> {
     @Override
     protected Movie convertResultSetToDomainModel(ResultSet rs) throws SQLException {
         return new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
-                rs.getString(5), rs.getString(6), rs.getDouble(7), rs.getInt(8),
+                rs.getString(5),
+                rs.getString(6),
+                rs.getDouble(7),
+                rs.getInt(8),
                 rs.getInt(9), rs.getString(10), rs.getString(11));
     }
 

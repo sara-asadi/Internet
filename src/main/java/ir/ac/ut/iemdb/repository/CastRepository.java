@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CastRepository extends Repository<Cast, String>{
     private static final String TABLE_NAME = "Casts";
@@ -49,6 +50,28 @@ public class CastRepository extends Repository<Cast, String>{
 
     protected void fillFindAllCastByMovieIdValues(PreparedStatement st, String movieId) throws SQLException {
         st.setInt(1, Integer.parseInt(movieId));
+    }
+
+    public List<Movie> getMovies(int actorId) throws SQLException {
+        List<Movie> result = new ArrayList<Movie>();
+        String statement = String.format("select %s from %s, %s\n" +
+                                        " where %s.actorId = %d and %s.movieId = %s.id;",
+                                        MovieRepository.getCOLUMNS(), TABLE_NAME, MovieRepository.getTableName(), TABLE_NAME, actorId, TABLE_NAME, MovieRepository.getTableName());
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    result.add(MovieRepository.getInstance().convertResultSetToDomainModel(resultSet));}
+                con.close();
+                return result;
+            } catch (SQLException ex) {
+                System.out.println("error in Mapper.findAll query.");
+                throw ex;
+            }
+        }
     }
 
     protected String getFindAllMovieByActorIdStatement(){

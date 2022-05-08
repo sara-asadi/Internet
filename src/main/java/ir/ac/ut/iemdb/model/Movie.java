@@ -50,6 +50,23 @@ public class Movie {
         this.coverImage = coverImage;
     }
 
+    public Movie(Integer id, String name, String summary, String  releaseDate, String director, String writer, Double imdbRate,
+                 Double rating, Integer ratingCount, Integer duration, Integer ageLimit, String image, String coverImage) {
+        this.id = id;
+        this.name = name;
+        this.summary = summary;
+        this.releaseDate = releaseDate;
+        this.director = director;
+        this.writer = writer;
+        this.imdbRate = imdbRate;
+        this.duration = duration;
+        this.ageLimit = ageLimit;
+        this.rating = rating;
+        this.ratingCount = ratingCount;
+        this.image = image;
+        this.coverImage = coverImage;
+    }
+
     public Integer getId() {
         return id;
     }
