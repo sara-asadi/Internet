@@ -9,8 +9,8 @@ import java.sql.Statement;
 public class ConnectionPool {
     private static final BasicDataSource ds = new BasicDataSource();
     private final static String dbURL = "jdbc:mysql://localhost:3306/iemdb_db";
-    private final static String dbUserName = "iemdb";
-    private final static String dbPassword = "123456";
+    private final static String dbUserName = "root";
+    private final static String dbPassword = "Asadi_1378";
 
     static {
         try {

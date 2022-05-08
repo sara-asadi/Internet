@@ -56,13 +56,6 @@ public class FilmRepository extends Repository<Film, String> {
         return String.format("INSERT INTO %s(id, name, summary, releaseDate, director, writers, genres, cast, imdbRate, duration, ageLimit, image, coverImage) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)", TABLE_NAME);
     }
 
-//    @Override
-//    protected void fillInsertValues(PreparedStatement st, IEMDB data) throws SQLException {
-//        st.setString(1, data.getId());
-//        st.setString(2, data.getName());
-//        st.setString(3, data.getActor());
-//    }
-
     @Override
     protected String getFindAllStatement() {
         return String.format("SELECT * FROM %s;", TABLE_NAME);
