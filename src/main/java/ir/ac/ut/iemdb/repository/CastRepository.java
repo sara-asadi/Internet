@@ -32,43 +32,51 @@ public class CastRepository extends Repository<Cast, String>{
     private CastRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format("CREATE TABLE IF NOT EXISTS %s(id long not null,\n" +
-                        "    movieId  long not null,\n" +
-                        "    actorId long not null,\n" +
-                        "    PRIMARY KEY(id));", TABLE_NAME)
+                String.format("CREATE TABLE IF NOT EXISTS %s(" +
+                        "movieId int not null, \n" +
+                        "actorId int not null,\n" +
+                        "PRIMARY KEY(movieId, actorId),\n" +
+                        "FOREIGN KEY (movieId) REFERENCES Movie(id),\n" +
+                        "FOREIGN KEY (actorId) REFERENCES Actor(id));", TABLE_NAME)
         );
         createTableStatement.executeUpdate();
         createTableStatement.close();
         con.close();
     }
-    protected String getFindAllCastByMovieId(){
+    protected String getFindAllCastByMovieIdStatement(){
         return String.format("SELECT* FROM %s cast WHERE cast.movieId = ?;", TABLE_NAME);
     }
 
-    protected String getFindAllMovieByActorId(){
+    protected void fillFindAllCastByMovieIdValues(PreparedStatement st, String movieId) throws SQLException {
+        st.setInt(1, Integer.parseInt(movieId));
+    }
+
+    protected String getFindAllMovieByActorIdStatement(){
         return String.format("SELECT* FROM %s cast WHERE cast.actorId = ?;", TABLE_NAME);
+    }
+    protected void fillFindAllMovieByActorIdValues(PreparedStatement st, String actorId) throws SQLException {
+        st.setInt(1, Integer.parseInt(actorId));
     }
 
     @Override
     protected String getFindByIdStatement() {
-        return String.format("SELECT* FROM %s cast WHERE cast.id = ?;", TABLE_NAME);
+        return null;
     }
 
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
-        st.setLong(1, Long.parseLong(id));
+
     }
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT INTO %s(id,movieId, actorId) VALUES(?,?,?)", TABLE_NAME);
+        return String.format("INSERT INTO %s(movieId, actorId) VALUES(?,?)", TABLE_NAME);
     }
 
     @Override
     protected void fillInsertValues(PreparedStatement st, Cast data) throws SQLException {
-        st.setLong(1, data.getId());
-        st.setLong(2, data.getMovieId());
-        st.setLong(3, data.getActorId());
+        st.setInt(1, data.getMovieId());
+        st.setInt(2, data.getActorId());
     }
 
     @Override
@@ -78,7 +86,7 @@ public class CastRepository extends Repository<Cast, String>{
 
     @Override
     protected Cast convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Cast(rs.getLong(1), rs.getLong(2), rs.getLong(3));
+        return new Cast(rs.getInt(1), rs.getInt(2));
     }
 
     @Override

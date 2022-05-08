@@ -26,7 +26,7 @@ public class MovieController {
         repository.insert(new Movie(id, name, summary, releaseDate, director, writers, imdbRate, duration, ageLimit, image, coverImage));
     }
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Movie> findAll() throws SQLException {
         return repository.findAll();
     }

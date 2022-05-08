@@ -1,40 +1,29 @@
 package ir.ac.ut.iemdb.model;
 
 public class Cast {
-    private long id;
-    private long movie_id;
-    private long actor_id;
+    private int movieId;
+    private int actorId;
 
-    public Cast(long id, long movie_id, long actor_id){
-        this.id = id;
-        this.movie_id = movie_id;
-        this.actor_id = actor_id;
+    public Cast(int movie_id, int actor_id){
+        this.movieId = movie_id;
+        this.actorId = actor_id;
     }
 
-    public long getId() {
-        return id;
+    public int getMovieId() {
+        return movieId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setMovieId(int movieId) {
+        this.movieId = movieId;
     }
 
-    public long getMovieId() {
-        return movie_id;
+    public int getActorId() {
+        return actorId;
     }
 
-    public void setMovieId(long MovieId) {
-        this.movie_id = MovieId;
+    public void setActorId(int actorId) {
+        this.actorId = actorId;
     }
-
-    public long getActorId() {
-        return actor_id;
-    }
-
-    public void setActorId(long ActorId) {
-        this.actor_id = ActorId;
-    }
-
 }
 
 
