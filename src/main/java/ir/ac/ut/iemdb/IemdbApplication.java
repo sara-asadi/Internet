@@ -1,7 +1,9 @@
 package ir.ac.ut.iemdb;
 
 import ir.ac.ut.iemdb.services.ActorService;
+import ir.ac.ut.iemdb.services.CommentsService;
 import ir.ac.ut.iemdb.services.MoviesService;
+import ir.ac.ut.iemdb.services.UserService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,6 +14,8 @@ public class IemdbApplication {
 		try {
 			MoviesService.getInstance().importMoviesFromWeb();
 			ActorService.getInstance().importActorFromWeb();
+			UserService.getInstance().importUserFromWeb();
+			CommentsService.getInstance().importCommentsFromWeb();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

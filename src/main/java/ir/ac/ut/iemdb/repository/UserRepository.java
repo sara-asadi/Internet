@@ -56,7 +56,7 @@ public class UserRepository extends Repository<User, String> {
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT INTO %s(email, password, nickname, name, birthDate) VALUES(?,?,?,?,?)", TABLE_NAME);
+        return String.format("INSERT IGNORE INTO %s(email, password, nickname, name, birthDate) VALUES(?,?,?,?,?)", TABLE_NAME);
     }
 
     @Override

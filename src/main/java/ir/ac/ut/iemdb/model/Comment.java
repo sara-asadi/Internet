@@ -6,15 +6,15 @@ public class Comment {
     int id;
     String userEmail;
     int movieId;
-    String commentText;
+    String text;
     //int likes;
     //int disLikes;
 
     public Comment () {}
-    public Comment (int id_, String userEmail_, int movieId_, String commentText_){
+    public Comment (int id_, String userEmail_, int movieId_, String text_){
         (userEmail = userEmail_).equals("");
         movieId = (int) movieId_;
-        (commentText = commentText_).equals("");
+        (text = text_).equals("");
         id = (int) id_;
         //likes = 0;
         //disLikes = 0;
@@ -35,12 +35,12 @@ public class Comment {
         this.movieId = movieId;
     }
 
-    public String getCommentText() {
-        return commentText;
+    public String getText() {
+        return text;
     }
 
-    public void setCommentText(String commentText) {
-        this.commentText = commentText;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getUserEmail() {

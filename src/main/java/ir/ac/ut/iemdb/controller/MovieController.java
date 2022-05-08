@@ -1,8 +1,10 @@
 package ir.ac.ut.iemdb.controller;
 
 import ir.ac.ut.iemdb.model.Actor;
+import ir.ac.ut.iemdb.model.Comment;
 import ir.ac.ut.iemdb.model.Movie;
 import ir.ac.ut.iemdb.repository.CastRepository;
+import ir.ac.ut.iemdb.repository.CommentRepository;
 import ir.ac.ut.iemdb.repository.MovieRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +45,8 @@ public class MovieController {
         return CastRepository.getInstance().getCast(id);
     }
 
-
+    @GetMapping("/comments/{id}")
+    public List<Comment> getComments(@PathVariable Integer id) throws SQLException {
+        return CommentRepository.getInstance().findByMovieId(id);
+    }
 }
