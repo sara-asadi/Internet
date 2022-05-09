@@ -1,13 +1,7 @@
 package ir.ac.ut.iemdb.controller;
 
-import ir.ac.ut.iemdb.model.Actor;
-import ir.ac.ut.iemdb.model.Comment;
-import ir.ac.ut.iemdb.model.Movie;
-import ir.ac.ut.iemdb.model.Rate;
-import ir.ac.ut.iemdb.repository.CastRepository;
-import ir.ac.ut.iemdb.repository.CommentRepository;
-import ir.ac.ut.iemdb.repository.MovieRepository;
-import ir.ac.ut.iemdb.repository.RatesRepository;
+import ir.ac.ut.iemdb.model.*;
+import ir.ac.ut.iemdb.repository.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Array;
@@ -46,11 +40,6 @@ public class MovieController {
         return CastRepository.getInstance().getCast(id);
     }
 
-    @GetMapping( "/comments/{id}" )
-    public List<Comment> getComments(@PathVariable Integer id) throws SQLException {
-        return CommentRepository.getInstance().findByMovieId(id);
-    }
-
     @GetMapping( "/sort/{sortBy}" )
     public List<Movie> sortByRate(@PathVariable String sortBy) throws SQLException {
         switch (sortBy) {
@@ -76,4 +65,25 @@ public class MovieController {
         return MovieRepository.getInstance().findById(String.valueOf(movieId));
     }
 
+    @GetMapping( "/comment/{id}" )
+    public List<Comment> getComments(@PathVariable Integer id) throws SQLException {
+        return CommentRepository.getInstance().findByMovieId(id);
+    }
+
+    @GetMapping( "/comment/{text}/{movieId}" )
+    public String comment(@PathVariable String text,@PathVariable Integer movieId) throws SQLException {
+        CommentRepository.getInstance().insert(new Comment("saman@ut.ac.ir", movieId, text));
+        return "comment added";
+    }
+
+    @GetMapping( "/comment/vote/{commentId}/{vote}" )
+    public Comment vote(@PathVariable String vote, @PathVariable Integer commentId) throws SQLException {
+        switch (vote) {
+            case "like": {VotesRepository.getInstance().insert(new Vote(commentId, "saman@ut.ac.ir", 1));
+                break;}
+            case "dislike": {VotesRepository.getInstance().insert(new Vote(commentId, "saman@ut.ac.ir", -1));
+                break;}
+        }
+        return CommentRepository.getInstance().findById(String.valueOf(commentId));
+    }
 }

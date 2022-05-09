@@ -97,5 +97,14 @@ public class Queries {
                                                     "FOREIGN KEY (movieId) REFERENCES Movie(id)" +
                                                     ");";
 
+    public static final String createVotes  = "CREATE TABLE IF NOT EXISTS %s(" +
+            "commentId int NOT NULL,\n" +
+            "userEmail varchar(25) NOT NULL,\n" +
+            "vote int not null,\n" +
+            "PRIMARY KEY (commentId, userEmail),\n" +
+            "FOREIGN KEY (userEmail) REFERENCES User(email)ON DELETE CASCADE,\n" +
+            "FOREIGN KEY (commentId) REFERENCES Comments(id)ON DELETE CASCADE" +
+            ");";
+
     public Queries() {}
 }

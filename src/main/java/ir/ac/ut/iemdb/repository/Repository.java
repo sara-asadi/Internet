@@ -42,8 +42,8 @@ public abstract class Repository<T, I> {
         } catch (Exception e) {
             st.close();
             con.close();
-            System.out.println("error in Repository.find query.");
-            e.printStackTrace();
+            //System.out.println("error in Repository.find query.");
+            //e.printStackTrace();
             throw e;
         }
     }
@@ -59,8 +59,8 @@ public abstract class Repository<T, I> {
         } catch (Exception e) {
             st.close();
             con.close();
-            System.out.println("error in Repository.insert query.");
-            e.printStackTrace();
+            //System.out.println("error in Repository.insert query.");
+            //e.printStackTrace();
         }
     }
 
@@ -81,8 +81,8 @@ public abstract class Repository<T, I> {
         } catch (Exception e) {
             st.close();
             con.close();
-            System.out.println("error in Repository.findAll query.");
-            e.printStackTrace();
+            //System.out.println("error in Repository.findAll query.");
+            //e.printStackTrace();
             throw e;
         }
     }
