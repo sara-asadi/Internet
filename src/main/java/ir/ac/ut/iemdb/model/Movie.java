@@ -4,20 +4,19 @@ import java.io.IOException;
 import java.sql.Array;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Movie {
-    //    id, name, summary, releaseDate, director, writers, genres, cast, imdbRate, duration, ageLimit, image, coverImage
     private int id;
     private String name;
     private String summary;
     private String releaseDate;
     private String director;
-    private String writer;
     private Double imdbRate;
     private Integer duration;
     private Integer ageLimit;
-    private Double rating;
+    private String rating;
     private Integer ratingCount;
     private String image;
     private String coverImage;
@@ -40,24 +39,24 @@ public class Movie {
         this.summary = summary;
         this.releaseDate = releaseDate;
         this.director = director;
-        this.writer = writer;
+        this.writers = new ArrayList<String>(Arrays.asList(writer.split(",")));
         this.imdbRate = imdbRate;
         this.duration = duration;
         this.ageLimit = ageLimit;
-        this.rating = 0.0;
+        this.rating = "0.0";
         this.ratingCount = 0;
         this.image = image;
         this.coverImage = coverImage;
     }
 
     public Movie(Integer id, String name, String summary, String  releaseDate, String director, String writer, Double imdbRate,
-                 Double rating, Integer ratingCount, Integer duration, Integer ageLimit, String image, String coverImage) {
+                 Integer duration, Integer ageLimit, String rating, Integer ratingCount,String image, String coverImage, String genres) {
         this.id = id;
         this.name = name;
         this.summary = summary;
         this.releaseDate = releaseDate;
         this.director = director;
-        this.writer = writer;
+        this.writers = new ArrayList<String>(Arrays.asList(((writer.replace("]","")).replace("[", "")).split(",")));
         this.imdbRate = imdbRate;
         this.duration = duration;
         this.ageLimit = ageLimit;
@@ -65,6 +64,11 @@ public class Movie {
         this.ratingCount = ratingCount;
         this.image = image;
         this.coverImage = coverImage;
+        this.genres = new ArrayList<String>(Arrays.asList(((genres.replace("]","")).replace("[", "")).split(",")));
+    }
+
+    public String writersString() {
+        return Arrays.toString(writers.toArray());
     }
 
     public Integer getId() {
@@ -105,14 +109,6 @@ public class Movie {
 
     public void setDirector(String director) {
         this.director = director;
-    }
-
-    public String getWriter() {
-        return writer;
-    }
-
-    public void setWriter(String writer) {
-        this.writer = writer;
     }
 
     public List<String> getWriters() {
@@ -171,11 +167,17 @@ public class Movie {
         this.ageLimit = ageLimit;
     }
 
-    public Double getRating() {
-        return rating;
+    public String getRating() {
+        int i = rating.indexOf(".");
+        if (i==-1)
+            return rating;
+        if (rating.length() >= i+2)
+            return rating.substring(0, i+2);
+        else
+            return rating.substring(0, i);
     }
 
-    public void setRating(Double rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 

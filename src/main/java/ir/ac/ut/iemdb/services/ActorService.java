@@ -4,13 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import ir.ac.ut.iemdb.model.Actor;
-import ir.ac.ut.iemdb.model.Cast;
-import ir.ac.ut.iemdb.model.Comment;
-import ir.ac.ut.iemdb.model.Actor;
 import ir.ac.ut.iemdb.repository.ActorRepository;
-import ir.ac.ut.iemdb.repository.CastRepository;
-import ir.ac.ut.iemdb.repository.CommentRepository;
 import ir.ac.ut.iemdb.services.HTTPRequestHandler.HTTPRequestHandler;
+import ir.ac.ut.iemdb.tools.URL.Url;
 
 import java.util.List;
 
@@ -30,7 +26,7 @@ public class ActorService {
     }
 
     public void importActorFromWeb() throws Exception {
-        String ActorJsonString = HTTPRequestHandler.getRequest("http://138.197.181.131:5000/api/v2/actors");
+        String ActorJsonString = HTTPRequestHandler.getRequest(Url.actors);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<Actor> actors = gson.fromJson(ActorJsonString, new TypeToken<List<Actor>>() {
         }.getType());

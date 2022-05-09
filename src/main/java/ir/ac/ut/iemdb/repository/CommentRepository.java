@@ -1,7 +1,8 @@
 package ir.ac.ut.iemdb.repository;
 
-import ir.ac.ut.iemdb.model.Actor;
 import ir.ac.ut.iemdb.model.Comment;
+import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
+import ir.ac.ut.iemdb.tools.Queries.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,12 +14,13 @@ import java.util.List;
 public class CommentRepository extends Repository<Comment, String> {
     private static final String TABLE_NAME = "Comments";
     private static final String COLUMNS = "id, userEmail, movieId, commentText";
+    private static final String COLUMNS_INIT = "userEmail, movieId, commentText";
+
     private static CommentRepository instance;
 
     public static String getTableName() {
         return TABLE_NAME;
     }
-
     public static String getCOLUMNS() {
         return COLUMNS;
     }
@@ -38,15 +40,7 @@ public class CommentRepository extends Repository<Comment, String> {
     private CommentRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format(
-                        "    CREATE TABLE IF NOT EXISTS %s(id int NOT NULL auto_increment,\n" +
-                        "    userEmail varchar(25) NOT NULL,\n" +
-                        "    movieId int not null,\n" +
-                        "    commentText varchar(200) not null,\n" +
-                        "    PRIMARY KEY (id),\n" +
-                        "    FOREIGN KEY (userEmail) REFERENCES %s(email),\n" +
-                        "    FOREIGN KEY (movieId) REFERENCES %s(id))",
-                        TABLE_NAME, UserRepository.getTableName(),MovieRepository.getTableName()));
+                String.format(Queries.createComment, TABLE_NAME, UserRepository.getTableName(),MovieRepository.getTableName()));
         createTableStatement.executeUpdate();
         createTableStatement.close();
         con.close();
@@ -54,9 +48,8 @@ public class CommentRepository extends Repository<Comment, String> {
 
     @Override
     protected String getFindByIdStatement() {
-        return String.format("SELECT %s FROM %s comment WHERE comment.id = ?;", COLUMNS, TABLE_NAME);
+        return String.format(Queries.SearchByOne, COLUMNS, TABLE_NAME, TABLE_NAME, "id");
     }
-
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
         st.setInt(1, Integer.parseInt(id));
@@ -64,9 +57,8 @@ public class CommentRepository extends Repository<Comment, String> {
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT IGNORE INTO %s(userEmail, movieId, commentText) VALUES(?,?,?)", TABLE_NAME);
+        return String.format(Queries.Insert, TABLE_NAME, COLUMNS_INIT, "?,?,?");
     }
-
     @Override
     protected void fillInsertValues(PreparedStatement st, Comment data) throws SQLException {
         st.setString(1, data.getUserEmail());
@@ -81,9 +73,7 @@ public class CommentRepository extends Repository<Comment, String> {
 
     public List<Comment> findByMovieId(int movieId) throws SQLException {
         List<Comment> result = new ArrayList<Comment>();
-        String statement = String.format("select %s from %s\n" +
-                        " where %s.movieId = %d;",
-                COLUMNS, TABLE_NAME, TABLE_NAME, movieId);
+        String statement = String.format(Queries.SearchByInt,COLUMNS, TABLE_NAME, TABLE_NAME, "movieId", movieId);
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement st = con.prepareStatement(statement);
         ) {
@@ -94,16 +84,18 @@ public class CommentRepository extends Repository<Comment, String> {
                     result.add(convertResultSetToDomainModel(resultSet));}
                 con.close();
                 return result;
-            } catch (SQLException ex) {
-                System.out.println("error in Mapper.findAll query.");
-                throw ex;
-            }
-        }
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return result;
     }
 
     @Override
     protected Comment convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Comment(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4));
+        return new Comment(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getInt(3),
+                rs.getString(4));
     }
 
     @Override

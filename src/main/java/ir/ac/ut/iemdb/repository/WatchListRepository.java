@@ -1,7 +1,7 @@
 package ir.ac.ut.iemdb.repository;
 
-import ir.ac.ut.iemdb.model.Cast;
 import ir.ac.ut.iemdb.model.WatchList;
+import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

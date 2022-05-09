@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import ir.ac.ut.iemdb.model.*;
 import ir.ac.ut.iemdb.repository.*;
 import ir.ac.ut.iemdb.services.HTTPRequestHandler.HTTPRequestHandler;
+import ir.ac.ut.iemdb.tools.URL.Url;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class MoviesService {
     }
 
     public void importMoviesFromWeb() throws Exception {
-        String MoviesJsonString = HTTPRequestHandler.getRequest("http://138.197.181.131:5000/api/v2/movies");
+        String MoviesJsonString = HTTPRequestHandler.getRequest(Url.movies);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<Movie> movies = gson.fromJson(MoviesJsonString, new TypeToken<List<Movie>>() {
         }.getType());
@@ -36,11 +37,11 @@ public class MoviesService {
                 for (String genre: movie.getGenres()) {
                     GenreRepository.getInstance().insert(new Genre(movie.getId(),genre));
                 }
-                for (Comment comment : movie.getComments()) {
-                    CommentRepository.getInstance().insert(comment);
-                }
                 for (Integer actorId : movie.getCast()) {
                     CastRepository.getInstance().insert(new Cast(Math.toIntExact(movie.getId()), Math.toIntExact(actorId)));
+                }
+                for (Comment comment : movie.getComments()) {
+                    CommentRepository.getInstance().insert(comment);
                 }
             } catch (Exception ignored) {}
         }

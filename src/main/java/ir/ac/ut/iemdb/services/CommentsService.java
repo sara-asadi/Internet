@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import ir.ac.ut.iemdb.model.Comment;
 import ir.ac.ut.iemdb.repository.CommentRepository;
 import ir.ac.ut.iemdb.services.HTTPRequestHandler.HTTPRequestHandler;
+import ir.ac.ut.iemdb.tools.URL.Url;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class CommentsService {
     }
 
     public void importCommentsFromWeb() throws Exception {
-        String CommentsJsonString = HTTPRequestHandler.getRequest("http://138.197.181.131:5000/api/comments");
+        String CommentsJsonString = HTTPRequestHandler.getRequest(Url.comments);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<Comment> comments = gson.fromJson(CommentsJsonString, new TypeToken<List<Comment>>() {
         }.getType());

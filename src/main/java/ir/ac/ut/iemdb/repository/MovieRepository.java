@@ -1,15 +1,17 @@
 package ir.ac.ut.iemdb.repository;
 
 import ir.ac.ut.iemdb.model.Movie;
+import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
+import ir.ac.ut.iemdb.tools.Queries.Queries;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MovieRepository extends Repository<Movie, String> {
 
     private static final String TABLE_NAME = "Movie";
-    private static final String COLUMNS = "id,name,summary,releaseDate,director,writers,imdbRate," +
-            "duration,ageLimit,rating,ratingCount,image,coverImage";
+    private static final String COLUMNS = "id, name, summary, releaseDate, director, writers, imdbRate, duration, ageLimit, image, coverImage";
 
     private static MovieRepository instance;
 
@@ -25,10 +27,7 @@ public class MovieRepository extends Repository<Movie, String> {
         if (instance == null) {
             try {
                 instance = new MovieRepository();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("error in MovieRepository.create query.");
-            }
+            } catch (SQLException ignored) {}
         }
         return instance;
     }
@@ -36,32 +35,54 @@ public class MovieRepository extends Repository<Movie, String> {
     private MovieRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format("CREATE TABLE IF NOT EXISTS %s(id int not null,\n" +
-                        "    id int not null,\n" +
-                        "    name  varchar(20) not null,\n" +
-                        "    summary varchar(1000),\n" +
-                        "    releaseDate varchar(20),\n" +
-                        "    director varchar(20),\n" +
-                        "    writers varchar(200),\n" +
-                        "    imdbRate double,\n" +
-                        "    duration int,\n" +
-                        "    ageLimit int,\n" +
-                        "    rating double default 0,\n" +
-                        "    ratingCount int default 0,\n" +
-                        "    image varchar(250),\n" +
-                        "    coverImage varchar(250),\n" +
-                        "    PRIMARY KEY(id));", TABLE_NAME)
+                String.format(Queries.createMovie, TABLE_NAME)
         );
         createTableStatement.executeUpdate();
         createTableStatement.close();
         con.close();
     }
 
-    @Override
-    protected String getFindByIdStatement() {
-        return String.format("SELECT %s FROM %s movie WHERE movie.id = ?;",COLUMNS, TABLE_NAME);
+    public List<Movie> sort(String sortBy) {
+        List<Movie> result = new ArrayList<>();
+        String statement = String.format(Queries.Sort, MovieRepository.getCOLUMNS(), TABLE_NAME, sortBy);
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    result.add(convertResultSetToDomainModel(resultSet));}
+                con.close();
+                return result;
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return result;
+    }
+    public List<Movie> search(String key) {
+        List<Movie> result = new ArrayList<>();
+        String query =  "SELECT id, name, summary, releaseDate, director, writers, imdbRate, duration, ageLimit, image, coverImage " +
+                        "FROM Movie\n " +
+                        "WHERE Movie.name LIKE '%"+key+"%';";
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(query);
+        ) {
+            ResultSet resultSet;
+            try {
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    result.add(convertResultSetToDomainModel(resultSet));}
+                con.close();
+                return result;
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return result;
     }
 
+    @Override
+    protected String getFindByIdStatement() {
+        return String.format(Queries.SearchByOne,COLUMNS, TABLE_NAME, TABLE_NAME, "id");
+    }
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
         st.setInt(1, Integer.parseInt(id));
@@ -69,10 +90,8 @@ public class MovieRepository extends Repository<Movie, String> {
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT IGNORE INTO %s(id, name, summary, releaseDate, director, writers, imdbRate, duration, ageLimit, image, coverImage) \n" +
-                "VALUES(?,?,?,?,?,?,?,?,?,?,?);", TABLE_NAME);
+        return String.format(Queries.Insert, TABLE_NAME, COLUMNS, "?,?,?,?,?,?,?,?,?,?,?");
     }
-
     @Override
     protected void fillInsertValues(PreparedStatement st, Movie data) throws SQLException {
         st.setInt(1, data.getId());
@@ -80,7 +99,7 @@ public class MovieRepository extends Repository<Movie, String> {
         st.setString(3, data.getSummary());
         st.setString(4, data.getReleaseDate());
         st.setString(5, data.getDirector());
-        st.setString(6, data.getName());
+        st.setString(6, data.writersString());
         st.setDouble(7, data.getImdbRate());
         st.setInt(8, data.getDuration());
         st.setInt(9, data.getAgeLimit());
@@ -90,17 +109,27 @@ public class MovieRepository extends Repository<Movie, String> {
 
     @Override
     protected String getFindAllStatement() {
-        return String.format("SELECT * FROM %s;", TABLE_NAME);
+        return String.format(Queries.SelectAll, TABLE_NAME);
     }
 
     @Override
     protected Movie convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Movie(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4),
+        return new Movie(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4),
                 rs.getString(5),
                 rs.getString(6),
                 rs.getDouble(7),
                 rs.getInt(8),
-                rs.getInt(9), rs.getString(10), rs.getString(11));
+                rs.getInt(9),
+                RatesRepository.getInstance().getRating(rs.getInt(1)),
+                RatesRepository.getInstance().getRatingCount(rs.getInt(1)),
+                rs.getString(10),
+                rs.getString(11),
+                GenreRepository.getInstance().getGenres(rs.getInt(1))
+        );
     }
 
     @Override

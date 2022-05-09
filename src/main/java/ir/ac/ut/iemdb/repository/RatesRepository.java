@@ -1,16 +1,22 @@
 package ir.ac.ut.iemdb.repository;
 
 
+import ir.ac.ut.iemdb.model.Movie;
 import ir.ac.ut.iemdb.model.Rate;
+import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
+import ir.ac.ut.iemdb.tools.Queries.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RatesRepository extends Repository<Rate, String> {
     private static final String TABLE_NAME = "Rates";
+    private static final String COLUMNS = "movieId, userEmail, rate";
+
     private static RatesRepository instance;
 
     public static String getTableName() {
@@ -21,59 +27,83 @@ public class RatesRepository extends Repository<Rate, String> {
         if (instance == null) {
             try {
                 instance = new RatesRepository();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("error in RatesRepository.create query.");
-            }
+            } catch (SQLException ignored) {}
         }
         return instance;
     }
 
     private RatesRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
-        PreparedStatement createTableStatement = con.prepareStatement(
-                String.format("CREATE TABLE IF NOT EXISTS %s(" +
-                        "    movieId int not null,\n" +
-                        "    userEmail varchar(25) not null,\n" +
-                        "    rateValue int not null, \n" +
-                        "    primary key (movieId, userEmail),\n" +
-                        "    FOREIGN KEY (userEmail) REFERENCES User(email),\n" +
-                        "    FOREIGN KEY (movieId) REFERENCES Movie(id))", TABLE_NAME)
-        );
+        PreparedStatement createTableStatement = con.prepareStatement(String.format(Queries.createRates, TABLE_NAME));
         createTableStatement.executeUpdate();
         createTableStatement.close();
         con.close();
     }
 
-    protected String getFindStatement() {
-        return String.format("SELECT * FROM %s rates WHERE rates.userEmail = ? and rates.movieId = ?;", TABLE_NAME);
+    public String getRating(int movieId) {
+        String statement = String.format("select avg(rate) from %s\n" +
+                                         "where %s.movieId = %d;",
+                                         TABLE_NAME, TABLE_NAME, movieId);
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                Object rating = null;
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    rating = resultSet.getObject(1);
+                }
+                con.close();
+                if (rating == null)
+                    return "0";
+                return rating.toString();
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return "0";
+    }
+    public int getRatingCount(int movieId) {
+        String statement = String.format("select count(userEmail) from %s\n" +
+                                         "where %s.movieId = %d;",
+                                         TABLE_NAME, TABLE_NAME, movieId);
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                int ratingCount = 0;
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                     ratingCount = Integer.parseInt(resultSet.getString(1));
+                }
+                con.close();
+                return ratingCount;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException ignored) {
+        }
+        return -1;
     }
 
-    protected void fillFindValues(PreparedStatement st, String userEmail, Integer movieId) throws SQLException {
-        st.setString(1, userEmail);
-        st.setInt(2, movieId);
+    @Override
+    protected String getInsertStatement() {
+        return String.format(Queries.InsertUpdate, TABLE_NAME, COLUMNS, "?,?,?", "rate", "?");
+    }
+    @Override
+    protected void fillInsertValues(PreparedStatement st, Rate data) throws SQLException {
+        st.setInt(1, data.getMovieId());
+        st.setString(2, data.getUserEmail());
+        st.setInt(3, data.getValue());
+        st.setInt(4, data.getValue());
     }
 
     @Override
     protected String getFindByIdStatement() {
         return null;
     }
-
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
-
-    }
-
-    @Override
-    protected String getInsertStatement() {
-        return String.format("INSERT INTO %s(movieId, userEmail, value) VALUES(?,?,?)", TABLE_NAME);
-    }
-
-    @Override
-    protected void fillInsertValues(PreparedStatement st, Rate data) throws SQLException {
-        st.setInt(1, data.getMovieId());
-        st.setString(2, data.getUserEmail());
-        st.setInt(3, data.getValue());
     }
 
     @Override

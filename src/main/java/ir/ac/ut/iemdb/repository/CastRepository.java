@@ -3,6 +3,8 @@ package ir.ac.ut.iemdb.repository;
 import ir.ac.ut.iemdb.model.Actor;
 import ir.ac.ut.iemdb.model.Cast;
 import ir.ac.ut.iemdb.model.Movie;
+import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
+import ir.ac.ut.iemdb.tools.Queries.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,20 +15,21 @@ import java.util.List;
 
 public class CastRepository extends Repository<Cast, String>{
     private static final String TABLE_NAME = "Casts";
+    private static final String COLUMNS = "movieId, actorId";
     private static CastRepository instance;
 
     public static String getTableName() {
         return TABLE_NAME;
+    }
+    public static String getCOLUMNS() {
+        return COLUMNS;
     }
 
     public static CastRepository getInstance() {
         if (instance == null) {
             try {
                 instance = new CastRepository();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("error in CastRepository.create query.");
-            }
+            } catch (SQLException ignored) {}
         }
         return instance;
     }
@@ -34,23 +37,16 @@ public class CastRepository extends Repository<Cast, String>{
     private CastRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format("CREATE TABLE IF NOT EXISTS %s(" +
-                        "movieId int not null, \n" +
-                        "actorId int not null,\n" +
-                        "PRIMARY KEY(movieId, actorId),\n" +
-                        "FOREIGN KEY (movieId) REFERENCES Movie(id),\n" +
-                        "FOREIGN KEY (actorId) REFERENCES Actor(id));", TABLE_NAME)
+                String.format(Queries.createCast, TABLE_NAME, MovieRepository.getTableName(), ActorRepository.getTableName())
         );
         createTableStatement.executeUpdate();
         createTableStatement.close();
         con.close();
     }
 
-    public List<Movie> getMovies(int actorId) throws SQLException {
+    public List<Movie> getMovies(int actorId) {
         List<Movie> result = new ArrayList<Movie>();
-        String statement = String.format("select %s from %s, %s\n" +
-                        " where %s.actorId = %d and %s.movieId = %s.id;",
-                MovieRepository.getCOLUMNS(), TABLE_NAME, MovieRepository.getTableName(), TABLE_NAME, actorId, TABLE_NAME, MovieRepository.getTableName());
+        String statement = String.format(Queries.SearchByTwo, MovieRepository.getCOLUMNS(), TABLE_NAME, MovieRepository.getTableName(), TABLE_NAME, "actorId", actorId, TABLE_NAME, "movieId", MovieRepository.getTableName(), "id");
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement st = con.prepareStatement(statement);
         ) {
@@ -61,18 +57,14 @@ public class CastRepository extends Repository<Cast, String>{
                     result.add(MovieRepository.getInstance().convertResultSetToDomainModel(resultSet));}
                 con.close();
                 return result;
-            } catch (SQLException ex) {
-                System.out.println("error in Mapper.findAll query.");
-                throw ex;
-            }
-        }
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return result;
     }
 
-    public List<Actor> getCast(int movieId) throws SQLException {
+    public List<Actor> getCast(int movieId) {
         List<Actor> result = new ArrayList<Actor>();
-        String statement = String.format("select %s from %s, %s\n" +
-                        " where %s.movieId = %d and %s.actorId = %s.id;",
-                ActorRepository.getCOLUMNS(), TABLE_NAME, ActorRepository.getTableName(), TABLE_NAME, movieId, TABLE_NAME, ActorRepository.getTableName());
+        String statement = String.format(Queries.SearchByTwo, ActorRepository.getCOLUMNS(), TABLE_NAME, ActorRepository.getTableName(), TABLE_NAME, "movieId", movieId, TABLE_NAME, "actorId", ActorRepository.getTableName(), "id");
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement st = con.prepareStatement(statement);
         ) {
@@ -83,18 +75,15 @@ public class CastRepository extends Repository<Cast, String>{
                     result.add(ActorRepository.getInstance().convertResultSetToDomainModel(resultSet));}
                 con.close();
                 return result;
-            } catch (SQLException ex) {
-                System.out.println("error in Mapper.findAll query.");
-                throw ex;
-            }
-        }
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return result;
     }
 
     @Override
     protected String getFindByIdStatement() {
         return null;
     }
-
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
 
@@ -102,9 +91,8 @@ public class CastRepository extends Repository<Cast, String>{
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT IGNORE INTO %s(movieId, actorId) VALUES(?,?)", TABLE_NAME);
+        return String.format(Queries.Insert, TABLE_NAME, COLUMNS, "?,?");
     }
-
     @Override
     protected void fillInsertValues(PreparedStatement st, Cast data) throws SQLException {
         st.setInt(1, data.getMovieId());
@@ -113,12 +101,15 @@ public class CastRepository extends Repository<Cast, String>{
 
     @Override
     protected String getFindAllStatement() {
-        return String.format("SELECT * FROM %s;", TABLE_NAME);
+        return String.format(Queries.SelectAll, TABLE_NAME);
     }
 
     @Override
     protected Cast convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Cast(rs.getInt(1), rs.getInt(2));
+        return new Cast(
+                rs.getInt(1),
+                rs.getInt(2)
+        );
     }
 
     @Override

@@ -2,25 +2,27 @@ package ir.ac.ut.iemdb.repository;
 
 import ir.ac.ut.iemdb.model.Genre;
 import ir.ac.ut.iemdb.model.Movie;
-import ir.ac.ut.iemdb.model.WatchList;
+import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
+import ir.ac.ut.iemdb.tools.Queries.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class GenreRepository extends Repository<Genre, String>{
 
-    private static final String TABLE_NAME = "Genre";
-    private static final String COLUMNS = "movieId,name";
+    private static final String TABLE_NAME = "Genres";
+    private static final String COLUMNS = "movieId, genre";
 
     private static GenreRepository instance;
 
     public static String getTableName() {
         return TABLE_NAME;
     }
-
     public static String getCOLUMNS() {
         return COLUMNS;
     }
@@ -29,10 +31,7 @@ public class GenreRepository extends Repository<Genre, String>{
         if (instance == null) {
             try {
                 instance = new GenreRepository();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("error in GenreRepository.create query.");
-            }
+            } catch (SQLException ignored) {}
         }
         return instance;
     }
@@ -40,47 +39,61 @@ public class GenreRepository extends Repository<Genre, String>{
     private GenreRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format("CREATE TABLE IF NOT EXISTS %s(" +
-                        "   movieId int not null,\n" +
-                        "    name  varchar(20) not null,\n" +
-                        "    PRIMARY KEY(movieId,name)),"+
-                        "    FOREIGN KEY (movieId) REFERENCES %s(id));", TABLE_NAME)
+                String.format(Queries.createGenre, TABLE_NAME, MovieRepository.getTableName())
         );
         createTableStatement.executeUpdate();
         createTableStatement.close();
         con.close();
     }
 
-    protected String getFindAllMovieByGenreStatement(){
-        return String.format("SELECT* FROM %s movieGenre WHERE  movieGenre.name = ?;", TABLE_NAME);
+    public List<Movie> getMovies(String genre) {
+        List<Movie> result = new ArrayList<>();
+        String statement = String.format(Queries.SearchByTwoS, MovieRepository.getCOLUMNS(), TABLE_NAME, MovieRepository.getTableName(), TABLE_NAME, "genre", genre, TABLE_NAME, "movieId", MovieRepository.getTableName(), "id");
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    result.add(MovieRepository.getInstance().convertResultSetToDomainModel(resultSet));}
+                con.close();
+                return result;
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return result;
     }
 
-    protected void fillFindAllMovieByGenreValues(PreparedStatement st, Genre data) throws SQLException {
-        st.setString(1, data.getName());
-    }
-
-    protected String getFindAllGenreByMovieIdStatement(){
-        return String.format("SELECT* FROM %s movieGenre WHERE  movieGenre.movieId = ?;", TABLE_NAME);
-    }
-
-    protected void fillFindAllGenreByMovieIdValues(PreparedStatement st, Genre data) throws SQLException {
-        st.setInt(1, data.getMovieId());
+    public String getGenres(int movieId) {
+        List<String> s = new ArrayList<>();
+        String statement = String.format(Queries.SearchByInt, COLUMNS, TABLE_NAME, TABLE_NAME, "movieId", movieId);
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    s.add(convertResultSetToDomainModel(resultSet).getName());
+                }
+                con.close();
+                return Arrays.toString(s.toArray());
+            } catch (SQLException ignored) {}
+        } catch (SQLException ignored) {}
+        return Arrays.toString(s.toArray());
     }
 
     @Override
     protected String getFindByIdStatement() {
         return null;
     }
-
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
-
     }
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT IGNORE INTO %s(movieId, name) \n" +
-                "VALUES(?,?);", TABLE_NAME);
+        return String.format(Queries.Insert, TABLE_NAME, COLUMNS, "?,?");
     }
 
     @Override
@@ -91,12 +104,15 @@ public class GenreRepository extends Repository<Genre, String>{
 
     @Override
     protected String getFindAllStatement() {
-        return String.format("SELECT * FROM %s;", TABLE_NAME);
+        return String.format(Queries.SelectAll, TABLE_NAME);
     }
 
     @Override
     protected Genre convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Genre(rs.getInt(1), rs.getString(2));
+        return new Genre(
+                rs.getInt(1),
+                rs.getString(2)
+        );
     }
 
     @Override

@@ -1,6 +1,8 @@
 package ir.ac.ut.iemdb.repository;
 
 import ir.ac.ut.iemdb.model.Actor;
+import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
+import ir.ac.ut.iemdb.tools.Queries.Queries;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,14 +12,13 @@ import java.util.ArrayList;
 
 public class ActorRepository extends Repository<Actor, String> {
     private static final String TABLE_NAME = "Actor";
-    private static final String COLUMNS = "id,name,birthDate,nationality,image";
+    private static final String COLUMNS = "id, name, birthDate, nationality, image";
 
     private static ActorRepository instance;
 
     public static String getTableName() {
         return TABLE_NAME;
     }
-
     public static String getCOLUMNS() {
         return COLUMNS;
     }
@@ -26,10 +27,7 @@ public class ActorRepository extends Repository<Actor, String> {
         if (instance == null) {
             try {
                 instance = new ActorRepository();
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("error in ACTORRepository.create query.");
-            }
+            } catch (SQLException ignored) { }
         }
         return instance;
     }
@@ -37,12 +35,7 @@ public class ActorRepository extends Repository<Actor, String> {
     private ActorRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format("CREATE TABLE IF NOT EXISTS %s(id  int not null,\n" +
-                        "    name  varchar(20) not null,\n" +
-                        "    birthDate varchar(20),\n" +
-                        "    nationality varchar(20),\n" +
-                        "    image varchar(500),\n" +
-                        "    PRIMARY KEY(id));", TABLE_NAME)
+                String.format(Queries.createActor, TABLE_NAME)
         );
         createTableStatement.executeUpdate();
         createTableStatement.close();
@@ -51,9 +44,8 @@ public class ActorRepository extends Repository<Actor, String> {
 
     @Override
     protected String getFindByIdStatement() {
-        return String.format("SELECT* FROM %s actor WHERE actor.id = ?;", TABLE_NAME);
+        return String.format(Queries.SearchByOne,COLUMNS, TABLE_NAME, TABLE_NAME, "id");
     }
-
     @Override
     protected void fillFindByIdValues(PreparedStatement st, String id) throws SQLException {
         st.setInt(1, Integer.parseInt(id));
@@ -61,9 +53,8 @@ public class ActorRepository extends Repository<Actor, String> {
 
     @Override
     protected String getInsertStatement() {
-        return String.format("INSERT IGNORE INTO %s(id, name, birthDate, nationality, image) VALUES(?,?,?,?,?);", TABLE_NAME);
+        return String.format(Queries.Insert, TABLE_NAME, COLUMNS, "?,?,?,?,?");
     }
-
     @Override
     protected void fillInsertValues(PreparedStatement st, Actor data) throws SQLException {
         st.setInt(1, data.getId());
@@ -75,12 +66,18 @@ public class ActorRepository extends Repository<Actor, String> {
 
     @Override
     protected String getFindAllStatement() {
-        return String.format("SELECT %s FROM %s;", COLUMNS, TABLE_NAME);
+        return String.format(Queries.SelectAll, TABLE_NAME);
     }
 
     @Override
     protected Actor convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Actor(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+        return new Actor(
+                rs.getInt(1),
+                rs.getString(2),
+                rs.getString(3),
+                rs.getString(4),
+                rs.getString(5)
+        );
     }
 
     @Override

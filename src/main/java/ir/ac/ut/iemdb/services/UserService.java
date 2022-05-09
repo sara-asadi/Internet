@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import ir.ac.ut.iemdb.model.User;
 import ir.ac.ut.iemdb.repository.UserRepository;
 import ir.ac.ut.iemdb.services.HTTPRequestHandler.HTTPRequestHandler;
+import ir.ac.ut.iemdb.tools.URL.Url;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class UserService {
     }
 
     public void importUserFromWeb() throws Exception {
-        String UserJsonString = HTTPRequestHandler.getRequest("http://138.197.181.131:5000/api/users");
+        String UserJsonString = HTTPRequestHandler.getRequest(Url.users);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         List<User> users = gson.fromJson(UserJsonString, new TypeToken<List<User>>() {
         }.getType());
