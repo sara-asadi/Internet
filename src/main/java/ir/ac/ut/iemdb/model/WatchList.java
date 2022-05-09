@@ -2,11 +2,11 @@ package ir.ac.ut.iemdb.model;
 
 public class WatchList {
     String userEmail;
-    long movieId;
+    int movieId;
 
     public WatchList(){}
 
-    public WatchList(String userEmail, long movieId){
+    public WatchList(String userEmail, int movieId){
         this.userEmail = userEmail;
         this.movieId = movieId;
     }
@@ -19,11 +19,11 @@ public class WatchList {
         this.userEmail = userEmail;
     }
 
-    public long getMovieId() {
+    public int getMovieId() {
         return movieId;
     }
 
-    public void setMovieId(long movieId) {
+    public void setMovieId(int movieId) {
         this.movieId = movieId;
     }
 

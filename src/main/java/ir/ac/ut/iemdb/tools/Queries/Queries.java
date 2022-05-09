@@ -89,5 +89,13 @@ public class Queries {
                                                 "FOREIGN KEY (movieId) REFERENCES Movie(id)" +
                                                 ");";
 
+    public static final String createWatchList = "CREATE TABLE IF NOT EXISTS %s(\" +\n" +
+                                                    "movieId int not null,\n" +
+                                                    "userEmail varchar(25) not null,\n" +
+                                                    "primary key (movieId, userEmail),\n" +
+                                                    "FOREIGN KEY (userEmail) REFERENCES User(email),\n" +
+                                                    "FOREIGN KEY (movieId) REFERENCES Movie(id)" +
+                                                    ");";
+
     public Queries() {}
 }
