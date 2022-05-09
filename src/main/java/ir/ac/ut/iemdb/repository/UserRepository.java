@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class UserRepository extends Repository<User, String> {
     private static final String TABLE_NAME = "User";
     private static final String COLUMNS= "email, password, nickname, name, birthDate";
-
+    private static String currentUser;
     private static UserRepository instance;
 
     public static String getTableName() {
@@ -22,6 +22,12 @@ public class UserRepository extends Repository<User, String> {
     public static String getCOLUMNS() {
         return COLUMNS;
     }
+    public static String getCurrentUser() {
+        return currentUser;
+    }
+    public static void setCurrentUser(String currentUser) {
+        UserRepository.currentUser = currentUser;
+    }
 
     public static UserRepository getInstance() {
         if (instance == null) {
@@ -29,6 +35,10 @@ public class UserRepository extends Repository<User, String> {
                 instance = new UserRepository();
             } catch (SQLException ignored) {}
         }
+        try {
+        instance.insert(new User("guest", "1234", "guest", "guest", ""));
+        currentUser = "guest";
+        } catch (SQLException ignored) {}
         return instance;
     }
 

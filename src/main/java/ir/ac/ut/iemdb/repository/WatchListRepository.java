@@ -39,7 +39,7 @@ public class WatchListRepository extends Repository<WatchList, String>{
     private WatchListRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement createTableStatement = con.prepareStatement(
-                String.format(Queries.createWatchList, TABLE_NAME,UserRepository.getTableName(), MovieRepository.getTableName())
+                String.format(Queries.createWatchList, TABLE_NAME)
         );
         createTableStatement.executeUpdate();
         createTableStatement.close();
@@ -48,8 +48,8 @@ public class WatchListRepository extends Repository<WatchList, String>{
 
     public List<Movie> getUserWatchListMovies(String userEmail) {
         List<Movie> result = new ArrayList<>();
+        String statement = "SELECT * FROM Movie, WatchList\nWHERE WatchList.userEmail = \""+userEmail+"\" and watchList.movieId = Movie.id;";
 
-        String statement = String.format(Queries.SearchByTwoS, MovieRepository.getCOLUMNS(), TABLE_NAME, MovieRepository.getTableName(), TABLE_NAME, "userEmail", userEmail, TABLE_NAME, "movieId", MovieRepository.getTableName(), "id");
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement st = con.prepareStatement(statement);
         ) {
@@ -60,11 +60,24 @@ public class WatchListRepository extends Repository<WatchList, String>{
                     result.add(MovieRepository.getInstance().convertResultSetToDomainModel(resultSet));}
                 con.close();
                 return result;
-            } catch (SQLException ignored) {}
-        } catch (SQLException ignored) {}
+            } catch (SQLException e) {e.printStackTrace();}
+        } catch (SQLException e) {
+            System.out.println("hi");
+        }
         return result;
     }
 
+    public void remove(int movieId, String userEmail) {
+        String statement = String.format("delete from %s\nwhere %s.%s = %d and %s.%s = \"%s\";", TABLE_NAME, TABLE_NAME, "movieId", movieId, TABLE_NAME, "userEmail", userEmail);
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            try {
+                st.executeUpdate();
+                con.close();
+            } catch (SQLException i) {i.printStackTrace();}
+        } catch (SQLException e) {e.printStackTrace();}
+    }
 
     @Override
     protected String getFindByIdStatement() {

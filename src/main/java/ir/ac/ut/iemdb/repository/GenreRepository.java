@@ -59,8 +59,8 @@ public class GenreRepository extends Repository<Genre, String>{
                     result.add(MovieRepository.getInstance().convertResultSetToDomainModel(resultSet));}
                 con.close();
                 return result;
-            } catch (SQLException ignored) {}
-        } catch (SQLException ignored) {}
+            } catch (SQLException i) {i.printStackTrace();}
+        } catch (SQLException e) {e.printStackTrace();}
         return result;
     }
 

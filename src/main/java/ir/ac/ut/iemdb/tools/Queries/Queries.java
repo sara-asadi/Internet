@@ -13,7 +13,10 @@ public class Queries {
                                               "WHERE %s.%s = %d and %s.%s = %s.%s;";
 
     public static final String SearchByTwoS = "SELECT %s FROM %s, %s\n" +
-                                              "WHERE %s.%s = %s and %s.%s = %s.%s;";
+                                              "WHERE %s.%s = \"%s\" and %s.%s = %s.%s;";
+
+    public static final String Delete       = "delete from %s\n" +
+                                              "where %s.%s = %d and %s.%s = %s;";
 
     public static final String Insert       = "INSERT IGNORE INTO %s(%s) VALUES(%s);";
 
@@ -46,9 +49,10 @@ public class Queries {
                                                 "movieId int not null,\n" +
                                                 "commentText varchar(200) not null,\n" +
                                                 "PRIMARY KEY (id),\n" +
+                                                "unique(userEmail, movieId, commentText),\n" +
                                                 "FOREIGN KEY (userEmail) REFERENCES %s(email),\n" +
                                                 "FOREIGN KEY (movieId) REFERENCES %s(id)" +
-                                                ")";
+                                                ");";
 
     public static final String createGenre  = "CREATE TABLE IF NOT EXISTS %s(" +
                                                 "movieId int not null,\n" +
@@ -89,22 +93,22 @@ public class Queries {
                                                 "FOREIGN KEY (movieId) REFERENCES Movie(id)" +
                                                 ");";
 
-    public static final String createWatchList = "CREATE TABLE IF NOT EXISTS %s(\" +\n" +
+    public static final String createVotes  = "CREATE TABLE IF NOT EXISTS %s(" +
+                                                "commentId int NOT NULL,\n" +
+                                                "userEmail varchar(25) NOT NULL,\n" +
+                                                "vote int not null,\n" +
+                                                "PRIMARY KEY (commentId, userEmail),\n" +
+                                                "FOREIGN KEY (userEmail) REFERENCES User(email)ON DELETE CASCADE,\n" +
+                                                "FOREIGN KEY (commentId) REFERENCES Comments(id)ON DELETE CASCADE" +
+                                                ");";
+
+    public static final String createWatchList= "CREATE TABLE IF NOT EXISTS %s(" +
                                                     "movieId int not null,\n" +
                                                     "userEmail varchar(25) not null,\n" +
                                                     "primary key (movieId, userEmail),\n" +
                                                     "FOREIGN KEY (userEmail) REFERENCES User(email),\n" +
                                                     "FOREIGN KEY (movieId) REFERENCES Movie(id)" +
                                                     ");";
-
-    public static final String createVotes  = "CREATE TABLE IF NOT EXISTS %s(" +
-            "commentId int NOT NULL,\n" +
-            "userEmail varchar(25) NOT NULL,\n" +
-            "vote int not null,\n" +
-            "PRIMARY KEY (commentId, userEmail),\n" +
-            "FOREIGN KEY (userEmail) REFERENCES User(email)ON DELETE CASCADE,\n" +
-            "FOREIGN KEY (commentId) REFERENCES Comments(id)ON DELETE CASCADE" +
-            ");";
 
     public Queries() {}
 }

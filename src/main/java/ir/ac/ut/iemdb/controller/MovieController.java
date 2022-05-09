@@ -59,9 +59,14 @@ public class MovieController {
         return MovieRepository.getInstance().search(key);
     }
 
+    @GetMapping( "/search/genre/{key}" )
+    public List<Movie> searchGenre(@PathVariable String key) throws SQLException {
+        return GenreRepository.getInstance().getMovies(key);
+    }
+
     @GetMapping( "/rate/{rate}/{movieId}" )
     public Movie rate(@PathVariable Integer rate,@PathVariable Integer movieId) throws SQLException {
-        RatesRepository.getInstance().insert(new Rate(movieId, "saman@ut.ac.ir", rate));
+        RatesRepository.getInstance().insert(new Rate(movieId, UserRepository.getCurrentUser(), rate));
         return MovieRepository.getInstance().findById(String.valueOf(movieId));
     }
 
@@ -72,18 +77,24 @@ public class MovieController {
 
     @GetMapping( "/comment/{text}/{movieId}" )
     public String comment(@PathVariable String text,@PathVariable Integer movieId) throws SQLException {
-        CommentRepository.getInstance().insert(new Comment("saman@ut.ac.ir", movieId, text));
+        CommentRepository.getInstance().insert(new Comment(UserRepository.getCurrentUser(), movieId, text));
         return "comment added";
     }
 
     @GetMapping( "/comment/vote/{commentId}/{vote}" )
     public Comment vote(@PathVariable String vote, @PathVariable Integer commentId) throws SQLException {
         switch (vote) {
-            case "like": {VotesRepository.getInstance().insert(new Vote(commentId, "saman@ut.ac.ir", 1));
+            case "like": {VotesRepository.getInstance().insert(new Vote(commentId, UserRepository.getCurrentUser(), 1));
                 break;}
-            case "dislike": {VotesRepository.getInstance().insert(new Vote(commentId, "saman@ut.ac.ir", -1));
+            case "dislike": {VotesRepository.getInstance().insert(new Vote(commentId, UserRepository.getCurrentUser(), -1));
                 break;}
         }
         return CommentRepository.getInstance().findById(String.valueOf(commentId));
+    }
+
+    @GetMapping( "/add/{movieId}" )
+    public String addToWatchlist(@PathVariable Integer movieId) throws SQLException {
+        WatchListRepository.getInstance().insert(new WatchList(UserRepository.getCurrentUser(), movieId));
+        return "movie added";
     }
 }

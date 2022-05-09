@@ -79,7 +79,7 @@ public class RatesRepository extends Repository<Rate, String> {
                 con.close();
                 return ratingCount;
             } catch (SQLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         } catch (SQLException ignored) {
         }
