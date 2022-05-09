@@ -49,8 +49,6 @@ public class WatchListRepository extends Repository<WatchList, String>{
 
     protected void fillFindAllWatchListMovieByUserEmailValues(PreparedStatement st, WatchList data) throws SQLException {
         st.setString(1, data.getUserEmail());
-        st.setLong(2, data.getMovieId());
-
     }
 
     @Override

@@ -3,10 +3,7 @@ package ir.ac.ut.iemdb.services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import ir.ac.ut.iemdb.model.Actor;
-import ir.ac.ut.iemdb.model.Cast;
-import ir.ac.ut.iemdb.model.Comment;
-import ir.ac.ut.iemdb.model.Movie;
+import ir.ac.ut.iemdb.model.*;
 import ir.ac.ut.iemdb.repository.*;
 import ir.ac.ut.iemdb.services.HTTPRequestHandler.HTTPRequestHandler;
 
@@ -36,9 +33,9 @@ public class MoviesService {
         for (Movie movie : movies) {
             try {
                 MovieRepository.getInstance().insert(movie);
-                //for (String genre: movie.getGenres()) {
-                //    GenreRepository.getInstance().insert(genre);
-                //}
+                for (String genre: movie.getGenres()) {
+                    GenreRepository.getInstance().insert(new Genre(movie.getId(),genre));
+                }
                 for (Comment comment : movie.getComments()) {
                     CommentRepository.getInstance().insert(comment);
                 }
