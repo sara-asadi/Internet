@@ -1,16 +1,15 @@
 package ir.ac.ut.iemdb.model;
 
 public class Vote {
+    int commentId;
     String userEmail;
-    long commentId;
     int value;
-
 
     public Vote(){}
 
-    public Vote(String userEmail,long commentId, int value){
-        this.userEmail = userEmail;
+    public Vote(int commentId, String userEmail, int value){
         this.commentId = commentId;
+        this.userEmail = userEmail;
         this.value = value;
     }
 
@@ -22,11 +21,11 @@ public class Vote {
         this.userEmail = userEmail;
     }
 
-    public long getCommentId() {
+    public int getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(long commentId) {
+    public void setCommentId(int commentId) {
         this.commentId = commentId;
     }
 

@@ -7,17 +7,22 @@ public class Comment {
     String userEmail;
     int movieId;
     String text;
-    //int likes;
-    //int disLikes;
+    int likes;
+    int disLikes;
 
     public Comment () {}
-    public Comment (int id_, String userEmail_, int movieId_, String text_){
+    public Comment (String userEmail_, int movieId_, String text_){
+        (userEmail = userEmail_).equals("");
+        movieId = (int) movieId_;
+        (text = text_).equals("");
+    }
+    public Comment (int id_, String userEmail_, int movieId_, String text_, int likes_, int dislikes_){
         (userEmail = userEmail_).equals("");
         movieId = (int) movieId_;
         (text = text_).equals("");
         id = (int) id_;
-        //likes = 0;
-        //disLikes = 0;
+        likes = likes_;
+        disLikes = dislikes_;
     }
     public int getId() {
         return id;
@@ -51,7 +56,22 @@ public class Comment {
         this.userEmail = userEmail;
     }
 
-//    public String getUserName() {
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+
+    public int getDisLikes() {
+        return disLikes;
+    }
+
+    public void setDisLikes(int disLikes) {
+        this.disLikes = disLikes;
+    }
+    //    public String getUserName() {
 //        int i = userEmail.indexOf('@');
 //        return "@"+userEmail.substring(0,i);
 //    }

@@ -1,6 +1,7 @@
 package ir.ac.ut.iemdb.repository;
 
 import ir.ac.ut.iemdb.model.Comment;
+import ir.ac.ut.iemdb.model.Movie;
 import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
 import ir.ac.ut.iemdb.tools.Queries.Queries;
 
@@ -30,8 +31,8 @@ public class CommentRepository extends Repository<Comment, String> {
             try {
                 instance = new CommentRepository();
             } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("error in CommentRepository.create query.");
+                //e.printStackTrace();
+                //System.out.println("error in CommentRepository.create query.");
             }
         }
         return instance;
@@ -95,7 +96,10 @@ public class CommentRepository extends Repository<Comment, String> {
                 rs.getInt(1),
                 rs.getString(2),
                 rs.getInt(3),
-                rs.getString(4));
+                rs.getString(4),
+                VotesRepository.getLikes(rs.getInt(1)),
+                VotesRepository.getDislikes(rs.getInt(1))
+        );
     }
 
     @Override

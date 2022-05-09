@@ -1,8 +1,8 @@
 package ir.ac.ut.iemdb.repository;
 
 
-import ir.ac.ut.iemdb.model.Movie;
 import ir.ac.ut.iemdb.model.Rate;
+import ir.ac.ut.iemdb.model.Vote;
 import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
 import ir.ac.ut.iemdb.tools.Queries.Queries;
 
@@ -11,73 +11,74 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class RatesRepository extends Repository<Rate, String> {
-    private static final String TABLE_NAME = "Rates";
-    private static final String COLUMNS = "movieId, userEmail, rate";
+public class VotesRepository extends Repository<Vote, String> {
+    private static final String TABLE_NAME = "Votes";
+    private static final String COLUMNS = "commentId, userEmail, vote";
 
-    private static RatesRepository instance;
+    private static VotesRepository instance;
 
     public static String getTableName() {
         return TABLE_NAME;
     }
 
-    public static RatesRepository getInstance() {
+    public static VotesRepository getInstance() {
         if (instance == null) {
             try {
-                instance = new RatesRepository();
+                instance = new VotesRepository();
             } catch (SQLException ignored) {}
         }
         return instance;
     }
 
-    private RatesRepository() throws SQLException {
+    private VotesRepository() throws SQLException {
         Connection con = ConnectionPool.getConnection();
-        PreparedStatement createTableStatement = con.prepareStatement(String.format(Queries.createRates, TABLE_NAME));
+        PreparedStatement createTableStatement = con.prepareStatement(String.format(Queries.createVotes, TABLE_NAME));
         createTableStatement.executeUpdate();
         createTableStatement.close();
         con.close();
     }
 
-    public String getRating(int movieId) {
-        String statement = String.format("select avg(rate) from %s\n" +
-                                         "where %s.movieId = %d;",
-                                         TABLE_NAME, TABLE_NAME, movieId);
-        try (Connection con = ConnectionPool.getConnection();
-             PreparedStatement st = con.prepareStatement(statement);
-        ) {
-            ResultSet resultSet;
-            try {
-                Object rating = null;
-                resultSet = st.executeQuery();
-                while (resultSet.next()){
-                    rating = resultSet.getObject(1);
-                }
-                con.close();
-                if (rating == null)
-                    return "0";
-                return rating.toString();
-            } catch (SQLException ignored) {}
-        } catch (SQLException ignored) {}
-        return "0";
-    }
-    public int getRatingCount(int movieId) {
+    public static int getLikes(int commentId) {
         String statement = String.format("select count(userEmail) from %s\n" +
-                                         "where %s.movieId = %d;",
-                                         TABLE_NAME, TABLE_NAME, movieId);
+                                        "where %s.commentId = %d and votes.vote = 1;",
+                TABLE_NAME, TABLE_NAME, commentId);
         try (Connection con = ConnectionPool.getConnection();
              PreparedStatement st = con.prepareStatement(statement);
         ) {
             ResultSet resultSet;
             try {
-                int ratingCount = 0;
+                int likes = 0;
                 resultSet = st.executeQuery();
                 while (resultSet.next()){
-                     ratingCount = Integer.parseInt(resultSet.getString(1));
+                    likes = Integer.parseInt(resultSet.getString(1));
                 }
                 con.close();
-                return ratingCount;
+                return likes;
+            } catch (SQLException e) {
+                //e.printStackTrace();
+            }
+        } catch (SQLException ignored) {
+        }
+        return -1;
+    }
+
+    public static int getDislikes(int commentId) {
+        String statement = String.format("select count(userEmail) from %s\n" +
+                                         "where %s.commentId = %d and votes.vote = -1;",
+                                         TABLE_NAME, TABLE_NAME, commentId);
+        try (Connection con = ConnectionPool.getConnection();
+             PreparedStatement st = con.prepareStatement(statement);
+        ) {
+            ResultSet resultSet;
+            try {
+                int dislikes = 0;
+                resultSet = st.executeQuery();
+                while (resultSet.next()){
+                    dislikes = Integer.parseInt(resultSet.getString(1));
+                }
+                con.close();
+                return dislikes;
             } catch (SQLException e) {
                 //e.printStackTrace();
             }
@@ -88,11 +89,11 @@ public class RatesRepository extends Repository<Rate, String> {
 
     @Override
     protected String getInsertStatement() {
-        return String.format(Queries.InsertUpdate, TABLE_NAME, COLUMNS, "?,?,?", "rate", "?");
+        return String.format(Queries.InsertUpdate, TABLE_NAME, COLUMNS, "?,?,?", "vote", "?");
     }
     @Override
-    protected void fillInsertValues(PreparedStatement st, Rate data) throws SQLException {
-        st.setInt(1, data.getMovieId());
+    protected void fillInsertValues(PreparedStatement st, Vote data) throws SQLException {
+        st.setInt(1, data.getCommentId());
         st.setString(2, data.getUserEmail());
         st.setInt(3, data.getValue());
         st.setInt(4, data.getValue());
@@ -112,16 +113,16 @@ public class RatesRepository extends Repository<Rate, String> {
     }
 
     @Override
-    protected Rate convertResultSetToDomainModel(ResultSet rs) throws SQLException {
-        return new Rate(rs.getInt(1), rs.getString(2), rs.getInt(3));
+    protected Vote convertResultSetToDomainModel(ResultSet rs) throws SQLException {
+        return new Vote(rs.getInt(1), rs.getString(2), rs.getInt(3));
     }
 
     @Override
-    protected ArrayList<Rate> convertResultSetToDomainModelList(ResultSet rs) throws SQLException {
-        ArrayList<Rate> rates = new ArrayList<>();
+    protected ArrayList<Vote> convertResultSetToDomainModelList(ResultSet rs) throws SQLException {
+        ArrayList<Vote> votes = new ArrayList<>();
         while (rs.next()) {
-            rates.add(this.convertResultSetToDomainModel(rs));
+            votes.add(this.convertResultSetToDomainModel(rs));
         }
-        return rates;
+        return votes;
     }
 }

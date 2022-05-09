@@ -16,7 +16,7 @@ public class ConnectionPool {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
         ds.setUsername(dbUserName);
         ds.setPassword(dbPassword);
@@ -41,7 +41,7 @@ public class ConnectionPool {
         }
         catch (SQLException e)
         {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
         }
     }
 }

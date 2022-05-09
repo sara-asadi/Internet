@@ -12,12 +12,12 @@ public class IemdbApplication {
 
 	public static void main(String[] args) {
 		try {
-			MoviesService.getInstance().importMoviesFromWeb();
 			ActorService.getInstance().importActorFromWeb();
 			UserService.getInstance().importUserFromWeb();
+			MoviesService.getInstance().importMoviesFromWeb();
 			CommentsService.getInstance().importCommentsFromWeb();
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		SpringApplication.run(IemdbApplication.class, args);
 	}
