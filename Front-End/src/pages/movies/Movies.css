@@ -1,0 +1,7 @@
+.hero-image {
+    background-color: #292929;
+    height: 50px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }

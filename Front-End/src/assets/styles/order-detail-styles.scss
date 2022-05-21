@@ -1,0 +1,33 @@
+
+.restaurant-title {
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  font-size: 22px;
+}
+.separator {
+  border: 1px solid #d9d7d7;
+  width: 80%;
+  margin: 20px auto;
+}
+
+.food-table {
+  margin: 0 40px;
+  text-align: center;
+
+  thead {
+    line-height: 15px;
+    background: #eae9e9;
+    color: gray;
+  }
+}
+
+
+.price-wrapper {
+  margin: 0px 40px 40px;
+  .price {
+    display: flex;
+
+    flex-direction: row-reverse;
+  }
+}

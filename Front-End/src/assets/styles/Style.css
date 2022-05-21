@@ -1,0 +1,286 @@
+body, html{
+    background-color: #292929;
+    font-color:white;
+}
+.navbar-header{
+  padding:0px;
+  margin-left:0px;
+}
+.navbar-form{
+  padding: 0px;
+  padding-right: 10px;
+  align-self: center;
+}
+.logo{
+  width: 50px;
+  height: 50px;
+}
+.default-navbar{
+    background-color: #b12025;
+    border:0px;
+    padding: 0px;
+}
+.movies{
+    display:flex;
+    flex-wrap:wrap;
+}
+.sort-bar{
+    width:min-content;
+}
+.sort{
+    background-color:#b12025;
+    border-radius:5px;
+    display:flex;
+    flex:center;
+}
+.sort-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.btn-link{
+    color:white;
+    align:center
+}
+.watch-list{
+    width:50%;
+    align:center;
+}
+.watch-list-item{
+    background-color: #4e4e50;
+    font-color:white;
+    border-radius:15px;
+}
+.recommends{
+    background-color: #4e4e50;
+    font-color:white;
+    border-radius:15px;
+    align:center;
+}
+.recommend-movie{
+    display:flex;
+    flex-wrap:wrap;
+}
+
+.movies{
+    display:flex;
+    flex:wrap;
+    align: stretch;
+    align-content:space-between;
+    gap:10px 10px;
+}
+
+.spk-img:hover{
+    left: 35%;
+    opacity: 1;
+    z-index: 9;
+}
+
+.hero-image {
+    background-color: #292929;
+    height: 500px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
+
+  .hero-text {
+    text-align: center;
+    position: absolute;
+    top: 110%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.5vw;
+    width: 100%;
+  }
+  .imdb-rate {
+    font-size: 4vw;
+    color: white;
+    text-align: center;
+    background-color: #B12025;
+    opacity: 0.7;
+    padding: 10px;
+  }
+  .user-rate {
+    font-size: 1.2vw;
+    color: white;
+    text-align: center;
+    right: 5%;
+  }
+  .user-rate-val{
+    font-size: 2.5vw;
+    left: 5%;
+  }
+  .cast {
+    font-size: 1.5vw;
+    color: white;
+    text-align: center;
+    background-color: #4E4E50;
+    padding: 10px;
+    border-radius: 25px;
+  }
+  .container-2 {
+  position: relative;
+  width: 100%;
+  }
+
+  .image-2 {
+  display: block;
+  
+  height: auto;
+  border-radius: 20%;
+  }
+
+  .overlay-2 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #B12025;
+  border-radius: 20%;
+  }
+
+  .container-2:hover .overlay-2 {
+  opacity: 0.8;
+  }
+
+  .comment {
+    font-size: 1.5 vw;
+    color: black;
+    text-align: right;
+    background-color: white;
+    padding: 10px;
+    border-radius: 25px;
+    width: 90%;
+  }
+  .btn {
+    font-size: small;
+    height: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+  .vote {
+    display: inline-block;
+  }
+  .caption {
+    text-align: center;
+  }
+
+  .actor-desc-text {
+    color: white;
+    font-size: 1.2vw;
+    padding: 10px;
+    margin-right: 50px;
+  }
+  .actor-img {
+      width: 100%;
+  }
+  .actor-movies {
+    font-size: 1.5vw;
+    color: white;
+    text-align: center;
+    background-color: #4e4e50;
+    padding: 10px;
+    border-radius: 25px;
+  }
+  .movie-img {
+    width: 100%;
+  }
+  .container-1 {
+  position: relative;
+  width: 100%;
+  }
+
+  .image-1 {
+  display: block;
+  width: 100%;
+  height: auto;
+  }
+  .button-2 {
+    background-color: #B12025;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 12px;
+  }
+  .overlay-1 {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 0;
+  transition: .5s ease;
+  background-color: #B12025;
+  }
+
+  .container-1:hover .overlay-1 {
+  opacity: 0.8;
+  }
+
+  .text-1 {
+  color: white;
+  font-size: 1.1vw;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  }
+
+  .container-login {
+      color: white;
+      background-color: rgb(15, 8, 16);
+    height: 750px;
+    background-repeat: repeat;
+    background-size: cover;
+    position: relative;
+  }
+  .image3 {
+    width: 12vw;
+    border-radius: 25px 0px 0px 25px;
+    margin: 0;
+    padding: 0;
+}
+.container3 {
+    background-color: #4E4E50;
+    border-radius: 25px;
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-size: 1.5vw;
+    text-align: center;
+}
+.whatchlist-title {
+    color: white;
+    font-size: 1.5vw;
+    margin-left: 12.5vw;
+    margin-top: 10px;
+}
+.whatchlist-desc {
+    color: white;
+    font-size: 1.2vw;
+    text-align: right;
+}
+.image1 {
+  display: block;
+  height: 290px;
+  width: 290px;
+  }
