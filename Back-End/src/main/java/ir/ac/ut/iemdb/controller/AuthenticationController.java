@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("auth")
+@RequestMapping("")
 public class AuthenticationController {
-    @GetMapping("/login/{email}/{password}")
+    @GetMapping("login/{email}/{password}")
     public ResponseEntity login(@PathVariable String email, @PathVariable String password) throws SQLException {
         try {
             Login loginData = new Login(email, password);
@@ -32,7 +32,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/login")
+    @PostMapping("login")
     public ResponseEntity login(
             @RequestBody Login loginData) throws IOException {
         String email = loginData.getEmail();
@@ -47,16 +47,17 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/signup")
+    @PostMapping("signup")
     public ResponseEntity signup(
             @RequestBody SignUp signUpData) throws IOException {
-        String email = signUpData.getEmail();
-        String password = signUpData.getPassword();
         try {
             AuthenticationService.signUpUser(signUpData);
             System.out.println("sign up successfull");
             return ResponseEntity.status(HttpStatus.OK).body("OK - sign up successfull");
         } catch (Exception e) {
+            if (e.getMessage().equals("email already exists")) {
+                return ResponseEntity.status(HttpStatus.OK).body("email already exists");
+            }
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body("sign up unsuccessful");
         }

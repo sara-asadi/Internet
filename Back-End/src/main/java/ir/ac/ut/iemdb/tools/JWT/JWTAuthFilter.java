@@ -19,15 +19,12 @@ public class JWTAuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String url = request.getRequestURI();
-        System.out.println("jwt filter url " + url);
         String method = request.getMethod();
 
-        if(url.equals("/auth/login/") || url.equals("/auth/signup/"))
+        if(url.equals("/login") || url.equals("/signup"))
             chain.doFilter(request, response);
         else {
-            System.out.println("hiii");
             String token = request.getHeader("Authorization");
-            System.out.println("token:"+token);
             if(token == null) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 response.getWriter().println("You have not authorized yet!");

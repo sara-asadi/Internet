@@ -37,7 +37,7 @@ public class AuthenticationService {
         if (user != null)
             throw new Exception("email already exists");
         try {
-            UserRepository.getInstance().insert(new User(signUpData.getEmail(), signUpData.getPassword(), signUpData.getNickname(), signUpData.getName(), signUpData.getBirthDate()));
+            UserRepository.getInstance().insert(new User(signUpData.getEmail(), signUpData.getPassword(), signUpData.getNickname(), signUpData.getNickname(), signUpData.getBirthDate()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
