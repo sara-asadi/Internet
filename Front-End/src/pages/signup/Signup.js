@@ -1,73 +1,111 @@
-import "../../assets/styles/signup-styles.css";
+import "./signup-styles.css";
 
 import * as React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
+import { toast } from "react-toastify";
+import { useState } from 'react';
 
-export default class Signup extends React.Component {
+const axios = require('axios').default;
 
-  constructor(props) {
-    super(props);
-    this.state = {}
+async function signup(credentials, navigate) {
+
+  axios.post('http://localhost:8080/signup',
+    {
+      "email": credentials.email,
+      "password": credentials.password,
+      "nickname": credentials.name,
+      "name": credentials.secondName,
+      "birthDate": credentials.birthDate
+    },
+    {
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "application/json"
+    })
+    .then(response => {
+      console.log(response);
+      if (response.status === 200) {
+        console.log('200');
+        if (response.data === "email already exists") {
+          console.log("email already exists!")
+        } else {
+          toast.success("You Signed Up!");
+          localStorage.setItem("token", response.data.token);
+          navigate("/");
+        }
+      }
+      else {
+        console.log('errror');
+        toast.error(response.data.message);
+      }
+    }).catch(function (error) {
+      console.log("error :", error);
+    });
+
+}
+
+export default function Signup() {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [nickname, setNickname] = useState();
+  const [name, setName] = useState();
+  const [birthDate, setBirthDate] = useState();
+  const navigate = useNavigate();
+
+  const handleSubmit = async e => {
+    e.preventDefault();
+    const success = await signup({
+      email: email,
+      password: password,
+      name: name,
+      nickname: nickname,
+      birthDate: birthDate,
+    }, navigate);
+    console.log(success);
+    if (success) {
+      navigate("/");
+    }
   }
 
-  componentDidMount() {
-    document.title = "Signup";
-  }
-
-  render() {
+  if (localStorage.getItem("token") !== null) {
+    return <Navigate to="/" />;
+  } else {
     return (
-      <div class="container-login" dir="ltr">
-        <div class="container p-1">
+      <div className="container-login" dir="ltr">
+        <div className="container p-1">
           <h1>Signup</h1>
           <br></br>
-          <form action="" method="POST">
-            <div class="form-group">
-              <label for="email">Email:</label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                placeholder="Enter email"
-                name="email"
-              />
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email:</label>
+              <input type="email" className="form-control" onChange={e => setEmail(e.target.value)} placeholder="email" required />
             </div>
             <br></br>
-            <div class="form-group">
-              <label for="pwd">Password:</label>
-              <input
-                type="password"
-                class="form-control"
-                id="pwd"
-                placeholder="Enter password"
-                name="password"
-              />
+            <div className="form-group">
+              <label>Password:</label>
+              <input type="password" className="form-control" onChange={e => setPassword(e.target.value)} placeholder="password" required />
             </div>
             <br></br>
-            <div class="form-group">
-              <label for="name">Name:</label>
-              <input
-                type="name"
-                class="form-control"
-                id="name"
-                placeholder="Enter name"
-                name="name"
-              />
+            <div className="form-group">
+              <label>Name:</label>
+              <input type="text" className="form-control" onChange={e => setName(e.target.value)} placeholder="name" required />
             </div>
             <br></br>
-            <div class="form-group">
-              <label for="age">Age:</label>
-              <input
-                type="age"
-                class="form-control"
-                id="age"
-                placeholder="Enter age"
-                name="age"
-              />
+            <div className="form-group">
+              <label>Nickname:</label>
+              <input type="text" className="form-control" onChange={e => setNickname(e.target.value)} placeholder="nickname" required />
             </div>
             <br></br>
-            <button type="submit" class="btn btn-success">
+            <div className="form-group">
+              <label>BirthDate:</label>
+              <input type="date" className="form-control" onChange={e => setBirthDate(e.target.value)} required />
+            </div>
+            <br></br>
+            <button type="submit" className="btn btn-success">
               Signup
             </button>
+            <br></br><br></br><hr></hr><br></br>
+            <Link to='/login'><button type="submit" className="btn btn-primary">Login</button></Link>
           </form>
         </div>
       </div>
