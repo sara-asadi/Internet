@@ -5,8 +5,10 @@ import React from 'react';
 // import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
-//import Movies from "./pages/movies/Movies";
+import Movies from "./pages/movies/Movies";
 import Actor from './pages/actor/Actor';
+import Logout from './pages/Logout';
+import { render } from '@testing-library/react';
 
 class App extends React.Component {
   constructor(props) {
@@ -43,6 +45,9 @@ class App extends React.Component {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/actors" element={<Actor />} />
+            <Route exact path="/" element={<Movies />} />
+            <Route path="/movies" element={<Movies />} />
+            <Route path="/logout" element={<Logout />} />
             {/*<Route path="/movies" element={<Movies />} />
         
         

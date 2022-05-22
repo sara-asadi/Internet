@@ -3,11 +3,10 @@ import PropTypes from "prop-types";
 
 export default class ActorCard extends React.Component {
   constructor(props) {
-      super(props);
-      this.state = {
-          redirect: false,
-        };
-    debugger
+    super(props);
+    this.state = {
+      redirect: false,
+    };
   }
 
   render() {

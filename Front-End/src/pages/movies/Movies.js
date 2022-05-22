@@ -27,7 +27,7 @@ export default class Movies extends React.Component {
       const apiUrl2 = `${MOVIESCAST_URL}${this.state.MovieId}`;
       const response2 = await fetch(apiUrl2);
       const json2 = await response2.json();
-      debugger
+
       setTimeout(() => {
         this.setState({
           Actors: json2
@@ -36,7 +36,7 @@ export default class Movies extends React.Component {
       const apiUrl1 = `${MOVIESCOMMENTS_URL}${this.state.MovieId}`;
       const response1 = await fetch(apiUrl1);
       const json1 = await response1.json();
-      debugger
+
       setTimeout(() => {
         this.setState({
           Comments: json1
@@ -51,14 +51,13 @@ export default class Movies extends React.Component {
       const apiUrl = `${MOVIES_URL}?search=${searchFilter}&type=${typeFilter}`;
       const response = await fetch(apiUrl);
       const json = await response.json();
-      debugger
+
       setTimeout(() => {
         this.setState({
           Movies: json,
         });
       }, 2000);
     }
-    debugger;
   }
 
   getId = () => {
@@ -160,10 +159,10 @@ export default class Movies extends React.Component {
                 <div className="carousel-inner">
                   <div className="carousel-item active">
                     <div className="row">
-                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id=" + this.state.Movie.actorIds[0]} ><img src={this.state.Movie.actorImages[0]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[0]}<br></br>{this.state.Movie.actorAges[0]}</div></div></a></div></div>
-                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id=" + this.state.Movie.actorIds[1]}><img src={this.state.Movie.actorImages[1]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[1]}<br></br>{this.state.Movie.actorAges[1]}</div></div></a></div></div>
-                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id=" + this.state.Movie.actorIds[2]}><img src={this.state.Movie.actorImages[2]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[2]}<br></br>{this.state.Movie.actorAges[2]}</div></div></a></div></div>
-                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:4277/actors?id=" + this.state.Movie.actorIds[3]}><img src={this.state.Movie.actorImages[3]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[3]}<br></br>{this.state.Movie.actorAges[3]}</div></div></a></div></div>
+                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:3000/actors?id=" + this.state.Movie.actorIds[0]} ><img src={this.state.Movie.actorImages[0]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[0]}<br></br>{this.state.Movie.actorAges[0]}</div></div></a></div></div>
+                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:3000/actors?id=" + this.state.Movie.actorIds[1]}><img src={this.state.Movie.actorImages[1]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[1]}<br></br>{this.state.Movie.actorAges[1]}</div></div></a></div></div>
+                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:3000/actors?id=" + this.state.Movie.actorIds[2]}><img src={this.state.Movie.actorImages[2]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[2]}<br></br>{this.state.Movie.actorAges[2]}</div></div></a></div></div>
+                      <div className="col-sm-3"><div className="container-2"><a href={"http://localhost:3000/actors?id=" + this.state.Movie.actorIds[3]}><img src={this.state.Movie.actorImages[3]} className="image-2" /><div className="overlay-2"><div className="text-1">{this.state.Movie.actorNames[3]}<br></br>{this.state.Movie.actorAges[3]}</div></div></a></div></div>
                     </div>
                   </div>
                 </div>
@@ -212,7 +211,6 @@ export default class Movies extends React.Component {
   actorsList() {
     if (this.state.Actors) {
       const actors = this.state.Actors;
-      debugger;
 
       var items = [];
       for (var i = 0; i < actors.length; i++) {
@@ -244,7 +242,6 @@ export default class Movies extends React.Component {
       for (var i = 0; i < 10; i++) {
         items.push(<MovieCard Movie={movies[i]} key={"M" + i} />);
       }
-      debugger
       return items;
     }
     return undefined
@@ -253,32 +250,32 @@ export default class Movies extends React.Component {
   renderMovies() {
     return (
       <div>
-        <div class="container">
-          <div class="movies col-md-10">{this.moviesList()}</div>
-          <span class="col-md-2 sort-bar">
-            <label class="title">:رتبه بندی بر اساس</label>
-            <div class="sort">
-              <form action="movies" method="POST" class="sort-form">
-                <button
-                  type="submit"
-                  name="action"
-                  value="sort_by_date"
-                  class="btn btn-link"
-                >
-                  تاریخ
-                </button>
-                <button
-                  type="submit"
-                  name="action"
-                  value="sort_by_imdb"
-                  class="btn btn-link"
-                >
-                  امتیاز imdb
-                </button>
-              </form>
-            </div>
-          </span>
-        </div>
+        <span class="col-md-2 sort-bar">
+          <label class="title">:رتبه بندی بر اساس</label>
+          <div class="sort">
+            <form action="movies" method="POST" class="sort-form">
+              <button
+                type="submit"
+                name="action"
+                value="sort_by_date"
+                class="btn btn-link"
+              >
+                تاریخ
+              </button>
+              <button
+                type="submit"
+                name="action"
+                value="sort_by_imdb"
+                class="btn btn-link"
+              >
+                امتیاز imdb
+              </button>
+            </form>
+          </div>
+        </span>
+        <br></br><br></br><br></br>
+        <div class="movies">{this.moviesList()}</div>
+
       </div>
     );
   }

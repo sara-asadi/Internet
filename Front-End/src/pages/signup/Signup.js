@@ -19,27 +19,31 @@ async function signup(credentials, navigate) {
       "birthDate": credentials.birthDate
     },
     {
-      "Authorization": `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json"
     })
     .then(response => {
-      console.log(response);
+      //console.log(response);
       if (response.status === 200) {
-        console.log('200');
+        console.log('signup 200');
         if (response.data === "email already exists") {
-          console.log("email already exists!")
+          console.log("email already exists!");
+          toast.error("email already exists!");
+          return false;
         } else {
           toast.success("You Signed Up!");
           localStorage.setItem("token", response.data.token);
           navigate("/");
+          return true;
         }
       }
       else {
         console.log('errror');
         toast.error(response.data.message);
+        return false;
       }
     }).catch(function (error) {
       console.log("error :", error);
+      return false;
     });
 
 }
@@ -54,17 +58,13 @@ export default function Signup() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const success = await signup({
+    await signup({
       email: email,
       password: password,
       name: name,
       nickname: nickname,
       birthDate: birthDate,
     }, navigate);
-    console.log(success);
-    if (success) {
-      navigate("/");
-    }
   }
 
   if (localStorage.getItem("token") !== null) {

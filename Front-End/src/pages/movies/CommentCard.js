@@ -7,7 +7,6 @@ export default class CommentCard extends React.Component {
     this.state = {
       redirect: false,
     };
-    debugger;
   }
 
   render() {

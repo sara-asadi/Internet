@@ -1,29 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
 import "./Movies.css"
+import { Link } from "react-router-dom";
 export default class MovieCard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       redirect: false,
     };
-    debugger;
   }
 
   render() {
     return (
-      <span class="container-1">
-        <a href="#">
-          <img src={this.props.Movie.image} className="poster image-1"  />
-          <div class="overlay-1">
-            <div class="text-1">
-              {this.props.Movie.name}
-              <br />
-              {this.props.Movie.imdbRate}
-            </div>
-          </div>
-        </a>
-      </span>
+      <div className="row">
+        //<div className="col-sm-11">
+          <span class="container-1">
+            <Link to={"/movies?id=" + this.props.Movie.id}>
+              <img src={this.props.Movie.image} className="" />
+              <div class="overlay-1">
+                <div class="text-1">
+                  {this.props.Movie.name}
+                  <br />
+                  {this.props.Movie.imdbRate}
+                </div>
+              </div>
+            </Link>
+          </span>
+        </div>
+      </div>
     );
   }
 }

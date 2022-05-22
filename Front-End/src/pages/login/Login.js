@@ -10,29 +10,32 @@ const axios = require('axios').default;
 
 async function loginUser(credentials, navigate) {
   console.log('loginUser');
-  let token = axios.post('http://localhost:8080/login',
+  axios.post('http://localhost:8080/login',
     { "email": credentials.email, "password": credentials.password },
     {
-      "Authorization": `Bearer ${localStorage.getItem("token")}`,
       "Content-Type": "application/json"
     }
   ).then(response => {
-    console.log('token:' + token);
-    console.log(response);
-
+    let token = response.data.token;
+    //console.log('token:' + token);
+    //console.log('response:' + JSON.stringify(response));
     if (response.status === 200) {
-      console.log('200');
-      toast.success("You Logged in!");
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
+      console.log('login 200');
+      if (response.data === "password incorrect") {
+        console.log("password incorrect!");
+        toast.error("password incorrect!");
+      } else {
+        toast.success("You Logged in!");
+        localStorage.setItem("token", JSON.stringify(token));
+        //console.log("token" + localStorage.getItem("token"));
+        navigate("/");
+      }
     } else {
       console.log('errror');
       toast.error(response.data.message);
     }
 
   }).catch(function (error) { console.log("error :", error); });
-
-  return token;
 }
 
 export default function Login({ setJWT }) {
@@ -43,18 +46,15 @@ export default function Login({ setJWT }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await loginUser({
+    await loginUser({
       email: email,
       password: password,
     }, navigate);
-    if (email && token) {
-      localStorage.setItem("token", token);
-      navigate("/");
-    }
-
   }
 
   if (localStorage.getItem("token") !== null) {
+    //localStorage.removeItem("token");
+    console.log("token" + localStorage.getItem("token"));
     return <Navigate to="/" />;
   } else {
     return (
