@@ -4,11 +4,15 @@ import ir.ac.ut.iemdb.model.User;
 import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
 import ir.ac.ut.iemdb.tools.Queries.Queries;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.google.common.io.Resources;
+import com.google.common.hash.Hashing;
 
 public class UserRepository extends Repository<User, String> {
     private static final String TABLE_NAME = "User";
@@ -68,7 +72,7 @@ public class UserRepository extends Repository<User, String> {
     @Override
     protected void fillInsertValues(PreparedStatement st, User data) throws SQLException {
         st.setString(1, data.getEmail());
-        st.setString(2, data.getPassword());
+        st.setString(2, Hashing.sha256().hashString(data.getPassword(), StandardCharsets.UTF_8).toString());
         st.setString(3, data.getNickname());
         st.setString(4, data.getName());
         st.setString(5, data.getBirthDate());

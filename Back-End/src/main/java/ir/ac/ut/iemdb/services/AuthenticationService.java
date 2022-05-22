@@ -1,45 +1,47 @@
 package ir.ac.ut.iemdb.services;
 
+import com.google.common.hash.Hashing;
 import ir.ac.ut.iemdb.model.Login;
 import ir.ac.ut.iemdb.model.SignUp;
 import ir.ac.ut.iemdb.model.User;
 import ir.ac.ut.iemdb.repository.UserRepository;
+import ir.ac.ut.iemdb.tools.JWT.JWTAuthentication;
 import ir.ac.ut.iemdb.tools.exceptions.ForbiddenException;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.web.servlet.tags.EditorAwareTag;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class AuthenticationService {
-    public static User authenticateUser(Login login) throws Exception{
-        if(login.getEmail() == null || login.getEmail().length() == 0 ||
-            login.getPassword() == null || login.getPassword().length() == 0)
-            throw new ForbiddenException("Fields must have values");
-        User user = UserRepository.getInstance().findById(login.getEmail());
+
+    public static String login(Login data) throws Exception {
+        User user = UserRepository.getInstance().findById(data.getEmail());
         if (user != null) {
-            if (!user.getPassword().equals(login.getPassword())){
-                throw new Exception("passwords do not match"+"email:"+user.getPassword()+"pass:"+login.getPassword());
-            }
-            return user;
+            if (!PasswordIsCorrect(user, data.getPassword()))
+                throw new Exception("password incorrect");
+            UserRepository.setCurrentUser(data.getEmail());
+            return JWTAuthentication.createAndSignToken(data.getEmail());
         }
-        else
-            throw new Exception();
+        else throw new Exception("email not found");
     }
 
-    public static boolean isStudentInDB(String email) throws SQLException {
-        if(email == null || email.length() == 0)
-            throw new ForbiddenException("Field must have values");
-        User user = UserRepository.getInstance().findById(email);
-        return user != null;
+    private static boolean PasswordIsCorrect(User user, String p) throws SQLException {
+        String userPassword = user.getPassword();
+        String password = Hashing.sha256().hashString(p, StandardCharsets.UTF_8).toString();
+        return password.startsWith(userPassword);
     }
 
-    public static void signUpUser(SignUp signUpData) throws Exception {
-        User user = UserRepository.getInstance().findById(signUpData.getEmail());
+    public static String signup(SignUp data) throws Exception {
+        User user = UserRepository.getInstance().findById(data.getEmail());
         if (user != null)
             throw new Exception("email already exists");
         try {
-            UserRepository.getInstance().insert(new User(signUpData.getEmail(), signUpData.getPassword(), signUpData.getNickname(), signUpData.getNickname(), signUpData.getBirthDate()));
+            UserRepository.getInstance().insert(new User(data.getEmail(), data.getPassword(), data.getNickname(), data.getNickname(), data.getBirthDate()));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        UserRepository.setCurrentUser(data.getEmail());
+        return JWTAuthentication.createAndSignToken(data.getEmail());
     }
 }

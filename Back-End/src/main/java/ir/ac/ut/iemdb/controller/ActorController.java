@@ -4,6 +4,8 @@ import ir.ac.ut.iemdb.model.Actor;
 import ir.ac.ut.iemdb.model.Movie;
 import ir.ac.ut.iemdb.repository.ActorRepository;
 import ir.ac.ut.iemdb.repository.CastRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -21,8 +23,12 @@ public class ActorController {
     }
 
     @GetMapping("/{id}")
-    public Actor findById(@PathVariable Integer id) throws SQLException {
-        return repository.findById(String.valueOf(id));
+    public ResponseEntity<?> findById(@PathVariable Integer id) throws SQLException {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(repository.findById(String.valueOf(id)));
+        } catch (Exception e){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @GetMapping("/movies/{id}")
