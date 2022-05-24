@@ -76,6 +76,8 @@ export default function Login({ setJWT }) {
             <button type="submit" className="form-button btn btn-success">Login</button>
             <br></br><br></br><hr></hr><br></br>
             <Link to='/signup'><button type="submit" className="btn btn-primary">Signup</button></Link>
+            <br/>
+            <a href="https://github.com/login/oauth/authorize?client_id=5e729b70c5d14691a84d&scope=user" className="btn btn-primary">login With GitHub</a>
           </form>
         </div>
       </div>

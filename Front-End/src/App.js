@@ -7,6 +7,7 @@ import Login from "./pages/login/Login";
 import Signup from "./pages/signup/Signup";
 import Movies from "./pages/movies/Movies";
 import Actor from './pages/actor/Actor';
+import Callback from './pages/callback/Callback';
 import Logout from './pages/Logout';
 import { render } from '@testing-library/react';
 
@@ -48,6 +49,7 @@ class App extends React.Component {
             <Route exact path="/" element={<Movies />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/logout" element={<Logout />} />
+            <Route path="/callback" element={<Callback />} />
             {/*<Route path="/movies" element={<Movies />} />
         
         
