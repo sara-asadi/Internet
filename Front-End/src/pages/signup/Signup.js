@@ -1,4 +1,5 @@
 import "./signup-styles.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 import * as React from "react";
 import { Link, Navigate } from "react-router-dom";
@@ -22,7 +23,6 @@ async function signup(credentials, navigate) {
       "Content-Type": "application/json"
     })
     .then(response => {
-      //console.log(response);
       if (response.status === 200) {
         console.log('signup 200');
         if (response.data === "email already exists") {

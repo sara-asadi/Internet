@@ -1,33 +1,35 @@
+import "./actor-styles.css"
+
 import React from "react";
 import Header from "../general/Header";
-import "./actor-styles.css"
-import axios from 'axios';
 import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
+const axios = require('axios').default;
+var first = true;
 
 export default class Actor extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       queryParams: new URLSearchParams(window.location.search),
-      actorId: new URLSearchParams(window.location.search).get("id"),
+      id: new URLSearchParams(window.location.search).get("id"),
       actor: null,
-      notFound: false,
+      movies: [],
       loading: false
     };
   }
 
   componentDidMount() {
     console.log("actor");
-
     document.title = "actor";
-    if (this.state.actorId != null) {
-      this.getActorById(this.state.actorId);
-      console.log(this.state.actorId);
+    if (this.state.id != null) {
+      this.getActorById(this.state.id);
     }
   }
 
-  async getActorById(id) {
+  getActorById(id) {
     const getData = () => {
       const token = localStorage.getItem("token");
       console.log("token" + token);
@@ -37,23 +39,22 @@ export default class Actor extends React.Component {
           'Content-Type': 'application/json'
         }
       }).then(response => {
+        console.log("response:");
         console.log(response);
-        let actor = response.data;
-        if (actor == null) {
-          this.setState({ notFound: true, });
-          console.log("not found");
-        }
-        else {
-          console.log(actor)
-          this.setState({ actor: actor, });
-          document.title = actor.name;
-          console.log(actor.name);
-        }
+        this.setState({ actor: response.data });
+        document.title = response.data.name;
       }).catch(function (error) {
-        console.log(error);
+        if (error) {
+          console.log(error);
+          console.log(error.data);
+          toast.error("error 404: Not Found!");
+        }
       });
     };
-    getData();
+    if (first) {
+      console.log("first"); first = false;
+      getData();
+    }
   }
 
   render() {
@@ -64,7 +65,11 @@ export default class Actor extends React.Component {
       return (
         <div className="h-100">
           <Header />
-          hi
+          {this.state.loading && (
+            <div className="loading" hidden="true" >
+              <div className="spinner-grow" role="status">
+              </div>
+            </div>)}
           {this.state.actor !== null
             ? this.renderActor()
             : this.renderLoading()}
@@ -74,8 +79,6 @@ export default class Actor extends React.Component {
   }
 
   renderActor() {
-    console.log("render actor");
-
     return (
       <div><div className="row">
         <div className="col-sm-8">

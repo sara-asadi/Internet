@@ -14,14 +14,14 @@ export default class MovieCard extends React.Component {
     return (
       <div className="row">
         //<div className="col-sm-11">
-          <span class="container-1">
-            <Link to={"/movies?id=" + this.props.Movie.id}>
-              <img src={this.props.Movie.image} className="" />
-              <div class="overlay-1">
-                <div class="text-1">
-                  {this.props.Movie.name}
+          <span className="container-1">
+            <Link to={"/movies?id=" + this.props.movie.id}>
+              <img src={this.props.movie.image} className="" />
+              <div className="overlay-1">
+                <div className="text-1">
+                  {this.props.movie.name}
                   <br />
-                  {this.props.Movie.imdbRate}
+                  {this.props.movie.imdbRate}
                 </div>
               </div>
             </Link>
@@ -33,7 +33,7 @@ export default class MovieCard extends React.Component {
 }
 
 MovieCard.propTypes = {
-  Movie: PropTypes.shape({
+  movie: PropTypes.shape({
     image: PropTypes.string,
     name: PropTypes.string,
     imdb: PropTypes.number,
