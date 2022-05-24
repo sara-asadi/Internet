@@ -5,10 +5,7 @@ import ir.ac.ut.iemdb.model.Login;
 import ir.ac.ut.iemdb.model.SignUp;
 import ir.ac.ut.iemdb.model.User;
 import ir.ac.ut.iemdb.repository.UserRepository;
-import ir.ac.ut.iemdb.tools.JWT.JWTAuthentication;
-import ir.ac.ut.iemdb.tools.exceptions.ForbiddenException;
-import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.web.servlet.tags.EditorAwareTag;
+import ir.ac.ut.iemdb.security.jwt.JWTAuthentication;
 
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
@@ -33,15 +30,13 @@ public class AuthenticationService {
     }
 
     public static String signup(SignUp data) throws Exception {
-        User user = UserRepository.getInstance().findById(data.getEmail());
-        if (user != null)
-            throw new Exception("email already exists");
         try {
+            User user = UserRepository.getInstance().findById(data.getEmail());
+        } catch (Exception e) { //new email
             UserRepository.getInstance().insert(new User(data.getEmail(), data.getPassword(), data.getNickname(), data.getNickname(), data.getBirthDate()));
-        } catch (SQLException e) {
-            e.printStackTrace();
+            UserRepository.setCurrentUser(data.getEmail());
+            return JWTAuthentication.createAndSignToken(data.getEmail());
         }
-        UserRepository.setCurrentUser(data.getEmail());
-        return JWTAuthentication.createAndSignToken(data.getEmail());
+        throw new Exception("email already exists");
     }
 }

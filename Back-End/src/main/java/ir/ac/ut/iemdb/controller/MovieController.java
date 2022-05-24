@@ -32,7 +32,12 @@ public class MovieController {
 
     @GetMapping( "/{id}" )
     public Movie findById(@PathVariable String id) throws SQLException {
-        return repository.findById(id);
+        try {
+            return repository.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GetMapping( "/cast/{id}" )
@@ -67,7 +72,12 @@ public class MovieController {
     @GetMapping( "/rate/{rate}/{movieId}" )
     public Movie rate(@PathVariable Integer rate,@PathVariable Integer movieId) throws SQLException {
         RatesRepository.getInstance().insert(new Rate(movieId, UserRepository.getCurrentUser(), rate));
+        try {
         return MovieRepository.getInstance().findById(String.valueOf(movieId));
+    } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GetMapping( "/comment/{id}" )
@@ -89,7 +99,12 @@ public class MovieController {
             case "dislike": {VotesRepository.getInstance().insert(new Vote(commentId, UserRepository.getCurrentUser(), -1));
                 break;}
         }
-        return CommentRepository.getInstance().findById(String.valueOf(commentId));
+        try {
+            return CommentRepository.getInstance().findById(String.valueOf(commentId));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @GetMapping( "/add/{movieId}" )

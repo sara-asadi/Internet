@@ -24,7 +24,7 @@ public abstract class Repository<T, I> {
 
     abstract protected ArrayList<T> convertResultSetToDomainModelList(ResultSet rs) throws SQLException;
 
-    public T findById(I id) throws SQLException {
+    public T findById(I id) throws Exception {
         Connection con = ConnectionPool.getConnection();
         PreparedStatement st = con.prepareStatement(getFindByIdStatement());
         fillFindByIdValues(st, id);
@@ -33,7 +33,7 @@ public abstract class Repository<T, I> {
             if (!resultSet.next()) {
                 st.close();
                 con.close();
-                return null;
+                throw new Exception("not found");
             }
             T result = convertResultSetToDomainModel(resultSet);
             st.close();
@@ -42,8 +42,6 @@ public abstract class Repository<T, I> {
         } catch (Exception e) {
             st.close();
             con.close();
-            //System.out.println("error in Repository.find query.");
-            //e.printStackTrace();
             throw e;
         }
     }

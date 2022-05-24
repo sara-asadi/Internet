@@ -27,6 +27,7 @@ public class ActorController {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(repository.findById(String.valueOf(id)));
         } catch (Exception e){
+            System.out.println(e.getMessage());
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }

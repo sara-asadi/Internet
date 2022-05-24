@@ -1,7 +1,6 @@
 package ir.ac.ut.iemdb.repository;
 
 import ir.ac.ut.iemdb.model.Comment;
-import ir.ac.ut.iemdb.model.Movie;
 import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
 import ir.ac.ut.iemdb.tools.Queries.Queries;
 

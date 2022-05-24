@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import com.google.common.io.Resources;
 import com.google.common.hash.Hashing;
 
 public class UserRepository extends Repository<User, String> {

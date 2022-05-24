@@ -1,7 +1,6 @@
 package ir.ac.ut.iemdb.repository;
 
 
-import ir.ac.ut.iemdb.model.Rate;
 import ir.ac.ut.iemdb.model.Vote;
 import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
 import ir.ac.ut.iemdb.tools.Queries.Queries;

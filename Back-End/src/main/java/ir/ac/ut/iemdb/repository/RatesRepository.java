@@ -1,7 +1,6 @@
 package ir.ac.ut.iemdb.repository;
 
 
-import ir.ac.ut.iemdb.model.Movie;
 import ir.ac.ut.iemdb.model.Rate;
 import ir.ac.ut.iemdb.repository.connectionpool.ConnectionPool;
 import ir.ac.ut.iemdb.tools.Queries.Queries;
@@ -11,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class RatesRepository extends Repository<Rate, String> {
     private static final String TABLE_NAME = "Rates";
