@@ -25,9 +25,9 @@ import java.util.HashMap;
 public class AuthenticationController {
     @PostMapping("callback")
     public ResponseEntity<?> callback(
-            @RequestParam("code") String code,
-            HttpServletRequest request,
-            HttpServletResponse response) throws IOException, InterruptedException {
+            @RequestBody Code code) throws IOException, InterruptedException {
+
+        System.out.println(code);
 
         String client_id ="5e729b70c5d14691a84d";
         String client_secret="5cf54def66d8eb54609d81cbf4d9629410bd51ca";
@@ -46,6 +46,8 @@ public class AuthenticationController {
         ObjectMapper mapper = new ObjectMapper();
         HashMap<String, Object> resultBody = mapper.readValue(accessTokenResult.body(), HashMap.class);
         String accessToken = (String) resultBody.get("access_token");
+
+        System.out.println(accessToken);
 
         URI userDataUri = URI.create("https://api.github.com/user");
         HttpRequest.Builder userDataBuilder = HttpRequest.newBuilder().uri(userDataUri);

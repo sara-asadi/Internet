@@ -9,6 +9,7 @@ import { useState } from 'react';
 const axios = require('axios').default;
 
 async function callbackUser(credentials, navigate) {
+  debugger
   console.log("hi");
   axios.post('http://localhost:8080/callback',
     { "code":credentials.code},
@@ -34,19 +35,13 @@ async function callbackUser(credentials, navigate) {
 }
 
 export default function Callback({ setJWT }) {
-
+  debugger
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const navigate = useNavigate();
-
-//  const handleSubmit = async e => {
-//    e.preventDefault();
-//    await loginUser({
-//      email: email,
-//      password: password,
-//    }, navigate);
-//  }
-
+    let code = new URLSearchParams(window.location.search).get("code");
+    callbackUser({code:code}, navigate);
+    console.log(localStorage.getItem("token"));
   if (localStorage.getItem("token") !== null) {
     //localStorage.removeItem("token");
     console.log("token" + localStorage.getItem("token"));
